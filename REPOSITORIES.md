@@ -1,10 +1,10 @@
 # Evaluation substrates
 
 The eight tasks in this sample use immutable pre-change snapshots from three
-historical enterprise repositories. Agents see a sealed working tree without
+production enterprise repositories. Agents see a sealed working tree without
 usable Git history; hidden tests enter the sandbox only at grading time.
 
-## Paigo backend
+## Usage-metering and billing backend
 
 - **Stack:** TypeScript, NestJS, TypeORM, and Jest.
 - **Domain:** usage metering and billing, offering/customer ownership,
@@ -16,7 +16,7 @@ usable Git history; hidden tests enter the sandbox only at grading time.
   dependencies are preinstalled in the Daytona snapshot and grading runs
   deterministic unit tests.
 
-## Champ state machine
+## Email-campaign state machine
 
 - **Stack:** TypeScript, Jest, and document-database repositories.
 - **Domain:** managed email inboxes, campaign associations, deliverability,
@@ -39,9 +39,9 @@ usable Git history; hidden tests enter the sandbox only at grading time.
 
 ## Shared properties
 
-- Historical tasks start at the exact parent commit of a real feature or
+- Tasks start at the exact parent commit of a real feature or
   migration; no synthetic bugs are planted.
-- Every task has an untouched-base reward of 0 and a historical-oracle reward
+- Every task has an untouched-base reward of 0 and a reference-oracle reward
   of 1 under the same binary verifier.
 - Source images and Daytona snapshots are distributed separately from this
   task package. Generated source patches may still require source-owner

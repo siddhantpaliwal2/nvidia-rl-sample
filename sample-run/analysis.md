@@ -5,7 +5,7 @@
 - [Setup](#setup)
   - [Enterprise long-horizon track](#enterprise-long-horizon-track)
   - [Current-checksum comparison cohort](#current-checksum-comparison-cohort)
-  - [Historical GPT-5.6 Sol control](#historical-gpt-56-sol-control)
+  - [GPT-5.6 Sol comparison](#gpt-56-sol-comparison)
 - [Headline result](#headline-result)
 - [Evaluation bar and win definition](#evaluation-bar-and-win-definition)
 - [Enterprise capability-gap results](#enterprise-capability-gap-results)
@@ -22,7 +22,7 @@
   - [Billing: visible success misses queue and invoice contracts](#billing-visible-success-misses-queue-and-invoice-contracts)
   - [Top-up: effort without state-machine closure](#top-up-effort-without-state-machine-closure)
   - [S3: control plane and data plane remain disconnected](#s3-control-plane-and-data-plane-remain-disconnected)
-  - [CHAMP: interface discoverability blocks the suite](#champ-interface-discoverability-blocks-the-suite)
+  - [Email infrastructure: interface discoverability blocks the suite](#email-infrastructure-interface-discoverability-blocks-the-suite)
   - [Finbit parser: a shared final blocker](#finbit-parser-a-shared-final-blocker)
   - [Google storage: the real provider boundary is missing](#google-storage-the-real-provider-boundary-is-missing)
 - [Trace comparison: Nemotron vs GPT-5.6 Sol vs Opus 5](#trace-comparison-nemotron-vs-gpt-56-sol-vs-opus-5)
@@ -35,13 +35,13 @@
 ### Enterprise long-horizon track
 
 The evaluation contains eight production-derived feature and migration tasks
-from Paigo, CHAMP, and Finbit. They do not plant synthetic defects. Each starts
+from three enterprise repositories. They do not plant synthetic defects. Each starts
 from the exact parent revision of a real change and asks the agent to implement
 the behavior from an engineering ticket across coupled production subsystems.
 
 The tasks span **4 to 44 oracle files** and **70 to 1,823 changed lines** in
 TypeScript and Groovy systems. Independently authored hidden tests grade the
-behavioral contract; the historical patch is used only as a solvability oracle.
+behavioral contract; the reference patch is used only as a solvability oracle.
 
 Nemotron received four actual model calls per task through OpenCode 1.18.13 in
 isolated Daytona sandboxes. The exact route was
@@ -60,12 +60,12 @@ Nemotron and Opus therefore share the grading boundary needed for a direct
 score comparison. The 64 current-checksum attempts are packaged under
 `trials/nemotron3-ultra/` and `trials/opus5/`.
 
-### Historical GPT-5.6 Sol control
+### GPT-5.6 Sol comparison
 
-Four complete GPT-5.6 Sol traces per task are retained as a separate historical
-control. Their route was `openrouter/openai/gpt-5.6-sol`. They contain the
-current assertion names but predate later verifier-fairness revisions and have
-different task-directory checksums.
+Four complete GPT-5.6 Sol traces per task are retained as a separate comparison
+cohort. Their route was `openrouter/openai/gpt-5.6-sol`. They contain the
+current assertion names but were collected before later verifier-fairness
+revisions and have different task-directory checksums.
 
 Sol is therefore used for trace-level behavioral comparison, not a current
 quantitative score claim. Its denominator and provenance remain explicit in
@@ -74,7 +74,7 @@ quantitative score claim. Its denominator and provenance remain explicit in
 ## Headline result
 
 Nemotron solved **2/32** current-checksum attempts. Both solves were on
-`paigo-dimension-pricing-tiers`, where it scored **2/4**. Opus solved **24/32**
+the dimension-pricing task, where it scored **2/4**. Opus solved **24/32**
 and completed at least one rollout on seven of eight tasks.
 
 Nemotron recorded **no task-level quantitative win over Opus**: seven losses
@@ -83,19 +83,19 @@ on tiered pricing, and its successful pricing runs are cheaper and shorter than
 the selected Opus pricing solves. That conditional efficiency does not offset
 the reliability gap across the full bank.
 
-| Task | Nemotron 3 Ultra | Claude Opus 5 | GPT-5.6 Sol historical | Current-checksum verdict |
-|---|---:|---:|---:|---|
-| Dimension pricing tiers | **2/4** | **4/4** | 0/4 | Opus win; Nemotron repeatably capable |
-| Top-up billing lifecycle | 0/4 | **4/4** | 0/4 | Opus win |
-| S3 datastore measurement | 0/4 | **3/4** | 0/4 | Opus win |
-| Customer identity migration | 0/4 | **4/4** | 0/4 | Opus win |
-| Customer billing-schedule migration | 0/4 | **3/4** | 0/4 | Opus win |
-| CHAMP email inbox infrastructure | 0/4 | **3/4** | 0/4 | Opus win |
-| Finbit bank parser consolidation | 0/4 | 0/4 | 0/4 | Tie; Opus has stronger partials |
-| Finbit Google storage migration | 0/4 | **3/4** | 0/4 | Opus win |
-| **Total** | **2/32** | **24/32** | **0/32** | **0 Nemotron wins, 7 losses, 1 tie** |
+| Task | Nemotron 3 Ultra | Claude Opus 5 | GPT-5.6 Sol |
+|---|---:|---:|---:|
+| Dimension pricing tiers | **2/4** | **4/4** | 0/4 |
+| Top-up billing lifecycle | 0/4 | **4/4** | 0/4 |
+| S3 datastore measurement | 0/4 | **3/4** | 0/4 |
+| Customer identity migration | 0/4 | **4/4** | 0/4 |
+| Customer billing-schedule migration | 0/4 | **3/4** | 0/4 |
+| Email inbox infrastructure | 0/4 | **3/4** | 0/4 |
+| Finbit bank parser consolidation | 0/4 | 0/4 | 0/4 |
+| Finbit Google storage migration | 0/4 | **3/4** | 0/4 |
+| **Total** | **2/32** | **24/32** | **0/32** |
 
-| Aggregate | Nemotron 3 Ultra | Claude Opus 5 | GPT-5.6 Sol historical |
+| Aggregate | Nemotron 3 Ultra | Claude Opus 5 | GPT-5.6 Sol |
 |---|---:|---:|---:|
 | Macro pass@1 | 0.0625 | 0.7500 | 0.0000 |
 | Macro pass@4 | 0.1250 | 0.8750 | 0.0000 |
@@ -107,7 +107,7 @@ the reliability gap across the full bank.
 | Observed cost / full solve | $31.35 | $12.74 | undefined |
 
 The lower Nemotron cohort cost is not an overall quality win: it bought one
-twelfth as many solves as Opus. Historical Sol scored 0/32, but its different
+twelfth as many solves as Opus. GPT-5.6 Sol scored 0/32, but its different
 checksums keep that row outside the current score comparison.
 
 ## Evaluation bar and win definition
@@ -147,8 +147,8 @@ only when it closes more required behavior.
 | Customer identity migration | 9 | Claude Opus 5 | 4/4 | 1.0000 | 1.0000 |
 | Customer billing-schedule migration | 8 | Nemotron 3 Ultra | 0/4 | 0.0000 | 0.0000 |
 | Customer billing-schedule migration | 8 | Claude Opus 5 | 3/4 | 0.7500 | 1.0000 |
-| CHAMP email inbox infrastructure | 12 | Nemotron 3 Ultra | 0/4 | 0.0000 | 0.0000 |
-| CHAMP email inbox infrastructure | 12 | Claude Opus 5 | 3/4 | 0.7500 | 1.0000 |
+| Email inbox infrastructure | 12 | Nemotron 3 Ultra | 0/4 | 0.0000 | 0.0000 |
+| Email inbox infrastructure | 12 | Claude Opus 5 | 3/4 | 0.7500 | 1.0000 |
 | Finbit bank parser consolidation | 7 | Nemotron 3 Ultra | 0/4 | 0.0000 | 0.0000 |
 | Finbit bank parser consolidation | 7 | Claude Opus 5 | 0/4 | 0.0000 | 0.0000 |
 | Finbit Google storage migration | 7 | Nemotron 3 Ultra | 0/4 | 0.0000 | 0.0000 |
@@ -172,7 +172,7 @@ those phases and remote provider/scheduling latency.
 | S3 | 65.8 | 81.0 | 19m 06.0s (3m 06.2s-82m 37.4s) | 3m 40.7s-83m 12.9s |
 | Identity | 95.0 | 117.2 | 9m 10.1s (7m 37.4s-10m 45.8s) | 8m 18.6s-11m 32.7s |
 | Billing | 53.0 | 69.5 | 4m 24.8s (2m 31.0s-6m 03.1s) | 3m 03.8s-6m 35.2s |
-| CHAMP | 50.2 | 58.0 | 4m 27.3s (3m 26.3s-5m 25.6s) | 4m 08.5s-6m 23.9s |
+| Email infrastructure | 50.2 | 58.0 | 4m 27.3s (3m 26.3s-5m 25.6s) | 4m 08.5s-6m 23.9s |
 | Parser | 81.0 | 90.2 | 5m 59.0s (4m 51.7s-6m 46.8s) | 5m 28.9s-7m 25.2s |
 | Google storage | 36.5 | 40.2 | 1m 39.4s (0m 53.1s-13m 11.0s) | 1m 31.8s-14m 04.2s |
 
@@ -210,10 +210,10 @@ complete assertion matrix; those trials remain reward 0.
 | Billing | 2 | 0 | 5/8 | 29 | 45 | 3m 03.8s | 1.57M (0.90M) / 8.4k | $0.61 | complete |
 | Billing | 3 | 0 | 6/8 | 44 | 59 | 5m 07.4s | 2.52M (1.54M) / 12.0k | $0.95 | complete |
 | Billing | 4 | 0 | 5/8 | 92 | 111 | 6m 35.2s | 7.47M (5.91M) / 18.7k | $2.19 | complete |
-| CHAMP | 1 | 0 | 2/12 | 52 | 63 | 6m 23.9s | 2.21M (1.47M) / 11.9k | $0.78 | suite abort |
-| CHAMP | 2 | 0 | 2/12 | 58 | 62 | 6m 09.9s | 2.51M (1.61M) / 25.8k | $0.96 | suite abort |
-| CHAMP | 3 | 0 | 2/12 | 39 | 43 | 4m 08.5s | 1.28M (0.97M) / 10.4k | $0.42 | suite abort |
-| CHAMP | 4 | 0 | 2/12 | 52 | 64 | 4m 27.5s | 2.04M (1.64M) / 11.9k | $0.62 | suite abort |
+| Email infrastructure | 1 | 0 | 2/12 | 52 | 63 | 6m 23.9s | 2.21M (1.47M) / 11.9k | $0.78 | suite abort |
+| Email infrastructure | 2 | 0 | 2/12 | 58 | 62 | 6m 09.9s | 2.51M (1.61M) / 25.8k | $0.96 | suite abort |
+| Email infrastructure | 3 | 0 | 2/12 | 39 | 43 | 4m 08.5s | 1.28M (0.97M) / 10.4k | $0.42 | suite abort |
+| Email infrastructure | 4 | 0 | 2/12 | 52 | 64 | 4m 27.5s | 2.04M (1.64M) / 11.9k | $0.62 | suite abort |
 | Parser | 1 | 0 | 6/7 | 70 | 86 | 7m 01.1s | 8.01M (6.54M) / 31.1k | $2.32 | complete |
 | Parser | 2 | 0 | 3/7 | 90 | 103 | 6m 22.9s | 9.58M (7.71M) / 10.7k | $2.72 | complete |
 | Parser | 3 | 0 | 3/7 | 93 | 92 | 7m 25.2s | 9.83M (7.91M) / 32.0k | $2.88 | complete |
@@ -231,7 +231,7 @@ complete assertion matrix; those trials remain reward 0.
 | S3 datastore | 4/4 miss scoped IAM provisioning, trust updates, persisted config, business derivation, and mirrored DLQ keys | Opus 3/4 | Complete both control plane and data plane; config-only or connector-only work cannot score |
 | Customer identity | 4/4 miss query forwarding, offering deletion guard, and usage-result wrapping | Opus 4/4 | Preserve existing API semantics while migrating ownership tags and repository relations |
 | Billing schedule | 4/4 miss invoice construction/time range and exclusive billing-queue routing | Opus 3/4 | Connect scheduler emission to the correct queue and complete the usage-to-invoice record |
-| CHAMP inboxes | 4/4 fail suite loading because `EmailAccount` is not exported from either accepted entity module | Opus 3/4 | Expose the expected domain entity before satisfying persistence, atomic association, ranking, hydration, and deletion |
+| Email inboxes | 4/4 fail suite loading because `EmailAccount` is not exported from either accepted entity module | Opus 3/4 | Expose the expected domain entity before satisfying persistence, atomic association, ranking, hydration, and deletion |
 | Bank parser | 4/4 miss heterogeneous bank routing; Opus also misses it 4/4 | Opus 0/4, but 6/7 every time | Resolve the shared-parser routing table without regressing dates, continuation rows, or bank-specific fallbacks |
 | Google storage | 4/4 miss configured-client upload, download, and persisted-GOOGLE dispatch | Opus 3/4 | Use the injected `Storage` boundary end to end while preserving local, Azure, and S3 fallback behavior |
 
@@ -245,14 +245,14 @@ Selected trace pairs:
 
 ### Fairness and validity
 
-- Untouched bases score 0 and historical solvability oracles score 1 for all
+- Untouched bases score 0 and reference solvability oracles score 1 for all
   eight tasks.
 - Every selected Nemotron and Opus attempt matches its exact route, OpenCode
   version, Daytona snapshot, single-agent policy, and expected checksum.
-- Exactly four actual Nemotron model calls enter each task cell. Two CHAMP
+- Exactly four actual Nemotron model calls enter each task cell. Two email-infrastructure
   sandboxes failed during agent installation before producing model tokens;
   they are excluded and replaced.
-- No candidate-caused failure is retried. Four CHAMP suite-load failures, one
+- No candidate-caused failure is retried. Four email-infrastructure suite-load failures, one
   identity verifier abort, and one Google-storage compile abort remain reward 0.
 - Those six aborts leave 56 assertions unreported. The 148/340 Nemotron
   assertion statistic is a conservative confirmed-pass lower bound, not an
@@ -291,10 +291,10 @@ The decisive compatibility condition is that a dimension with no tiers,
 consumption price, or entitlement must not create an invoice line item. Both
 successful Nemotron traces explicitly account for this behavior.
 
-All four historical Sol pricing traces miss that compatibility assertion.
+All four GPT-5.6 Sol pricing traces miss that compatibility assertion.
 [Sol attempt 2](trials/gpt56sol-historical/paigo-dimension-pricing-tiers/attempt-02/verifier-output.json)
 passes 20/21 but still scores 0. This is the clearest trace-level Nemotron
-separation from historical Sol: Nemotron can add the new tier branch without
+separation from GPT-5.6 Sol: Nemotron can add the new tier branch without
 breaking the old unpriced path.
 
 It is not a separation from Opus. Opus passes 21/21 in all four current-checksum
@@ -347,13 +347,13 @@ The task requires a single invariant across control-plane provisioning and
 data-plane delivery. Opus solves 3/4, showing that the coupled contract is
 difficult but learnable.
 
-### CHAMP: interface discoverability blocks the suite
+### Email infrastructure: interface discoverability blocks the suite
 
 All four candidates preserve the two regression tests but fail before the ten
 new assertions load because the verifier cannot discover an exported
 `EmailAccount` entity. The repeated boundary is visible in
 [attempt 1 stdout](trials/nemotron3-ultra/champ-email-inbox-infrastructure/attempt-01/verifier-stdout.txt)
-and the other packaged CHAMP stdout files.
+and the other packaged email-infrastructure stdout files.
 
 The terminal reward remains 0, while the unreported list prevents fabricated
 per-assertion claims. Exposing the expected domain entity is the first
@@ -381,7 +381,7 @@ candidate-caused verifier abort rather than retried as infrastructure.
 
 ## Trace comparison: Nemotron vs GPT-5.6 Sol vs Opus 5
 
-| Dimension | Nemotron 3 Ultra | Claude Opus 5 | GPT-5.6 Sol historical |
+| Dimension | Nemotron 3 Ultra | Claude Opus 5 | GPT-5.6 Sol |
 |---|---|---|---|
 | Full solves | 2/32 | 24/32 | 0/32 |
 | Task coverage | 1/8 | 7/8 | 0/8 |
@@ -389,11 +389,11 @@ candidate-caused verifier abort rather than retried as infrastructure.
 | Strongest cell | Pricing, 2/4 | Pricing, top-up, and identity, 4/4 | Pricing, 78/84 checks but 0 solves |
 | Stable blocker | Cross-layer closure outside pricing | Shared Finbit parser routing | Compatibility and cross-layer terminal contracts |
 | Cost / solve | $31.35 | $12.74 | Undefined |
-| Score status | Current checksum | Current checksum | Historical checksum; qualitative only |
+| Score status | Current checksum | Current checksum | Earlier checksum; qualitative only |
 
-Nemotron's meaningful separation from historical Sol is concentrated in
+Nemotron's meaningful separation from GPT-5.6 Sol is concentrated in
 pricing. Sol's four traces reach 18/21 or 20/21 but never preserve every legacy
-contract. Nemotron does so twice. On the other seven tasks, Sol's historical
+contract. Nemotron does so twice. On the other seven tasks, Sol's
 partial-check rate is equal to or higher than Nemotron's on five cells; there is
 no broad evidence of Nemotron dominance.
 
@@ -412,11 +412,11 @@ with a warning about build errors while the frozen required verifier passes
 ## Why these environments are trainable
 
 - **The reward is satisfiable and non-trivial.** Every untouched base scores 0
-  and every historical oracle scores 1.
+  and every reference oracle scores 1.
 - **Failures are decomposable.** Assertions name queue routing, storage
   dispatch, tier arithmetic, repository persistence, and fallback behavior.
 - **Repeated rollouts reveal variance.** Pricing's 2/4 distinguishes an
-  expressible capability from universal blockers such as CHAMP entity
+  expressible capability from universal blockers such as email-entity
   discovery and Finbit parser routing.
 - **Comparator solves establish learnability.** Opus completes seven of eight
   tasks at least once under the same current verifier.
@@ -427,8 +427,8 @@ with a warning about build errors while the frozen required verifier passes
 
 For curriculum design, the first universally red contract is an appropriate
 intermediate reward while all-tests-pass remains the terminal objective.
-Examples are CHAMP entity discoverability, Finbit shared-parser routing, billing
-queue exclusivity, and S3 control-plane persistence. The historical oracle
+Examples are email-entity discoverability, Finbit shared-parser routing, billing
+queue exclusivity, and S3 control-plane persistence. The reference oracle
 proves satisfiability; it is not a patch-similarity target.
 
 ## Caveats
