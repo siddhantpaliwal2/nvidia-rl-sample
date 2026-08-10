@@ -1,0 +1,22 @@
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/dist/grails-plugin-log4j-2.3.11.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/lib/org.slf4j/slf4j-simple/jars/slf4j-simple-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.GrailsSlf4jLoggerFactory]
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/dist/grails-plugin-log4j-2.3.11.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/lib/org.slf4j/slf4j-simple/jars/slf4j-simple-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/app/lib/tika-app-1.14.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/app/lib/traprange-1.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.GrailsSlf4jLoggerFactory]
+PASS Bank parser consolidation normalizes compact and OCR-corrupted month dates
+PASS Bank parser consolidation recognizes opening balances and repeated transaction headers
+PASS Bank parser consolidation parses an irregular date through the description-below-date layout
+PASS Bank parser consolidation retains balance-only continuation rows in the description-above-date layout
+FAIL Bank parser consolidation routes heterogeneous bank layouts through the correct shared parser: PowerAssertionError: assert calls == ['andhra-regex', 'shared-above', 'shared-below']
+       |     |
+       |     false
+       [shared-above, shared-below]
+PASS Bank parser consolidation preserves standard numeric date parsing
+PASS Bank parser consolidation preserves the dedicated Bank of Baroda saving-account route

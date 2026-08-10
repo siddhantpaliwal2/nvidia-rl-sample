@@ -1,0 +1,18 @@
+{
+    "task": {
+        "path": "tasks/champ-email-inbox-infrastructure"
+    },
+    "trial_name": "champ-email-inbox-infrastructure__dStj4r7",
+    "trials_dir": "sample-run/enterprise-controls/champ2197-null-daytona-r10",
+    "agent": {
+        "name": "nop"
+    },
+    "environment": {
+        "type": "daytona",
+        "kwargs": {
+            "snapshot_template_name": "harbor-probe-champ-email-inbox-infrastructure-8g",
+            "assume_global_snapshot": true
+        }
+    },
+    "job_id": "09e55c6c-378c-42e5-88f8-c928bd1ba2ac"
+}

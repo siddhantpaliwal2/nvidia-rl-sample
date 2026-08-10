@@ -1,0 +1,16 @@
+[31m[Nest] 318  - [39m08/08/2026, 5:37:51 AM [31m  ERROR[39m [38;5;3m[EmailAccountEntity] [39m[31mThe following email accounts are missing: 2[39m
+[31m[Nest] 318  - [39m08/08/2026, 5:37:51 AM [31m  ERROR[39m [38;5;3m[EmailinfraService] [39m[31mCound not found smartlead email account by id=missing[39m
+[31m[Nest] 318  - [39m08/08/2026, 5:37:51 AM [31m  ERROR[39m [38;5;3m[EmailinfraService] [39m[31mFailed to save email account, error: NotFoundException: Smartlead email account not found[39m
+PASS src/emailinfra/emailinfra.gold.spec.ts (6.02 s)
+[32m[Nest] 318  - [39m08/08/2026, 5:37:51 AM [32m    LOG[39m [38;5;3m[EmailAccountEntity] [39m[32mCreating email account [object Object][39m
+[32m[Nest] 318  - [39m08/08/2026, 5:37:51 AM [32m    LOG[39m [38;5;3m[EmailAccountEntity] [39m[32mGetting email account by email: a@example.com[39m
+[32m[Nest] 318  - [39m08/08/2026, 5:37:51 AM [32m    LOG[39m [38;5;3m[EmailAccountEntity] [39m[32mGetting email accounts by smartleadClientId: client-1[39m
+[32m[Nest] 318  - [39m08/08/2026, 5:37:51 AM [32m    LOG[39m [38;5;3m[EmailAccountEntity] [39m[32mGetting email account by email: missing@example.com[39m
+PASS src/email-reply-agent/entities/entity.spec.ts
+PASS src/emailinfra/entities/emailAccountHistorical.gold.spec.ts
+
+Test Suites: 3 passed, 3 total
+Tests:       21 passed, 21 total
+Snapshots:   0 total
+Time:        6.169 s
+Test results written to: ../tmp/jest-unit.json

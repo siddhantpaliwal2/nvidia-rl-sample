@@ -1,0 +1,225 @@
+ts-jest[backports] (WARN) "[jest-config].globals.ts-jest.tsConfig" is deprecated, use "[jest-config].globals.ts-jest.tsconfig" instead.
+ts-jest[backports] (WARN) Your Jest configuration is outdated. Use the CLI to help migrating it: ts-jest config:migrate <config-file>.
+FAIL src/customer/customerIdentityMigration.gold.spec.ts
+  ● Customer identity migration › persists and restores the offering attached to a customer
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: "offeringId", "offering-1"
+    Received
+           1: "customerId", "customer-1"
+           2: "businessID", "business-1"
+           3: "paymentChannel", "manual"
+
+    Number of calls: 6
+
+      39 |         } as any);
+      40 |         CustomerEntity.transformer(entity, { getPoint: jest.fn(() => point) } as any);
+    > 41 |         expect(point.tag).toHaveBeenCalledWith('offeringId', 'offering-1');
+         |                           ^
+      42 |
+      43 |         const restored = CustomerEntity.dbModelToEntity({
+      44 |             _value: 'Acme',
+
+      at Object.<anonymous> (customer/customerIdentityMigration.gold.spec.ts:41:27)
+
+  ● Customer identity migration › writes and reads standard measurements with customerId as the ownership tag
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: "customerId", "customer-1"
+    Received
+           1: "applicationId", undefined
+           2: "dimensionId", "dimension-1"
+           3: "serviceId", undefined
+
+    Number of calls: 5
+
+      62 |         } as any);
+      63 |         MeasurementFormat.getPointForm(measurement, { getPoint: jest.fn(() => point) } as any);
+    > 64 |         expect(point.tag).toHaveBeenCalledWith('customerId', 'customer-1');
+         |                           ^
+      65 |         expect(point.tag).toHaveBeenCalledWith('dimensionId', 'dimension-1');
+      66 |
+      67 |         expect(
+
+      at Object.<anonymous> (customer/customerIdentityMigration.gold.spec.ts:64:27)
+
+  ● Customer identity migration › maps infrastructure labels to customer-owned measurements
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: ObjectContaining {"customerId": "customer-1", "dimensionId": "dimension-1", "recordValue": 7.25}
+    Received: {"_measurement": "usageMeasurement", "applicationId": undefined, "businessID": "business-1", "dimensionId": "dimension-1", "metadata": {"source": "agent"}, "recordValue": 7.25, "serviceId": undefined, "timeStamp": "2023-03-10T00:00:00.000Z"}
+
+    Number of calls: 1
+
+      92 |             ]),
+      93 |         } as any);
+    > 94 |         expect(publish).toHaveBeenCalledWith(
+         |                         ^
+      95 |             expect.objectContaining({ customerId: 'customer-1', dimensionId: 'dimension-1', recordValue: 7.25 }),
+      96 |         );
+      97 |     });
+
+      at Object.<anonymous> (customer/customerIdentityMigration.gold.spec.ts:94:25)
+
+  ● Customer identity migration › queries usage through the customer offering and preserves time and interval overrides
+
+    TypeError: service.findUsageForCustomer is not a function
+
+      114 |         );
+      115 |         await expect(
+    > 116 |             service.findUsageForCustomer(
+          |                     ^
+      117 |                 { customerId: 'customer-1', businessID: 'business-1' },
+      118 |                 {
+      119 |                     startTime: '2023-03-01T00:00:00.000Z',
+
+      at Object.<anonymous> (customer/customerIdentityMigration.gold.spec.ts:116:21)
+
+  ● Customer identity migration › returns customer reads with invoices and the hydrated offering
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  5
+    + Received  + 10
+
+    - ObjectContaining {
+    + ReadCustomerResponseData {
+    +   "address": Object {},
+    +   "businessID": undefined,
+        "customerId": "customer-1",
+    +   "customerName": "Acme",
+    +   "customerVatId": undefined,
+    +   "email": "",
+        "invoices": Array [],
+    -   "offering": ObjectContaining {
+    -     "offeringId": "offering-1",
+    -   },
+    -   "offeringId": "offering-1",
+    +   "paymentChannel": "manual",
+    +   "paymentChannelOptions": Object {},
+    +   "softDelete": undefined,
+    +   "taxExempt": "none",
+      }
+
+      161 |         );
+      162 |         const result = await service.findOne({ customerId: 'customer-1', businessID: 'business-1' });
+    > 163 |         expect(result.data[0]).toEqual(
+          |                                ^
+      164 |             expect.objectContaining({
+      165 |                 customerId: 'customer-1',
+      166 |                 offeringId: 'offering-1',
+
+      at Object.<anonymous> (customer/customerIdentityMigration.gold.spec.ts:163:32)
+
+  ● Customer identity migration › exposes customer usage and forwards business, customer, and query parameters
+
+    TypeError: controller.findUsage is not a function
+
+      175 |         const controller = new PublicAPICustomerController({ findUsageForCustomer } as any);
+      176 |         const query = { aggregationInterval: 'none' } as any;
+    > 177 |         await controller.findUsage('customer-1', { user: { businessID: 'business-1' } } as any, query);
+          |                          ^
+      178 |         expect(findUsageForCustomer).toHaveBeenCalledWith(
+      179 |             { businessID: 'business-1', customerId: 'customer-1' },
+      180 |             query,
+
+      at Object.<anonymous> (customer/customerIdentityMigration.gold.spec.ts:177:26)
+
+  ● Customer identity migration › prevents deleting an offering while customers still reference it
+
+    expect(received).rejects.toBeInstanceOf(expected)
+
+    Expected constructor: ConflictException
+    Received constructor: TypeError
+
+      194 |             dependencies as any,
+      195 |         );
+    > 196 |         await expect(service.delete({ businessID: 'business-1', offeringId: 'offering-1' })).rejects.toBeInstanceOf(
+          |                                                                                                      ^
+      197 |             ConflictException,
+      198 |         );
+      199 |     });
+
+      at Object.toBeInstanceOf (../node_modules/@jest/expect/node_modules/expect/build/index.js:241:22)
+      at Object.<anonymous> (customer/customerIdentityMigration.gold.spec.ts:196:102)
+
+  ● Customer identity migration › wraps customer usage results without changing their records
+
+    TypeError: service.findUsageForCustomer is not a function
+
+      213 |         );
+      214 |         await expect(
+    > 215 |             service.findUsageForCustomer(
+          |                     ^
+      216 |                 { customerId: 'customer-1', businessID: 'business-1' },
+      217 |                 { aggregationInterval: 'day' } as any,
+      218 |             ),
+
+      at Object.<anonymous> (customer/customerIdentityMigration.gold.spec.ts:215:21)
+
+[32m[Nest] 2957  - [39m08/10/2026, 8:39:19 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mFinding saasClientID: customer-1 for business-1[39m
+[32m[Nest] 2957  - [39m08/10/2026, 8:39:19 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mFinding invoices for customer customer-1 of business business-1[39m
+[95m[Nest] 2957  - [39m08/10/2026, 8:39:19 PM [95m  DEBUG[39m [38;5;3m[CustomerService] [39m[95m[][39m
+[32m[Nest] 2957  - [39m08/10/2026, 8:39:19 PM [32m    LOG[39m [38;5;3m[OfferingService] [39m[32mAttempting to delete offering: offering-1 for business-1[39m
+PASS src/measurement-config/measurementConfigControllerHistorical.gold.spec.ts
+
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       8 failed, 1 passed, 9 total
+Snapshots:   0 total
+Time:        4.141 s
+Test results written to: ../tmp/jest-unit.json
+Force exiting Jest: Have you considered using `--detectOpenHandles` to detect async operations that kept running after all tests finished?
+{
+  "tests": [
+    {
+      "name": "Customer identity migration persists and restores the offering attached to a customer",
+      "status": "failed"
+    },
+    {
+      "name": "Customer identity migration writes and reads standard measurements with customerId as the ownership tag",
+      "status": "failed"
+    },
+    {
+      "name": "Customer identity migration maps infrastructure labels to customer-owned measurements",
+      "status": "failed"
+    },
+    {
+      "name": "Customer identity migration queries usage through the customer offering and preserves time and interval overrides",
+      "status": "failed"
+    },
+    {
+      "name": "Customer identity migration returns customer reads with invoices and the hydrated offering",
+      "status": "failed"
+    },
+    {
+      "name": "Customer identity migration exposes customer usage and forwards business, customer, and query parameters",
+      "status": "failed"
+    },
+    {
+      "name": "Customer identity migration prevents deleting an offering while customers still reference it",
+      "status": "failed"
+    },
+    {
+      "name": "Customer identity migration wraps customer usage results without changing their records",
+      "status": "failed"
+    },
+    {
+      "name": "MeasurementConfigController should be defined",
+      "status": "passed"
+    }
+  ]
+}
+
+required passed: 1/9
+  NOT PASSED (failed): Customer identity migration persists and restores the offering attached to a customer
+  NOT PASSED (failed): Customer identity migration writes and reads standard measurements with customerId as the ownership tag
+  NOT PASSED (failed): Customer identity migration maps infrastructure labels to customer-owned measurements
+  NOT PASSED (failed): Customer identity migration queries usage through the customer offering and preserves time and interval overrides
+  NOT PASSED (failed): Customer identity migration returns customer reads with invoices and the hydrated offering
+  NOT PASSED (failed): Customer identity migration exposes customer usage and forwards business, customer, and query parameters
+  NOT PASSED (failed): Customer identity migration prevents deleting an offering while customers still reference it
+  NOT PASSED (failed): Customer identity migration wraps customer usage results without changing their records
+reward: 0

@@ -1,0 +1,23 @@
+{
+    "job_name": "champ2197-null-daytona-r5",
+    "jobs_dir": "sample-run/enterprise-controls",
+    "n_concurrent_trials": 1,
+    "quiet": true,
+    "environment": {
+        "type": "daytona",
+        "kwargs": {
+            "snapshot_template_name": "harbor-probe-champ-email-inbox-infrastructure-8g",
+            "assume_global_snapshot": true
+        }
+    },
+    "agents": [
+        {
+            "name": "nop"
+        }
+    ],
+    "tasks": [
+        {
+            "path": "tasks/champ-email-inbox-infrastructure"
+        }
+    ]
+}

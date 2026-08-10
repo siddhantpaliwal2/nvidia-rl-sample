@@ -1,0 +1,15 @@
+{
+    "task": {
+        "path": "tasks/paigo-s3-datastore-measurement"
+    },
+    "trial_name": "paigo-s3-datastore-measurement__N2wrixx",
+    "trials_dir": "sample-run/enterprise-controls/eng411-oracle-daytona-r3",
+    "environment": {
+        "type": "daytona",
+        "kwargs": {
+            "snapshot_template_name": "harbor-probe-paigo-s3-datastore-measurement-8g",
+            "assume_global_snapshot": true
+        }
+    },
+    "job_id": "95de2c96-ddac-46d3-88e6-02316e7a51d7"
+}

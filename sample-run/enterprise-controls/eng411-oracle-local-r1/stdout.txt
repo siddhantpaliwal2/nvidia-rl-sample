@@ -1,0 +1,43 @@
+FAIL src/measurement-config/datastoreMeasurement.gold.spec.ts
+  ● Test suite failed to run
+
+    Cannot find module '@aws-sdk/client-iam' from 'measurement-config/datastoreMeasurement.gold.spec.ts'
+
+       8 | const mockS3Send = jest.fn();
+       9 |
+    > 10 | jest.mock('@aws-sdk/client-iam', () => ({
+         |      ^
+      11 |     IAM: jest.fn(() => ({
+      12 |         createPolicy: mockCreatePolicy,
+      13 |         createRole: mockCreateRole,
+
+      at Resolver._throwModNotFoundError (../node_modules/jest-resolve/build/resolver.js:491:11)
+      at Object.<anonymous> (measurement-config/datastoreMeasurement.gold.spec.ts:10:6)
+
+FAIL src/measurement-config/measurement-config.controller.spec.ts
+  ● Test suite failed to run
+
+    Cannot find module '@aws-sdk/client-iam' from 'measurement-config/entities/measurement-config.entity.ts'
+
+    Require stack:
+      measurement-config/entities/measurement-config.entity.ts
+      influx/influx.service.ts
+      influx/influx.module.ts
+      measurement-config/measurement-config.controller.spec.ts
+
+      10 | import { ReadMeasurementResponseData } from '../dto/read-measurement-config.dto';
+      11 | import { ValidIAMRole } from '../../setting/dto/customIAMAuthorizer';
+    > 12 | import { IAM } from '@aws-sdk/client-iam';
+         | ^
+      13 | import { randomUUID } from 'crypto';
+      14 |
+      15 | /**
+
+      at Resolver._throwModNotFoundError (../node_modules/jest-resolve/build/resolver.js:491:11)
+      at Object.<anonymous> (measurement-config/entities/measurement-config.entity.ts:12:1)
+
+Test Suites: 2 failed, 2 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        0.947 s
+Test results written to: ../tmp/jest-unit.json

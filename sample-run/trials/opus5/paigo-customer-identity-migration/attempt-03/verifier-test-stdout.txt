@@ -1,0 +1,66 @@
+ts-jest[backports] (WARN) "[jest-config].globals.ts-jest.tsConfig" is deprecated, use "[jest-config].globals.ts-jest.tsconfig" instead.
+ts-jest[backports] (WARN) Your Jest configuration is outdated. Use the CLI to help migrating it: ts-jest config:migrate <config-file>.
+PASS src/customer/customerIdentityMigration.gold.spec.ts
+[95m[Nest] 11485  - [39m08/09/2026, 11:13:50 PM [95m  DEBUG[39m [38;5;3m[UsageService] [39m[95mGathering Usage for businessID: business-1 and customerId: customer-1[39m
+[32m[Nest] 11485  - [39m08/09/2026, 11:13:50 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mFinding saasClientID: customer-1 for business-1[39m
+[32m[Nest] 11485  - [39m08/09/2026, 11:13:50 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mFinding invoices for customer customer-1 of business business-1[39m
+[95m[Nest] 11485  - [39m08/09/2026, 11:13:50 PM [95m  DEBUG[39m [38;5;3m[CustomerService] [39m[95m[][39m
+[32m[Nest] 11485  - [39m08/09/2026, 11:13:50 PM [32m    LOG[39m [38;5;3m[OfferingService] [39m[32mAttempting to delete offering: offering-1 for business-1[39m
+[32m[Nest] 11485  - [39m08/09/2026, 11:13:50 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mGetting Usage for a customer[39m
+[32m[Nest] 11485  - [39m08/09/2026, 11:13:50 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mObject:[39m
+{
+  "businessID": "business-1",
+  "customerId": "customer-1"
+}
+
+PASS src/measurement-config/measurementConfigControllerHistorical.gold.spec.ts
+
+Test Suites: 2 passed, 2 total
+Tests:       9 passed, 9 total
+Snapshots:   0 total
+Time:        2.285 s
+Test results written to: ../tmp/jest-unit.json
+Force exiting Jest: Have you considered using `--detectOpenHandles` to detect async operations that kept running after all tests finished?
+{
+  "tests": [
+    {
+      "name": "Customer identity migration persists and restores the offering attached to a customer",
+      "status": "passed"
+    },
+    {
+      "name": "Customer identity migration writes and reads standard measurements with customerId as the ownership tag",
+      "status": "passed"
+    },
+    {
+      "name": "Customer identity migration maps infrastructure labels to customer-owned measurements",
+      "status": "passed"
+    },
+    {
+      "name": "Customer identity migration queries usage through the customer offering and preserves time and interval overrides",
+      "status": "passed"
+    },
+    {
+      "name": "Customer identity migration returns customer reads with invoices and the hydrated offering",
+      "status": "passed"
+    },
+    {
+      "name": "Customer identity migration exposes customer usage and forwards business, customer, and query parameters",
+      "status": "passed"
+    },
+    {
+      "name": "Customer identity migration prevents deleting an offering while customers still reference it",
+      "status": "passed"
+    },
+    {
+      "name": "Customer identity migration wraps customer usage results without changing their records",
+      "status": "passed"
+    },
+    {
+      "name": "MeasurementConfigController should be defined",
+      "status": "passed"
+    }
+  ]
+}
+
+required passed: 9/9
+reward: 1

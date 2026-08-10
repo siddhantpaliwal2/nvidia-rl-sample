@@ -1,0 +1,9 @@
+# Raw verifier output can contain diagnostic lines ending in spaces.
+sample-run/trials/**/verifier-stdout.txt -whitespace
+sample-run/trials/**/verifier-test-stdout.txt -whitespace
+sample-run/enterprise-controls/**/*.txt -whitespace
+sample-run/enterprise-controls/**/*.log -whitespace
+
+# Historical oracle patches preserve source whitespace byte-for-byte.
+tasks/**/solution/oracle.patch -whitespace
+authoring/patches/*.patch -whitespace

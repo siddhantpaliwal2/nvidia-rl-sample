@@ -1,0 +1,87 @@
+diff --git a/src/microservices/offeringTopUpHandler/offeringTopUp.service.ts b/src/microservices/offeringTopUpHandler/offeringTopUp.service.ts
+index 85b4e40e..e7563a15 100644
+--- a/src/microservices/offeringTopUpHandler/offeringTopUp.service.ts
++++ b/src/microservices/offeringTopUpHandler/offeringTopUp.service.ts
+@@ -104,54 +104,21 @@ export class OfferingTopUpChecker {
+                                 const total = invoice.totalAmountWithoutTax;
+                                 if (total !== 0) {
+                                     const credits = customer?.creditBalance ? parseFloat(customer.creditBalance) : 0;
+-                                    if (credits > total) {
+-                                        await this.creditService.create({
+-                                            transactionAmount: (total * -1).toFixed(2),
+-                                            customerId: invoice.customerId,
+-                                            businessID,
+-                                            timestamp: now.toISOString(),
+-                                            metadata: {
+-                                                offeringId,
+-                                                reason: `Deducting credits for usage on offering: ${contract?.offering?.offeringName}`,
+-                                                start: start.toISOString(),
+-                                                end: end.toISOString(),
+-                                            },
+-                                        });
+-                                        customer.creditBalance = (credits - total).toFixed(2);
+-                                    } else {
+-                                        let amountToCharge = total;
+-                                        if (credits && credits > 0) {
+-                                            await this.creditService.create({
+-                                                transactionAmount: (credits * -1).toFixed(2),
+-                                                customerId: invoice.customerId,
+-                                                businessID,
+-                                                timestamp: now.toISOString(),
+-                                                metadata: {
+-                                                    offeringId,
+-                                                    reason: `Deducting credits for usage on offering: ${contract?.offering?.offeringName}`,
+-                                                    start: start.toISOString(),
+-                                                    end: end.toISOString(),
+-                                                },
+-                                            });
+-                                            customer.creditBalance = '0';
+-                                            amountToCharge -= credits;
+-                                            if (amountToCharge > 0) {
+-                                                await this.invoiceService.create({
+-                                                    businessID,
+-                                                    customerId: invoice.customerId,
+-                                                    items: [
+-                                                        {
+-                                                            amount: amountToCharge,
+-                                                            description: `Usage for ${contract?.offering?.offeringName}`,
+-                                                            quantity: 1,
+-                                                        },
+-                                                    ],
+-                                                });
+-                                            }
+-                                        }
+-                                    }
+-                                    await contract.offering.topUp({ customer });
++                                    await this.creditService.create({
++                                        transactionAmount: (total * -1).toFixed(2),
++                                        customerId: invoice.customerId,
++                                        businessID,
++                                        timestamp: now.toISOString(),
++                                        metadata: {
++                                            offeringId,
++                                            reason: `Deducting credits for usage on offering: ${contract?.offering?.offeringName}`,
++                                            start: start.toISOString(),
++                                            end: end.toISOString(),
++                                        },
++                                    });
++                                    customer.creditBalance = (credits - total).toFixed(2);
+                                 }
++                                await contract.offering.topUp({ customer });
+                             }),
+                         );
+                     }
+diff --git a/src/offering/entities/offeringPackage.entity.ts b/src/offering/entities/offeringPackage.entity.ts
+index 92f935bb..6d560657 100644
+--- a/src/offering/entities/offeringPackage.entity.ts
++++ b/src/offering/entities/offeringPackage.entity.ts
+@@ -1623,8 +1623,7 @@ export class UsageBased extends Offering {
+     async topUp({ customer }) {
+         try {
+             Offering.logger.log(`Checking if top up is needed for ${this.offeringName} for ${this.customerId}`);
+-            const creditAmount = customer?.creditBalance;
+-            let creditBalance: string = creditAmount?.balance;
++            let creditBalance: string = customer?.creditBalance;
+             Offering.logger.log(`Credit balance for ${this.customerId} is ${creditBalance}`);
+             if (!creditBalance) {
+                 creditBalance = '0';

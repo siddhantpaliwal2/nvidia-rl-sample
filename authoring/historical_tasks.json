@@ -1,0 +1,354 @@
+{
+  "paigo-dimension-pricing-tiers": {
+    "repository": "paigo-tech/paigo-backend",
+    "provenance": "ENG-830 / PR 349",
+    "base_commit": "b86196fd83b19f092c484eabf303e04a62986611",
+    "target_commit": "fc8f14b6f27dae6e42cedbb7101fdc322be43a8f",
+    "oracle_paths": [
+      "src"
+    ],
+    "oracle_excludes": [
+      "**/*.spec.ts"
+    ],
+    "oracle_post_patch": "authoring/patches/eng830-infinity-order.patch",
+    "test_paths": [],
+    "extra_git_test_files": [
+      {
+        "source": "src/offering/entities/offeringPackage.entity.spec.ts",
+        "target": "src/offering/entities/offeringPackageHistorical.gold.spec.ts"
+      }
+    ],
+    "extra_test_files": [
+      {
+        "source": "gold-tests/paigo-dimension-pricing-tiers.gold-spec.ts",
+        "target": "src/dimensions/dto/dimensionTiers.gold.spec.ts"
+      }
+    ]
+  },
+  "paigo-top-up-billing-lifecycle": {
+    "repository": "paigo-tech/paigo-backend",
+    "provenance": "ENG-1167",
+    "base_commit": "bbad236ac1116d756576fa98efba49f8f8fd3bce",
+    "target_commit": "5c4eacae2c1b65c2f1dc7b3e68df89a5afeb6e5c",
+    "oracle_paths": [
+      "src"
+    ],
+    "oracle_excludes": [
+      "**/*.spec.ts"
+    ],
+    "oracle_post_patch": "authoring/patches/eng1167-wallet-lifecycle.patch",
+    "test_paths": [],
+    "extra_git_test_files": [
+      {
+        "source": "src/offering/entities/offeringPackage.entity.spec.ts",
+        "target": "src/offering/entities/offeringPackageHistorical.gold.spec.ts"
+      }
+    ],
+    "extra_test_files": [
+      {
+        "source": "gold-tests/paigo-top-up-billing-lifecycle.gold-spec.ts",
+        "target": "src/offering/topUpBilling.gold.spec.ts"
+      }
+    ]
+  },
+  "paigo-s3-datastore-measurement": {
+    "repository": "paigo-tech/paigo-backend",
+    "provenance": "ENG-411 / PRs 114, 115, 116, 118",
+    "base_commit": "cc633c6ae18b59698d5b9606f3b0aac2e5b4baf9",
+    "target_commit": "95c1547981bf230482eeec022c23de9246a64523",
+    "oracle_paths": [
+      "package.json",
+      "package-lock.json",
+      "src/app.module.ts",
+      "src/customer/dto/create-customer.dto.ts",
+      "src/dimensions/dto/create-dimension.dto.ts",
+      "src/measurement-config",
+      "src/usage"
+    ],
+    "oracle_excludes": [
+      "**/*.spec.ts"
+    ],
+    "oracle_post_patch": "authoring/patches/eng411-dlq-key.patch",
+    "preinstall_packages": [
+      {
+        "spec": "@aws-sdk/client-iam@3.272.0",
+        "module": "@aws-sdk/client-iam",
+        "method": "npm-pack"
+      },
+      {
+        "spec": "@aws-sdk/util-utf8@3.254.0",
+        "module": "@aws-sdk/util-utf8",
+        "method": "npm-pack"
+      }
+    ],
+    "test_paths": [],
+    "extra_git_test_files": [
+      {
+        "source": "src/app.controller.spec.ts",
+        "target": "src/appControllerHistorical.gold.spec.ts"
+      }
+    ],
+    "extra_test_files": [
+      {
+        "source": "gold-tests/paigo-s3-datastore-measurement.gold-spec.ts",
+        "target": "src/measurement-config/datastoreMeasurement.gold.spec.ts"
+      }
+    ]
+  },
+  "paigo-customer-identity-migration": {
+    "repository": "paigo-tech/paigo-backend",
+    "provenance": "ENG-504 / PRs 139 and 141",
+    "base_commit": "8ff3f0c2948ca052385ec4bafc4ebb8291f78fa9",
+    "target_commit": "b933efd140d3d2cf50de814ec2cfacad873e069d",
+    "oracle_paths": [
+      "src"
+    ],
+    "oracle_excludes": [
+      "**/*.spec.ts"
+    ],
+    "test_paths": [],
+    "extra_git_test_files": [
+      {
+        "source": "src/measurement-config/measurement-config.controller.spec.ts",
+        "target": "src/measurement-config/measurementConfigControllerHistorical.gold.spec.ts"
+      }
+    ],
+    "extra_test_files": [
+      {
+        "source": "gold-tests/paigo-customer-identity-migration.gold-spec.ts",
+        "target": "src/customer/customerIdentityMigration.gold.spec.ts"
+      }
+    ]
+  },
+  "paigo-customer-billing-schedule-migration": {
+    "repository": "paigo-tech/paigo-backend",
+    "provenance": "ENG-504 / second half of PR 140",
+    "base_commit": "b933efd140d3d2cf50de814ec2cfacad873e069d",
+    "target_commit": "8936ec462cbe4e405088f03ce5b80a9f8c9d4a26",
+    "oracle_paths": [
+      "src"
+    ],
+    "oracle_excludes": [
+      "**/*.spec.ts"
+    ],
+    "test_paths": [],
+    "extra_test_files": [
+      {
+        "source": "gold-tests/paigo-customer-billing-schedule-migration.gold-spec.ts",
+        "target": "src/billing/customerBillingScheduleMigration.gold.spec.ts"
+      }
+    ]
+  },
+  "finbit-bank-parser-consolidation": {
+    "repository": "finbit-inc/fin360",
+    "provenance": "multiple-upload-bhumika / pull request 370",
+    "base_commit": "97882f68ad95b31608aeba2ce4613e32cab778dc",
+    "target_commit": "44a2ca1980a33a41b4e7adf82a7e60377145a770",
+    "oracle_paths": [
+      "grails-app/services/com/bankScraper/bank/BankService.groovy",
+      "grails-app/services/com/bankScraper/bank/pdf/AndhraBankPdfService.groovy",
+      "grails-app/services/com/bankScraper/bank/pdf/BankOfBarodaPdfService.groovy",
+      "grails-app/services/com/bankScraper/bank/pdf/CentralBankPdfService.groovy",
+      "grails-app/services/com/bankScraper/bank/pdf/CityUnionBankPdfService.groovy",
+      "grails-app/services/com/bankScraper/bank/pdf/HsbcPdfService.groovy",
+      "grails-app/services/com/bankScraper/bank/pdf/IndianOverseasPdfService.groovy",
+      "grails-app/services/com/bankScraper/bank/pdf/KarurVysyaPdfService.groovy",
+      "grails-app/services/com/bankScraper/bank/pdf/KotakPdfService.groovy",
+      "grails-app/services/com/bankScraper/bank/pdf/OrientalBankOfCommercePdfService.groovy",
+      "grails-app/services/com/bankScraper/bank/pdf/PnbPdfService.groovy",
+      "src/groovy/com/bankScraper/bank/AndhraBankUtil.groovy",
+      "src/groovy/com/bankScraper/bank/BankOfBarodaUtil.groovy",
+      "src/groovy/com/bankScraper/bank/BankTransactionUtil.groovy",
+      "src/groovy/com/bankScraper/bank/BankUtil.groovy",
+      "src/groovy/com/bankScraper/bank/CityUnionBankUtil.groovy",
+      "src/groovy/com/bankScraper/bank/HSBCBankUtil.groovy",
+      "src/groovy/com/bankScraper/bank/KotakBankUtil.groovy",
+      "src/groovy/com/bankScraper/bank/OrientalBankOfCommerceUtil.groovy",
+      "src/groovy/com/bankScraper/bank/PnbBankUtil.groovy"
+    ],
+    "oracle_excludes": [],
+    "test_paths": [],
+    "extra_test_files": [
+      {
+        "source": "gold-tests/finbit-bank-parser-consolidation/finbit_parser_spec.groovy",
+        "target": "xai-tests/finbit_parser_spec.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-bank-parser-consolidation/stubs/com/bankScraper/AppUtil.groovy",
+        "target": "xai-tests/stubs/com/bankScraper/AppUtil.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-bank-parser-consolidation/stubs/com/bankScraper/Enums.groovy",
+        "target": "xai-tests/stubs/com/bankScraper/Enums.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-bank-parser-consolidation/stubs/com/bankScraper/HelperMethod.groovy",
+        "target": "xai-tests/stubs/com/bankScraper/HelperMethod.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-bank-parser-consolidation/stubs/com/bankScraper/LogEntry.groovy",
+        "target": "xai-tests/stubs/com/bankScraper/LogEntry.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-bank-parser-consolidation/stubs/com/constants/AppConstant.groovy",
+        "target": "xai-tests/stubs/com/constants/AppConstant.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-bank-parser-consolidation/stubs/com/bankScraper/bank/AndhraBankUtil.groovy",
+        "target": "xai-tests/stubs/com/bankScraper/bank/AndhraBankUtil.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-bank-parser-consolidation/stubs/com/bankScraper/bank/BankOfBarodaUtil.groovy",
+        "target": "xai-tests/stubs/com/bankScraper/bank/BankOfBarodaUtil.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-bank-parser-consolidation/stubs/com/bankScraper/bank/BankTransactionResponse.groovy",
+        "target": "xai-tests/stubs/com/bankScraper/bank/BankTransactionResponse.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-bank-parser-consolidation/stubs/com/bankScraper/bank/BankUtil.groovy",
+        "target": "xai-tests/stubs/com/bankScraper/bank/BankUtil.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-bank-parser-consolidation/stubs/com/bankScraper/bank/MainBankService.groovy",
+        "target": "xai-tests/stubs/com/bankScraper/bank/MainBankService.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-bank-parser-consolidation/stubs/com/bankScraper/bank/ProcessedBankStatementVO.groovy",
+        "target": "xai-tests/stubs/com/bankScraper/bank/ProcessedBankStatementVO.groovy"
+      }
+    ]
+  },
+  "finbit-google-cloud-storage-migration": {
+    "repository": "finbit-inc/fin360",
+    "provenance": "Google Cloud Storage migration / 29 March 2018",
+    "base_commit": "1cfc84885a84535fc5889fe79bb40acb5f303218",
+    "target_commit": "9ec9df7d811d8cd00e03681cb3361efa49a8d7fc",
+    "oracle_paths": [
+      "grails-app/conf/BuildConfig.groovy",
+      "grails-app/domain/com/bankScraper/bank/Document.groovy",
+      "src/groovy/com/bankScraper/Enums.groovy",
+      "src/groovy/com/bankScraper/HelperMethod.groovy"
+    ],
+    "oracle_excludes": [],
+    "test_paths": [],
+    "extra_test_files": [
+      {
+        "source": "gold-tests/finbit-google-cloud-storage-migration/finbit_cloud_storage_spec.groovy",
+        "target": "xai-tests/finbit_cloud_storage_spec.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/com/amazonaws/services/s3/model/S3Requests.groovy",
+        "target": "xai-tests/stubs/com/amazonaws/services/s3/model/S3Requests.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/com/bankScraper/AppUtil.groovy",
+        "target": "xai-tests/stubs/com/bankScraper/AppUtil.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/com/bankScraper/LogEntry.groovy",
+        "target": "xai-tests/stubs/com/bankScraper/LogEntry.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/com/bankScraper/bank/BankAccount.groovy",
+        "target": "xai-tests/stubs/com/bankScraper/bank/BankAccount.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/com/bankScraper/bank/StatementInputs.groovy",
+        "target": "xai-tests/stubs/com/bankScraper/bank/StatementInputs.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/com/bankScraper/common/EncryptDecrypt.groovy",
+        "target": "xai-tests/stubs/com/bankScraper/common/EncryptDecrypt.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/com/bankScraper/util/ScanPdfDetector.groovy",
+        "target": "xai-tests/stubs/com/bankScraper/util/ScanPdfDetector.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/com/constants/AppConstant.groovy",
+        "target": "xai-tests/stubs/com/constants/AppConstant.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/com/google/auth/oauth2/GoogleCredentials.groovy",
+        "target": "xai-tests/stubs/com/google/auth/oauth2/GoogleCredentials.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/com/google/auth/oauth2/ServiceAccountCredentials.groovy",
+        "target": "xai-tests/stubs/com/google/auth/oauth2/ServiceAccountCredentials.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/com/google/cloud/storage/StorageSupport.groovy",
+        "target": "xai-tests/stubs/com/google/cloud/storage/StorageSupport.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/com/microsoft/azure/storage/AzureSupport.groovy",
+        "target": "xai-tests/stubs/com/microsoft/azure/storage/AzureSupport.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/com/microsoft/azure/storage/blob/AzureBlobSupport.groovy",
+        "target": "xai-tests/stubs/com/microsoft/azure/storage/blob/AzureBlobSupport.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/grails/plugin/awssdk/AmazonWebService.groovy",
+        "target": "xai-tests/stubs/grails/plugin/awssdk/AmazonWebService.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/org/apache/http/impl/client/HttpClientBuilder.groovy",
+        "target": "xai-tests/stubs/org/apache/http/impl/client/HttpClientBuilder.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/org/bson/types/ObjectId.groovy",
+        "target": "xai-tests/stubs/org/bson/types/ObjectId.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/org/codehaus/groovy/grails/commons/ApplicationHolder.groovy",
+        "target": "xai-tests/stubs/org/codehaus/groovy/grails/commons/ApplicationHolder.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/org/openqa/selenium/SeleniumSupport.groovy",
+        "target": "xai-tests/stubs/org/openqa/selenium/SeleniumSupport.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/org/openqa/selenium/phantomjs/PhantomJSDriver.groovy",
+        "target": "xai-tests/stubs/org/openqa/selenium/phantomjs/PhantomJSDriver.groovy"
+      },
+      {
+        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/org/zeroturnaround/zip/ZipUtil.groovy",
+        "target": "xai-tests/stubs/org/zeroturnaround/zip/ZipUtil.groovy"
+      }
+    ]
+  },
+  "champ-email-inbox-infrastructure": {
+    "repository": "10x-sales/state-machine",
+    "provenance": "CHAMP-2197 / PR 16",
+    "base_commit": "26d8b5c4f248e8d27413f1fc0b0bbf0e24d00beb",
+    "target_commit": "75cb7c2008a2821a0bca77477916a48e7be3fe99",
+    "oracle_paths": [
+      "src",
+      "package.json",
+      "package-lock.json"
+    ],
+    "oracle_excludes": [
+      "**/*.spec.ts"
+    ],
+    "preinstall_packages": [
+      {
+        "spec": "ramda@0.30.1",
+        "module": "ramda"
+      },
+      {
+        "spec": "exponential-backoff@3.1.2",
+        "module": "exponential-backoff"
+      }
+    ],
+    "test_paths": [],
+    "extra_git_test_files": [],
+    "extra_test_files": [
+      {
+        "source": "gold-tests/champ-email-inbox-infrastructure.gold-spec.ts",
+        "target": "src/emailinfra/emailinfra.gold.spec.ts"
+      }
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+    "job_name": "champ2197-null-local-r8",
+    "jobs_dir": "sample-run/enterprise-controls",
+    "n_concurrent_trials": 1,
+    "quiet": true,
+    "agents": [
+        {
+            "name": "nop"
+        }
+    ],
+    "tasks": [
+        {
+            "path": "tasks/champ-email-inbox-infrastructure"
+        }
+    ]
+}

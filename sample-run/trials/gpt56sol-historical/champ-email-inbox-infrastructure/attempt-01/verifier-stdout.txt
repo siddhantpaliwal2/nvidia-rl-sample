@@ -1,0 +1,74 @@
+FAIL src/emailinfra/emailinfra.gold.spec.ts (6.311 s)
+  ● Email inbox infrastructure contract › derives stable identity, domain, counters, and deliverability bands
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "inbox-1"
+    Received: undefined
+
+      136 |         deliverabilityScore: score,
+      137 |       });
+    > 138 |       expect(account.id).toBe('inbox-1');
+          |                          ^
+      139 |       expect(account.domain).toBe('example.com');
+      140 |       expect(account.numberOfCampaignAssociated).toBe(1);
+      141 |       expect(account.deliverability).toBe(expected);
+
+      at Object.<anonymous> (emailinfra/emailinfra.gold.spec.ts:138:26)
+
+  ● Email inbox infrastructure contract › persists the normalized email account in the dedicated collection
+
+    TypeError: account.save is not a function
+
+      154 |     });
+      155 |
+    > 156 |     await account.save(db);
+          |                   ^
+      157 |     expect(db.store).toHaveBeenCalledTimes(1);
+      158 |     const request = db.store.mock.calls[0][0];
+      159 |     expect(request.context.uniqueId).toBe('inbox-1');
+
+      at Object.<anonymous> (emailinfra/emailinfra.gold.spec.ts:156:19)
+
+  ● Email inbox infrastructure contract › looks up accounts through inbox-specific datastore fields
+
+    expect(received).resolves.toHaveLength()
+
+    Received promise rejected instead of resolved
+    Rejected to value: [TypeError: this.datastoreService.getPageCount is not a function]
+
+      192 |     );
+      193 |     await expect(clientLookup(service, 'client-1')).resolves.toHaveLength(2);
+    > 194 |     await expect(
+          |           ^
+      195 |       service.getAllEmailAccounts({ page: 0, pageSize: 1 }),
+      196 |     ).resolves.toHaveLength(1);
+      197 |   });
+
+      at expect (../node_modules/expect/build/index.js:113:15)
+      at Object.<anonymous> (emailinfra/emailinfra.gold.spec.ts:194:11)
+
+  ● Email inbox infrastructure contract › skips existing campaign links and persists each new association once
+
+    expect(jest.fn()).toHaveBeenCalledTimes(expected)
+
+    Expected number of calls: 1
+    Received number of calls: 2
+
+      245 |     });
+      246 |
+    > 247 |     expect(db.store).toHaveBeenCalledTimes(1);
+          |                      ^
+      248 |     expect(db.store.mock.calls[0][0].data).toEqual(
+      249 |       expect.objectContaining({
+      250 |         id: '2',
+
+      at Object.<anonymous> (emailinfra/emailinfra.gold.spec.ts:247:22)
+
+PASS src/email-reply-agent/entities/entity.spec.ts
+
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       4 failed, 8 passed, 12 total
+Snapshots:   0 total
+Time:        6.402 s
+Test results written to: ../tmp/jest-unit.json

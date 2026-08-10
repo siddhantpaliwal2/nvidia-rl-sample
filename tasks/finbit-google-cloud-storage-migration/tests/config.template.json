@@ -1,0 +1,21 @@
+{
+  "instance_id": "finbit-fin360-google-cloud-storage-migration",
+  "repo": "finbit-inc/fin360",
+  "base_commit": "GENERATED",
+  "patch": "GENERATED",
+  "test_patch": "GENERATED",
+  "fail_to_pass": [
+    "Google storage migration adds GOOGLE target and defaults new documents to it",
+    "Google storage migration uploads bytes through the configured storage client",
+    "Google storage migration downloads bytes through the configured storage client",
+    "Google storage migration routes persisted GOOGLE documents to cloud storage",
+    "Google storage migration leaves blank cloud paths inert"
+  ],
+  "pass_to_pass": [
+    "Google storage migration preserves local file download precedence",
+    "Google storage migration preserves Azure target routing"
+  ],
+  "selected_test_files_to_run": [
+    "xai-tests/finbit_cloud_storage_spec.groovy"
+  ]
+}

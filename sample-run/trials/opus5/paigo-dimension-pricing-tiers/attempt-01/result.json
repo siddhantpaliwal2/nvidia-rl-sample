@@ -1,0 +1,121 @@
+{
+  "id": "351db5b3-81ad-447b-9a9e-047c32928e6f",
+  "task_name": "paigo-dimension-pricing-tiers",
+  "trial_name": "paigo-dimension-pricing-tiers__U6Lr6XC",
+  "trial_uri": "file:///Users/siddhantpaliwal/Desktop/amazon-rl/xai-rl-sample/sample-run/enterprise-raw/enterprise-calibrated-v2-opus5-bedrock-paigo-dimension-pricing-tiers-a02/paigo-dimension-pricing-tiers__U6Lr6XC",
+  "task_id": {
+    "path": "tasks/paigo-dimension-pricing-tiers"
+  },
+  "source": null,
+  "task_checksum": "32397db1d2039a92abc0594de74fb5fef6a325b383208aa7f9a8327ad3dac307",
+  "config": {
+    "task": {
+      "path": "tasks/paigo-dimension-pricing-tiers",
+      "git_url": null,
+      "git_commit_id": null,
+      "name": null,
+      "ref": null,
+      "overwrite": false,
+      "download_dir": null,
+      "source": null
+    },
+    "trial_name": "paigo-dimension-pricing-tiers__U6Lr6XC",
+    "trials_dir": "/Users/siddhantpaliwal/Desktop/amazon-rl/xai-rl-sample/sample-run/enterprise-raw/enterprise-calibrated-v2-opus5-bedrock-paigo-dimension-pricing-tiers-a02",
+    "install_only": false,
+    "timeout_multiplier": 1.0,
+    "agent_timeout_multiplier": null,
+    "verifier_timeout_multiplier": null,
+    "agent_setup_timeout_multiplier": null,
+    "environment_build_timeout_multiplier": null,
+    "agent": {
+      "name": "harness.harbor_agents:OpenCodeNode22",
+      "import_path": null,
+      "model_name": "amazon-bedrock/global.anthropic.claude-opus-5",
+      "n_concurrent": null,
+      "concurrency_group": null,
+      "skills": [],
+      "override_timeout_sec": null,
+      "override_setup_timeout_sec": null,
+      "max_timeout_sec": null,
+      "extra_allowed_hosts": [],
+      "kwargs": {
+        "version": "1.18.13",
+        "opencode_config": {
+          "permission": {
+            "task": "deny"
+          }
+        }
+      },
+      "mcp_servers": []
+    },
+    "environment": {
+      "type": "daytona",
+      "import_path": null,
+      "force_build": false,
+      "delete": true,
+      "cpu_enforcement_policy": "auto",
+      "memory_enforcement_policy": "auto",
+      "override_cpus": null,
+      "override_memory_mb": null,
+      "override_storage_mb": null,
+      "override_gpus": null,
+      "override_tpu": null,
+      "mounts": null,
+      "extra_docker_compose": [],
+      "kwargs": {
+        "snapshot_template_name": "harbor-probe-paigo-dimension-pricing-tiers-8g",
+        "assume_global_snapshot": true
+      },
+      "extra_allowed_hosts": []
+    },
+    "verifier": {
+      "override_timeout_sec": null,
+      "max_timeout_sec": null,
+      "disable": false
+    },
+    "artifacts": [],
+    "extra_instruction_paths": [],
+    "job_id": "d5227304-a76b-4a13-9f9c-edcf16c7baf6"
+  },
+  "agent_info": {
+    "name": "opencode",
+    "version": "1.18.13",
+    "model_info": {
+      "name": "global.anthropic.claude-opus-5",
+      "provider": "amazon-bedrock"
+    }
+  },
+  "agent_result": {
+    "n_input_tokens": 13006033,
+    "n_cache_tokens": 13005825,
+    "n_output_tokens": 71999,
+    "cost_usd": 9.417865,
+    "rollout_details": null,
+    "metadata": null
+  },
+  "verifier_result": {
+    "rewards": {
+      "reward": 1.0
+    }
+  },
+  "exception_info": null,
+  "started_at": "2026-08-08T22:53:38.648816Z",
+  "finished_at": "2026-08-08T23:21:37.942316Z",
+  "environment_setup": {
+    "started_at": "2026-08-08T22:53:38.703848Z",
+    "finished_at": "2026-08-08T22:53:41.327535Z"
+  },
+  "agent_setup": {
+    "started_at": "2026-08-08T22:53:41.327610Z",
+    "finished_at": "2026-08-08T22:54:06.480329Z"
+  },
+  "agent_execution": {
+    "started_at": "2026-08-08T22:54:06.480689Z",
+    "finished_at": "2026-08-08T23:21:18.762761Z"
+  },
+  "verifier": {
+    "started_at": "2026-08-08T23:21:26.971901Z",
+    "finished_at": "2026-08-08T23:21:37.724630Z"
+  },
+  "step_results": null
+}

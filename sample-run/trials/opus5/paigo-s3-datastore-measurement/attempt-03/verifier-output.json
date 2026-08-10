@@ -1,0 +1,44 @@
+{
+  "tests": [
+    {
+      "name": "S3 datastore measurement configuration accepts datastoreBased S3 configuration and materializes nested validation",
+      "status": "passed"
+    },
+    {
+      "name": "S3 datastore measurement configuration defaults an omitted platform to S3 and region to us-east-1",
+      "status": "passed"
+    },
+    {
+      "name": "S3 datastore measurement configuration persists and restores every datastore access field",
+      "status": "passed"
+    },
+    {
+      "name": "S3 datastore measurement configuration provisions a scoped IAM role and returns ingestion and DLQ locations",
+      "status": "passed"
+    },
+    {
+      "name": "S3 datastore measurement configuration updates account trust while preserving the existing role and external ID",
+      "status": "passed"
+    },
+    {
+      "name": "S3 datastore measurement configuration creates, persists, and returns provisioned datastore configuration",
+      "status": "passed"
+    },
+    {
+      "name": "S3 connector usage delivery derives the business from the object key and ingests a valid record",
+      "status": "passed"
+    },
+    {
+      "name": "S3 connector usage delivery writes malformed connector records to the mirrored message key in the DLQ",
+      "status": "passed"
+    },
+    {
+      "name": "S3 connector usage delivery keeps the generic DLQ writer usable for an already-relative source key",
+      "status": "failed"
+    },
+    {
+      "name": "AppController root should return \"Hello World!\"",
+      "status": "passed"
+    }
+  ]
+}

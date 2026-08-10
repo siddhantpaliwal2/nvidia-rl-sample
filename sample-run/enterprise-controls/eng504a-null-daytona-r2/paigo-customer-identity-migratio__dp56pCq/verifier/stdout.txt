@@ -1,0 +1,174 @@
+ts-jest[backports] (WARN) "[jest-config].globals.ts-jest.tsConfig" is deprecated, use "[jest-config].globals.ts-jest.tsconfig" instead.
+ts-jest[backports] (WARN) Your Jest configuration is outdated. Use the CLI to help migrating it: ts-jest config:migrate <config-file>.
+FAIL src/customer/customerIdentityMigration.gold.spec.ts
+  ● Customer identity migration › persists and restores the offering attached to a customer
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: "offeringId", "offering-1"
+    Received
+           1: "customerId", "customer-1"
+           2: "businessID", "business-1"
+           3: "paymentChannel", "manual"
+
+    Number of calls: 6
+
+      26 |         } as any);
+      27 |         CustomerEntity.transformer(entity, { getPoint: jest.fn(() => point) } as any);
+    > 28 |         expect(point.tag).toHaveBeenCalledWith('offeringId', 'offering-1');
+         |                           ^
+      29 |
+      30 |         const restored = CustomerEntity.dbModelToEntity({
+      31 |             _value: 'Acme',
+
+      at Object.<anonymous> (customer/customerIdentityMigration.gold.spec.ts:28:27)
+
+  ● Customer identity migration › writes and reads standard measurements with customerId as the ownership tag
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: "customerId", "customer-1"
+    Received
+           1: "applicationId", undefined
+           2: "dimensionId", "dimension-1"
+           3: "serviceId", undefined
+
+    Number of calls: 5
+
+      49 |         } as any);
+      50 |         MeasurementFormat.getPointForm(measurement, { getPoint: jest.fn(() => point) } as any);
+    > 51 |         expect(point.tag).toHaveBeenCalledWith('customerId', 'customer-1');
+         |                           ^
+      52 |         expect(point.tag).toHaveBeenCalledWith('dimensionId', 'dimension-1');
+      53 |
+      54 |         expect(
+
+      at Object.<anonymous> (customer/customerIdentityMigration.gold.spec.ts:51:27)
+
+  ● Customer identity migration › maps infrastructure labels to customer-owned measurements
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: ObjectContaining {"customerId": "customer-1", "dimensionId": "dimension-1", "recordValue": 7.25}
+    Received: {"_measurement": "usageMeasurement", "applicationId": undefined, "businessID": "business-1", "dimensionId": "dimension-1", "metadata": {"source": "agent"}, "recordValue": 7.25, "serviceId": undefined, "timeStamp": "2023-03-10T00:00:00.000Z"}
+
+    Number of calls: 1
+
+      79 |             ]),
+      80 |         } as any);
+    > 81 |         expect(publish).toHaveBeenCalledWith(
+         |                         ^
+      82 |             expect.objectContaining({ customerId: 'customer-1', dimensionId: 'dimension-1', recordValue: 7.25 }),
+      83 |         );
+      84 |     });
+
+      at Object.<anonymous> (customer/customerIdentityMigration.gold.spec.ts:81:25)
+
+  ● Customer identity migration › queries usage through the customer offering and preserves time and interval overrides
+
+    TypeError: service.findUsageForCustomer is not a function
+
+       99 |         );
+      100 |         await expect(
+    > 101 |             service.findUsageForCustomer(
+          |                     ^
+      102 |                 { customerId: 'customer-1', businessID: 'business-1' },
+      103 |                 {
+      104 |                     startTime: '2023-03-01T00:00:00.000Z',
+
+      at Object.<anonymous> (customer/customerIdentityMigration.gold.spec.ts:101:21)
+
+  ● Customer identity migration › returns customer reads with invoices and the hydrated offering
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  5
+    + Received  + 10
+
+    - ObjectContaining {
+    + ReadCustomerResponseData {
+    +   "address": Object {},
+    +   "businessID": undefined,
+        "customerId": "customer-1",
+    +   "customerName": "Acme",
+    +   "customerVatId": undefined,
+    +   "email": "",
+        "invoices": Array [],
+    -   "offering": ObjectContaining {
+    -     "offeringId": "offering-1",
+    -   },
+    -   "offeringId": "offering-1",
+    +   "paymentChannel": "manual",
+    +   "paymentChannelOptions": Object {},
+    +   "softDelete": undefined,
+    +   "taxExempt": "none",
+      }
+
+      137 |         const service = new CustomerService(influx as any, {} as any, {} as any, offering as any, {} as any);
+      138 |         const result = await service.findOne({ customerId: 'customer-1', businessID: 'business-1' });
+    > 139 |         expect(result.data[0]).toEqual(
+          |                                ^
+      140 |             expect.objectContaining({
+      141 |                 customerId: 'customer-1',
+      142 |                 offeringId: 'offering-1',
+
+      at Object.<anonymous> (customer/customerIdentityMigration.gold.spec.ts:139:32)
+
+  ● Customer identity migration › exposes customer usage and forwards business, customer, and query parameters
+
+    TypeError: controller.findUsage is not a function
+
+      151 |         const controller = new PublicAPICustomerController({ findUsageForCustomer } as any);
+      152 |         const query = { aggregationInterval: 'none' } as any;
+    > 153 |         await controller.findUsage('customer-1', { user: { businessID: 'business-1' } } as any, query);
+          |                          ^
+      154 |         expect(findUsageForCustomer).toHaveBeenCalledWith(
+      155 |             { businessID: 'business-1', customerId: 'customer-1' },
+      156 |             query,
+
+      at Object.<anonymous> (customer/customerIdentityMigration.gold.spec.ts:153:26)
+
+  ● Customer identity migration › prevents deleting an offering while customers still reference it
+
+    expect(received).rejects.toBeInstanceOf(expected)
+
+    Expected constructor: ConflictException
+    Received constructor: TypeError
+
+      164 |             { findAllCustomersWithOfferingId: jest.fn(async () => ({ data: [{ customerId: 'customer-1' }] })) } as any,
+      165 |         );
+    > 166 |         await expect(service.delete({ businessID: 'business-1', offeringId: 'offering-1' })).rejects.toBeInstanceOf(
+          |                                                                                                      ^
+      167 |             ConflictException,
+      168 |         );
+      169 |     });
+
+      at Object.toBeInstanceOf (../node_modules/@jest/expect/node_modules/expect/build/index.js:241:22)
+      at Object.<anonymous> (customer/customerIdentityMigration.gold.spec.ts:166:102)
+
+  ● Customer identity migration › wraps customer usage results without changing their records
+
+    TypeError: service.findUsageForCustomer is not a function
+
+      179 |         );
+      180 |         await expect(
+    > 181 |             service.findUsageForCustomer(
+          |                     ^
+      182 |                 { customerId: 'customer-1', businessID: 'business-1' },
+      183 |                 { aggregationInterval: 'day' } as any,
+      184 |             ),
+
+      at Object.<anonymous> (customer/customerIdentityMigration.gold.spec.ts:181:21)
+
+[32m[Nest] 269  - [39m08/08/2026, 5:37:50 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mFinding saasClientID: customer-1 for business-1[39m
+[32m[Nest] 269  - [39m08/08/2026, 5:37:50 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mFinding invoices for customer customer-1 of business business-1[39m
+[95m[Nest] 269  - [39m08/08/2026, 5:37:50 AM [95m  DEBUG[39m [38;5;3m[CustomerService] [39m[95m[][39m
+[32m[Nest] 269  - [39m08/08/2026, 5:37:50 AM [32m    LOG[39m [38;5;3m[OfferingService] [39m[32mAttempting to delete offering: offering-1 for business-1[39m
+PASS src/measurement-config/measurementConfigControllerHistorical.gold.spec.ts
+
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       8 failed, 1 passed, 9 total
+Snapshots:   0 total
+Time:        4.338 s
+Test results written to: ../tmp/jest-unit.json
+Force exiting Jest: Have you considered using `--detectOpenHandles` to detect async operations that kept running after all tests finished?

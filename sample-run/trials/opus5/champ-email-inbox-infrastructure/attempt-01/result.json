@@ -1,0 +1,121 @@
+{
+  "id": "4d8455d1-9041-4cf3-b18d-8922e56ef322",
+  "task_name": "champ-email-inbox-infrastructure",
+  "trial_name": "champ-email-inbox-infrastructure__cYaBaSu",
+  "trial_uri": "file:///Users/siddhantpaliwal/Desktop/amazon-rl/xai-rl-sample/sample-run/enterprise-raw/enterprise-champ-fairness-v4-r1-opus5-bedrock-champ-email-inbox-infrastructure-a01/champ-email-inbox-infrastructure__cYaBaSu",
+  "task_id": {
+    "path": "tasks/champ-email-inbox-infrastructure"
+  },
+  "source": null,
+  "task_checksum": "da938b4450ab450ecab08048e313f7ae373d756bd0ed96ace8d35ecaeb2fe3ff",
+  "config": {
+    "task": {
+      "path": "tasks/champ-email-inbox-infrastructure",
+      "git_url": null,
+      "git_commit_id": null,
+      "name": null,
+      "ref": null,
+      "overwrite": false,
+      "download_dir": null,
+      "source": null
+    },
+    "trial_name": "champ-email-inbox-infrastructure__cYaBaSu",
+    "trials_dir": "/Users/siddhantpaliwal/Desktop/amazon-rl/xai-rl-sample/sample-run/enterprise-raw/enterprise-champ-fairness-v4-r1-opus5-bedrock-champ-email-inbox-infrastructure-a01",
+    "install_only": false,
+    "timeout_multiplier": 1.0,
+    "agent_timeout_multiplier": null,
+    "verifier_timeout_multiplier": null,
+    "agent_setup_timeout_multiplier": null,
+    "environment_build_timeout_multiplier": null,
+    "agent": {
+      "name": "harness.harbor_agents:OpenCodeNode22",
+      "import_path": null,
+      "model_name": "amazon-bedrock/global.anthropic.claude-opus-5",
+      "n_concurrent": null,
+      "concurrency_group": null,
+      "skills": [],
+      "override_timeout_sec": null,
+      "override_setup_timeout_sec": null,
+      "max_timeout_sec": null,
+      "extra_allowed_hosts": [],
+      "kwargs": {
+        "version": "1.18.13",
+        "opencode_config": {
+          "permission": {
+            "task": "deny"
+          }
+        }
+      },
+      "mcp_servers": []
+    },
+    "environment": {
+      "type": "daytona",
+      "import_path": null,
+      "force_build": false,
+      "delete": true,
+      "cpu_enforcement_policy": "auto",
+      "memory_enforcement_policy": "auto",
+      "override_cpus": null,
+      "override_memory_mb": null,
+      "override_storage_mb": null,
+      "override_gpus": null,
+      "override_tpu": null,
+      "mounts": null,
+      "extra_docker_compose": [],
+      "kwargs": {
+        "snapshot_template_name": "harbor-probe-champ-email-inbox-infrastructure-8g",
+        "assume_global_snapshot": true
+      },
+      "extra_allowed_hosts": []
+    },
+    "verifier": {
+      "override_timeout_sec": null,
+      "max_timeout_sec": null,
+      "disable": false
+    },
+    "artifacts": [],
+    "extra_instruction_paths": [],
+    "job_id": "4200f019-6866-4eda-b0c2-af8b35559c1f"
+  },
+  "agent_info": {
+    "name": "opencode",
+    "version": "1.18.13",
+    "model_info": {
+      "name": "global.anthropic.claude-opus-5",
+      "provider": "amazon-bedrock"
+    }
+  },
+  "agent_result": {
+    "n_input_tokens": 6400082,
+    "n_cache_tokens": 6399932,
+    "n_output_tokens": 72596,
+    "cost_usd": 5.85169725,
+    "rollout_details": null,
+    "metadata": null
+  },
+  "verifier_result": {
+    "rewards": {
+      "reward": 0.0
+    }
+  },
+  "exception_info": null,
+  "started_at": "2026-08-10T03:57:59.953425Z",
+  "finished_at": "2026-08-10T04:16:14.627241Z",
+  "environment_setup": {
+    "started_at": "2026-08-10T03:57:59.981267Z",
+    "finished_at": "2026-08-10T03:58:01.797423Z"
+  },
+  "agent_setup": {
+    "started_at": "2026-08-10T03:58:01.797509Z",
+    "finished_at": "2026-08-10T03:58:23.709630Z"
+  },
+  "agent_execution": {
+    "started_at": "2026-08-10T03:58:23.709771Z",
+    "finished_at": "2026-08-10T04:15:58.034870Z"
+  },
+  "verifier": {
+    "started_at": "2026-08-10T04:16:02.755840Z",
+    "finished_at": "2026-08-10T04:16:14.345781Z"
+  },
+  "step_results": null
+}

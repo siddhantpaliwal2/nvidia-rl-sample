@@ -1,0 +1,28 @@
+version = "1.0"
+
+[metadata]
+author_name = "Siddhant Paliwal"
+author_email = "paliwal.siddhant@gmail.com"
+title = "Consolidate heterogeneous bank statement parsers"
+repository = "finbit-inc/fin360"
+base_commit = "97882f68ad95b31608aeba2ce4613e32cab778dc"
+difficulty = "hard"
+category = "refactoring"
+tags = ["long-horizon", "migration", "parsing", "groovy", "grails", "swe-bench-pro"]
+human_solve_time = "1d"
+requires_internet = false
+repo_type = "service"
+task_type = "refactoring"
+verifier_runtime_sec = 300
+
+[verifier]
+timeout_sec = 1800
+
+[agent]
+timeout_sec = 9000
+
+[environment]
+build_timeout_sec = 3600.0
+cpus = 2
+memory_mb = 8192
+storage_mb = 20480

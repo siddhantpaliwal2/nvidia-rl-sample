@@ -1,0 +1,99 @@
+[31m[Nest] 4710  - [39m08/10/2026, 4:16:11 AM [31m  ERROR[39m [38;5;3m[EmailinfraService] [39m[31mEmail accounts not found: missing[39m
+FAIL src/emailinfra/emailinfra.gold.spec.ts (6.61 s)
+  ● Email inbox infrastructure contract › persists the normalized email account in the dedicated collection
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "High"
+    Received: undefined
+
+      308 |     );
+      309 |     expect(request.data.id ?? request.data.smartleadInboxId).toBe('inbox-1');
+    > 310 |     expect(deliverabilityOf(request.data)).toBe('High');
+          |                                            ^
+      311 |     expect(numericDeliverabilityOf(request.data)).toBe(100);
+      312 |   });
+      313 |
+
+      at Object.<anonymous> (emailinfra/emailinfra.gold.spec.ts:310:44)
+
+  ● Email inbox infrastructure contract › requests the documented multi-factor ranking and page limit
+
+    TypeError: Cannot set property numberOfCampaignAssociated of #<EmailAccount> which has only a getter
+        at Function.assign (<anonymous>)
+
+      56 |
+      57 |   constructor(partial: EmailAccountFields = {}) {
+    > 58 |     Object.assign(this, partial ? partial : {});
+         |            ^
+      59 |     // Datastore documents carry internal metadata which should not leak onto
+      60 |     // the account.
+      61 |     EmailAccount.internalFields.forEach((field) => {
+
+      at new EmailAccount (emailinfra/entities/emailAccount.entity.ts:58:12)
+      at Function.map (emailinfra/entities/emailAccount.entity.ts:183:12)
+      at emailinfra/entities/emailinfra.entity.ts:168:39
+          at Array.map (<anonymous>)
+      at EmailInfraEntity.query (emailinfra/entities/emailinfra.entity.ts:168:8)
+
+  ● Email inbox infrastructure contract › sizes a campaign pool from volume, duration, and daily capacity
+
+    TypeError: Cannot set property numberOfCampaignAssociated of #<EmailAccount> which has only a getter
+        at Function.assign (<anonymous>)
+
+      56 |
+      57 |   constructor(partial: EmailAccountFields = {}) {
+    > 58 |     Object.assign(this, partial ? partial : {});
+         |            ^
+      59 |     // Datastore documents carry internal metadata which should not leak onto
+      60 |     // the account.
+      61 |     EmailAccount.internalFields.forEach((field) => {
+
+      at new EmailAccount (emailinfra/entities/emailAccount.entity.ts:58:12)
+      at Function.map (emailinfra/entities/emailAccount.entity.ts:183:12)
+      at emailinfra/entities/emailinfra.entity.ts:168:39
+          at Array.map (<anonymous>)
+      at EmailInfraEntity.query (emailinfra/entities/emailinfra.entity.ts:168:8)
+
+  ● Email inbox infrastructure contract › hydrates Smartlead reputation and creation time before saving
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "Medium"
+    Received: undefined
+
+      510 |     expect(stored?.createdAt).toBe('2025-04-21T04:51:14.026Z');
+      511 |     expect(numericDeliverabilityOf(stored)).toBe(99);
+    > 512 |     expect(deliverabilityOf(stored)).toBe('Medium');
+          |                                      ^
+      513 |   });
+      514 |
+      515 |   it('surfaces a missing Smartlead inbox and delegates deletion safely', async () => {
+
+      at Object.<anonymous> (emailinfra/emailinfra.gold.spec.ts:512:38)
+
+[32m[Nest] 4710  - [39m08/10/2026, 4:16:11 AM [32m    LOG[39m [38;5;3m[EmailInfraEntity] [39m[32mStoring email account for inbox: inbox-1[39m
+[32m[Nest] 4710  - [39m08/10/2026, 4:16:11 AM [32m    LOG[39m [38;5;3m[EmailinfraService] [39m[32mGetting email accounts page 0 of size 1[39m
+[32m[Nest] 4710  - [39m08/10/2026, 4:16:11 AM [32m    LOG[39m [38;5;3m[EmailinfraService] [39m[32mAssociating 2 inboxes with campaign campaign-1[39m
+[32m[Nest] 4710  - [39m08/10/2026, 4:16:11 AM [32m    LOG[39m [38;5;3m[EmailInfraEntity] [39m[32mStoring email account for inbox: 1[39m
+[32m[Nest] 4710  - [39m08/10/2026, 4:16:11 AM [32m    LOG[39m [38;5;3m[EmailInfraEntity] [39m[32mStoring email account for inbox: 2[39m
+[32m[Nest] 4710  - [39m08/10/2026, 4:16:11 AM [32m    LOG[39m [38;5;3m[EmailinfraService] [39m[32mAssociating 2 inboxes with campaign campaign-1[39m
+[32m[Nest] 4710  - [39m08/10/2026, 4:16:11 AM [32m    LOG[39m [38;5;3m[EmailinfraService] [39m[32mAssociating 2 inboxes with campaign campaign-1[39m
+[32m[Nest] 4710  - [39m08/10/2026, 4:16:11 AM [32m    LOG[39m [38;5;3m[EmailinfraService] [39m[32mInbox 1 is already associated with campaign campaign-1[39m
+[32m[Nest] 4710  - [39m08/10/2026, 4:16:11 AM [32m    LOG[39m [38;5;3m[EmailInfraEntity] [39m[32mStoring email account for inbox: 2[39m
+[32m[Nest] 4710  - [39m08/10/2026, 4:16:11 AM [32m    LOG[39m [38;5;3m[EmailinfraService] [39m[32mCampaign campaign-1 requires 3 inboxes for 650 emails[39m
+[32m[Nest] 4710  - [39m08/10/2026, 4:16:11 AM [32m    LOG[39m [38;5;3m[EmailinfraService] [39m[32mCampaign campaign-1 requires 3 inboxes for 650 emails[39m
+[32m[Nest] 4710  - [39m08/10/2026, 4:16:11 AM [32m    LOG[39m [38;5;3m[EmailinfraService] [39m[32mSaving email account for inbox: inbox-1[39m
+[32m[Nest] 4710  - [39m08/10/2026, 4:16:11 AM [32m    LOG[39m [38;5;3m[EmailInfraEntity] [39m[32mStoring email account for inbox: inbox-1[39m
+[32m[Nest] 4710  - [39m08/10/2026, 4:16:11 AM [32m    LOG[39m [38;5;3m[EmailinfraService] [39m[32mSaving email account for inbox: missing[39m
+[33m[Nest] 4710  - [39m08/10/2026, 4:16:11 AM [33m   WARN[39m [38;5;3m[EmailInfraEntity] [39m[33mSmartlead request failed (404): email-accounts/missing/[39m
+[33m[Nest] 4710  - [39m08/10/2026, 4:16:11 AM [33m   WARN[39m [38;5;3m[EmailInfraEntity] [39m[33mSmartlead request failed (404): email-accounts/?offset=0&limit=100[39m
+[32m[Nest] 4710  - [39m08/10/2026, 4:16:11 AM [32m    LOG[39m [38;5;3m[EmailInfraEntity] [39m[32mFetched 0 inboxes from Smartlead[39m
+[32m[Nest] 4710  - [39m08/10/2026, 4:16:11 AM [32m    LOG[39m [38;5;3m[EmailInfraEntity] [39m[32mDeleting email account for inbox: inbox-1[39m
+PASS src/email-reply-agent/entities/entity.spec.ts
+
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       4 failed, 8 passed, 12 total
+Snapshots:   0 total
+Time:        6.686 s
+Test results written to: ../tmp/jest-unit.json

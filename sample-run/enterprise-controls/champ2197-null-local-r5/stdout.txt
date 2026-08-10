@@ -1,0 +1,103 @@
+FAIL src/emailinfra/emailinfra.gold.spec.ts
+  ● Test suite failed to run
+
+    [96msrc/emailinfra/emailinfra.gold.spec.ts[0m:[93m10[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module './entities/emailAccount.entity' or its corresponding type declarations.
+
+    [7m10[0m } from './entities/emailAccount.entity';
+    [7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    [96msrc/emailinfra/emailinfra.gold.spec.ts[0m:[93m68[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'EMAIL_ACCOUNT' does not exist on type 'typeof documentType'.
+
+    [7m68[0m           documentType: documentType.EMAIL_ACCOUNT,
+    [7m  [0m [91m                                     ~~~~~~~~~~~~~[0m
+    [96msrc/emailinfra/emailinfra.gold.spec.ts[0m:[93m90[0m:[93m34[0m - [91merror[0m[90m TS2339: [0mProperty 'EMAIL_ACCOUNT' does not exist on type 'typeof documentType'.
+
+    [7m90[0m       documentType: documentType.EMAIL_ACCOUNT,
+    [7m  [0m [91m                                 ~~~~~~~~~~~~~[0m
+    [96msrc/emailinfra/emailinfra.gold.spec.ts[0m:[93m95[0m:[93m34[0m - [91merror[0m[90m TS2339: [0mProperty 'EMAIL_ACCOUNT' does not exist on type 'typeof documentType'.
+
+    [7m95[0m       documentType: documentType.EMAIL_ACCOUNT,
+    [7m  [0m [91m                                 ~~~~~~~~~~~~~[0m
+    [96msrc/emailinfra/emailinfra.gold.spec.ts[0m:[93m111[0m:[93m43[0m - [91merror[0m[90m TS2554: [0mExpected 0 arguments, but got 1.
+
+    [7m111[0m     const service = new EmailinfraService(entity);
+    [7m   [0m [91m                                          ~~~~~~[0m
+    [96msrc/emailinfra/emailinfra.gold.spec.ts[0m:[93m167[0m:[93m9[0m - [91merror[0m[90m TS2339: [0mProperty 'getManyAndAggregate' does not exist on type 'Mocked<DatastoreService>'.
+
+    [7m167[0m     (db.getManyAndAggregate as jest.Mock).mockResolvedValue([
+    [7m   [0m [91m        ~~~~~~~~~~~~~~~~~~~[0m
+    [96msrc/emailinfra/emailinfra.gold.spec.ts[0m:[93m192[0m:[93m57[0m - [91merror[0m[90m TS2339: [0mProperty 'getManyAndAggregate' does not exist on type 'Mocked<DatastoreService>'.
+
+    [7m192[0m     const [filter, context, pipeline, pagination] = (db.getManyAndAggregate as jest.Mock).mock.calls[0];
+    [7m   [0m [91m                                                        ~~~~~~~~~~~~~~~~~~~[0m
+    [96msrc/emailinfra/emailinfra.gold.spec.ts[0m:[93m194[0m:[93m58[0m - [91merror[0m[90m TS2339: [0mProperty 'EMAIL_ACCOUNT' does not exist on type 'typeof documentType'.
+
+    [7m194[0m     expect(context).toEqual({ documentType: documentType.EMAIL_ACCOUNT });
+    [7m   [0m [91m                                                         ~~~~~~~~~~~~~[0m
+    [96msrc/emailinfra/emailinfra.gold.spec.ts[0m:[93m220[0m:[93m43[0m - [91merror[0m[90m TS2554: [0mExpected 0 arguments, but got 1.
+
+    [7m220[0m     const service = new EmailinfraService(entity);
+    [7m   [0m [91m                                          ~~~~~~[0m
+    [96msrc/emailinfra/emailinfra.gold.spec.ts[0m:[93m227[0m:[93m7[0m - [91merror[0m[90m TS2353: [0mObject literal may only specify known properties, and 'numberOfEmailPerDay' does not exist in type 'EmailAccountListDto'.
+
+    [7m227[0m       numberOfEmailPerDay: 20,
+    [7m   [0m [91m      ~~~~~~~~~~~~~~~~~~~[0m
+    [96msrc/emailinfra/emailinfra.gold.spec.ts[0m:[93m234[0m:[93m43[0m - [91merror[0m[90m TS2554: [0mExpected 0 arguments, but got 1.
+
+    [7m234[0m     const service = new EmailinfraService(entity);
+    [7m   [0m [91m                                          ~~~~~~[0m
+    [96msrc/emailinfra/emailinfra.gold.spec.ts[0m:[93m247[0m:[93m7[0m - [91merror[0m[90m TS2353: [0mObject literal may only specify known properties, and 'smartleadInboxId' does not exist in type 'EmailAccountDto'.
+
+    [7m247[0m       smartleadInboxId: 'inbox-1',
+    [7m   [0m [91m      ~~~~~~~~~~~~~~~~[0m
+    [96msrc/emailinfra/emailinfra.gold.spec.ts[0m:[93m259[0m:[93m43[0m - [91merror[0m[90m TS2554: [0mExpected 0 arguments, but got 1.
+
+    [7m259[0m     const service = new EmailinfraService(entity);
+    [7m   [0m [91m                                          ~~~~~~[0m
+    [96msrc/emailinfra/emailinfra.gold.spec.ts[0m:[93m265[0m:[93m9[0m - [91merror[0m[90m TS2353: [0mObject literal may only specify known properties, and 'smartleadInboxId' does not exist in type 'EmailAccountDto'.
+
+    [7m265[0m         smartleadInboxId: 'missing',
+    [7m   [0m [91m        ~~~~~~~~~~~~~~~~[0m
+    [96msrc/emailinfra/emailinfra.gold.spec.ts[0m:[93m274[0m:[93m38[0m - [91merror[0m[90m TS2345: [0mArgument of type 'string' is not assignable to parameter of type 'EmailAccountDto'.
+
+    [7m274[0m     await service.deleteEmailAccount('inbox-1');
+    [7m   [0m [91m                                     ~~~~~~~~~[0m
+
+PASS src/email-reply-agent/entities/entity.spec.ts
+FAIL src/emailinfra/entities/emailAccount.entity.spec.ts
+  ● Test suite failed to run
+
+    [96msrc/emailinfra/entities/emailAccount.entity.spec.ts[0m:[93m1[0m:[93m46[0m - [91merror[0m[90m TS2307: [0mCannot find module './emailAccount.entity' or its corresponding type declarations.
+
+    [7m1[0m import { Deliverability, EmailAccount } from './emailAccount.entity';
+    [7m [0m [91m                                             ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+Test Suites: 2 failed, 1 passed, 3 total
+Tests:       2 passed, 2 total
+Snapshots:   0 total
+Time:        3.867 s
+Test results written to: ../tmp/jest-unit.json
+{
+  "tests": [
+    {
+      "name": "Entity email template  should be defined",
+      "status": "passed"
+    },
+    {
+      "name": "Entity email template  should be able to get email template by id",
+      "status": "passed"
+    }
+  ]
+}
+
+required passed: 2/12
+  NOT PASSED (not-run): Email inbox infrastructure contract derives stable identity, domain, counters, and deliverability bands
+  NOT PASSED (not-run): Email inbox infrastructure contract persists the normalized email account in the dedicated collection
+  NOT PASSED (not-run): Email inbox infrastructure contract looks up accounts through inbox-specific datastore fields
+  NOT PASSED (not-run): Email inbox infrastructure contract rejects a lookup when no account has the requested email
+  NOT PASSED (not-run): Email inbox infrastructure contract deduplicates campaign associations and refuses partial id sets
+  NOT PASSED (not-run): Email inbox infrastructure contract skips existing campaign links and persists each new association once
+  NOT PASSED (not-run): Email inbox infrastructure contract requests the documented multi-factor ranking and page limit
+  NOT PASSED (not-run): Email inbox infrastructure contract sizes a campaign pool from volume, duration, and daily capacity
+  NOT PASSED (not-run): Email inbox infrastructure contract hydrates Smartlead reputation and creation time before saving
+  NOT PASSED (not-run): Email inbox infrastructure contract surfaces a missing Smartlead inbox and delegates deletion safely
+reward: 0

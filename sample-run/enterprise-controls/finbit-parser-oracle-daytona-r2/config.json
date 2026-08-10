@@ -1,0 +1,18 @@
+{
+    "job_name": "finbit-parser-oracle-daytona-r2",
+    "jobs_dir": "sample-run/enterprise-controls",
+    "n_concurrent_trials": 1,
+    "quiet": true,
+    "environment": {
+        "type": "daytona",
+        "kwargs": {
+            "snapshot_template_name": "harbor-probe-finbit-bank-parser-consolidation-8g",
+            "assume_global_snapshot": true
+        }
+    },
+    "tasks": [
+        {
+            "path": "tasks/finbit-bank-parser-consolidation"
+        }
+    ]
+}

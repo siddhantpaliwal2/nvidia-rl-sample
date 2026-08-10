@@ -1,0 +1,60 @@
+{
+    "schema_version": 2,
+    "created_at": "2026-08-08T03:31:30.431911Z",
+    "harbor": {
+        "version": "0.18.0",
+        "is_editable": false
+    },
+    "n_concurrent_trials": 1,
+    "retry": {
+        "max_retries": 0,
+        "exclude_exceptions": [
+            "AgentTimeoutError",
+            "RewardFileEmptyError",
+            "VerifierTimeoutError",
+            "RewardFileNotFoundError",
+            "ApiUsageLimitError",
+            "VerifierOutputParseError"
+        ],
+        "wait_multiplier": 1.0,
+        "min_wait_sec": 1.0,
+        "max_wait_sec": 60.0
+    },
+    "trials": [
+        {
+            "schema_version": 1,
+            "task": {
+                "name": "champ-email-inbox-infrastructure",
+                "type": "local",
+                "digest": "sha256:811e4be1960187d9bff1d5b321ad147051df708ab60e5044a8d83eb0f86b3822",
+                "path": "tasks/champ-email-inbox-infrastructure"
+            },
+            "install_only": false,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "nop",
+                "skills": [],
+                "extra_allowed_hosts": [],
+                "kwargs": {},
+                "mcp_servers": []
+            },
+            "skills": [],
+            "environment": {
+                "type": "daytona",
+                "force_build": false,
+                "delete": true,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {
+                    "snapshot_template_name": "harbor-probe-champ-email-inbox-infrastructure-8g",
+                    "assume_global_snapshot": true
+                },
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": false
+            }
+        }
+    ]
+}

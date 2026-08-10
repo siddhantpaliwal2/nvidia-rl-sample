@@ -1,0 +1,36 @@
+{
+  "instance_id": "paigo-backend-eng830-dimension-pricing-tiers",
+  "repo": "paigo-tech/paigo-backend",
+  "base_commit": "GENERATED",
+  "patch": "GENERATED",
+  "test_patch": "GENERATED",
+  "fail_to_pass": [
+    "OfferingPackageEntity Offering Line items should be generated correctly for dimension tiers",
+    "OfferingPackageEntity Offering Line items should be generated correctly for a dimension where the first tier doesnt have a unit price",
+    "OfferingPackageEntity Offering Line items should take into account usage increment with tiers",
+    "OfferingPackageEntity Offering Line items should be generated correctly for dimension tiers with no upperBound",
+    "OfferingPackageEntity Offering Line items should be generated correctly for a dimension with only one tier",
+    "OfferingPackageEntity Offering Line items should be generated correctly for a dimension where any tier doesnt have a unit price",
+    "OfferingPackageEntity Offering Line items should be generated correctly for tiers where there is not overage",
+    "OfferingPackageEntity Offering Line items should be genenerated correctly for a large number of tiers",
+    "OfferingPackageEntity Offering Line items without tiers, consumption price or entitlements should still work fine",
+    "Dimension tier contract accepts an ordered schedule with an optional free first tier",
+    "Dimension tier contract rejects finite bounds that do not align to the usage increment",
+    "Dimension tier contract rejects descending or overlapping bounds",
+    "Dimension tier contract requires an infinite bound to be the final tier",
+    "Dimension tier contract rejects tier schedules combined with legacy pricing fields",
+    "Dimension tier contract requires a price on every tier after the first",
+    "Dimension tier contract persists and restores a schedule without changing its values",
+    "Dimension tier contract includes persisted tiers when constructing a read DTO",
+    "Dimension tier contract accepts null as the explicit clear operation on update"
+  ],
+  "pass_to_pass": [
+    "OfferingPackageEntity Offering Line Items should respect the precision when using USD",
+    "OfferingPackageEntity Offering Line Items should respect the precision of the rate passed into it when converting to EUR",
+    "OfferingPackageEntity Offering Free trial scheduler must set parameters correctly"
+  ],
+  "selected_test_files_to_run": [
+    "src/offering/entities/offeringPackageHistorical.gold.spec.ts",
+    "src/dimensions/dto/dimensionTiers.gold.spec.ts"
+  ]
+}

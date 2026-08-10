@@ -1,0 +1,57 @@
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/lib/org.slf4j/slf4j-simple/jars/slf4j-simple-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/dist/grails-plugin-log4j-2.3.11.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.SimpleLoggerFactory]
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/lib/org.slf4j/slf4j-simple/jars/slf4j-simple-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/dist/grails-plugin-log4j-2.3.11.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/app/lib/tika-app-1.14.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/app/lib/traprange-1.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.SimpleLoggerFactory]
+PASS Google storage migration adds GOOGLE target and defaults new documents to it
+PASS Google storage migration uploads bytes through the configured storage client
+PASS Google storage migration downloads bytes through the configured storage client
+[main] INFO com.bankScraper.HelperMethod - === Requesting file for download from Google Cloud Storage location ===>>> synthetic/routed.txt
+PASS Google storage migration routes persisted GOOGLE documents to cloud storage
+PASS Google storage migration leaves blank cloud paths inert
+[main] INFO com.bankScraper.HelperMethod - === Requesting file for download from Local location ===>>> /tmp/synthetic-local-download-7931035917529520176.txt
+PASS Google storage migration preserves local file download precedence
+[main] INFO com.bankScraper.HelperMethod - === Requesting file for download from Azure location ===>>> /tmp/synthetic-missing-azure-object
+PASS Google storage migration preserves Azure target routing
+{
+  "tests": [
+    {
+      "name": "Google storage migration adds GOOGLE target and defaults new documents to it",
+      "status": "passed"
+    },
+    {
+      "name": "Google storage migration uploads bytes through the configured storage client",
+      "status": "passed"
+    },
+    {
+      "name": "Google storage migration downloads bytes through the configured storage client",
+      "status": "passed"
+    },
+    {
+      "name": "Google storage migration routes persisted GOOGLE documents to cloud storage",
+      "status": "passed"
+    },
+    {
+      "name": "Google storage migration leaves blank cloud paths inert",
+      "status": "passed"
+    },
+    {
+      "name": "Google storage migration preserves local file download precedence",
+      "status": "passed"
+    },
+    {
+      "name": "Google storage migration preserves Azure target routing",
+      "status": "passed"
+    }
+  ]
+}
+
+required passed: 7/7
+reward: 1

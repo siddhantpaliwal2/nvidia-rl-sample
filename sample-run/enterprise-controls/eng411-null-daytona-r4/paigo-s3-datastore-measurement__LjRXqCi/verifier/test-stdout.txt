@@ -1,0 +1,247 @@
+FAIL src/measurement-config/datastoreMeasurement.gold.spec.ts
+  ● S3 datastore measurement configuration › accepts datastoreBased S3 configuration and materializes nested validation
+
+    expect(received).resolves.toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 33
+
+    - Array []
+    + Array [
+    +   ValidationError {
+    +     "children": Array [
+    +       ValidationError {
+    +         "children": Array [],
+    +         "constraints": Object {
+    +           "isNotEmpty": "cloudId should not be empty",
+    +           "isString": "cloudId must be a string",
+    +         },
+    +         "property": "cloudId",
+    +         "target": DatastoreAccessInformation {
+    +           "accountId": "123456789012",
+    +           "platform": "s3",
+    +         },
+    +         "value": undefined,
+    +       },
+    +     ],
+    +     "property": "measurementConfiguration",
+    +     "target": CreateMeasurementConfigDto {
+    +       "businessID": "business-1",
+    +       "measurementConfiguration": DatastoreAccessInformation {
+    +         "accountId": "123456789012",
+    +         "platform": "s3",
+    +       },
+    +       "measurementMode": "datastoreBased",
+    +       "measurementName": "S3 usage",
+    +     },
+    +     "value": DatastoreAccessInformation {
+    +       "accountId": "123456789012",
+    +       "platform": "s3",
+    +     },
+    +   },
+    + ]
+
+      132 |     it('accepts datastoreBased S3 configuration and materializes nested validation', async () => {
+      133 |         const value = input();
+    > 134 |         await expect(validate(value)).resolves.toEqual([]);
+          |                                                ^
+      135 |         expect(value.measurementConfiguration).toBeInstanceOf(DatastoreAccessInformation);
+      136 |     });
+      137 |
+
+      at Object.toEqual (../node_modules/expect/build/index.js:194:22)
+      at Object.<anonymous> (measurement-config/datastoreMeasurement.gold.spec.ts:134:48)
+
+  ● S3 datastore measurement configuration › defaults an omitted platform to S3 and region to us-east-1
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "s3"
+    Received: undefined
+
+      138 |     it('defaults an omitted platform to S3 and region to us-east-1', () => {
+      139 |         const access = new DatastoreAccessInformation({ accountId: '123456789012' } as any);
+    > 140 |         expect(access.platform).toBe(SupportedDatastores.s3);
+          |                                 ^
+      141 |         expect(access.region).toBe('us-east-1');
+      142 |     });
+      143 |
+
+      at Object.<anonymous> (measurement-config/datastoreMeasurement.gold.spec.ts:140:33)
+
+  ● S3 datastore measurement configuration › persists and restores every datastore access field
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: "platform", "s3"
+    Received
+           1: "measurementId", "measurement-1"
+           2: "businessID", "business-1"
+           3: "subject", "subject-1"
+
+    Number of calls: 7
+
+      170 |             ['region', 'us-west-2'],
+      171 |         ]) {
+    > 172 |             expect(point.tag).toHaveBeenCalledWith(key, value);
+          |                               ^
+      173 |         }
+      174 |         const restored = MeasurementConfigEntity.dbModelToEntity({
+      175 |             _value: measurementMode.datastoreBased,
+
+      at Object.<anonymous> (measurement-config/datastoreMeasurement.gold.spec.ts:172:31)
+
+  ● S3 datastore measurement configuration › provisions a scoped IAM role and returns ingestion and DLQ locations
+
+    TypeError: s3.getBucketPolicy is not a function
+
+      497 |                     Bucket: `${process.env.DB_MEASUREMENT_BUCKET_NAME}`,
+      498 |                 };
+    > 499 |                 const policy = await s3.getBucketPolicy(params);
+          |                                         ^
+      500 |                 const policyJson = JSON.parse(policy.Policy);
+      501 |                 const statement = policyJson.Statement;
+      502 |                 const rootAccount = {
+
+      at Function.setupAccess (measurement-config/entities/measurement-config.entity.ts:499:41)
+      at Object.<anonymous> (measurement-config/datastoreMeasurement.gold.spec.ts:194:57)
+
+  ● S3 datastore measurement configuration › updates account trust while preserving the existing role and external ID
+
+    TypeError: measurement_config_entity_1.DatastoreAccessInformation.updateAccess is not a function
+
+      228 |
+      229 |     it('updates account trust while preserving the existing role and external ID', async () => {
+    > 230 |         const result = await DatastoreAccessInformation.updateAccess(
+          |                                                         ^
+      231 |             accessEntity('999999999999', { iamRoleArn: 'arn:role', externalId: 'external-1' }),
+      232 |         );
+      233 |         expect(result).toEqual(expect.objectContaining({ iamRoleArn: 'arn:role', externalId: 'external-1' }));
+
+      at Object.<anonymous> (measurement-config/datastoreMeasurement.gold.spec.ts:230:57)
+
+  ● S3 datastore measurement configuration › creates, persists, and returns provisioned datastore configuration
+
+    TypeError: s3.getBucketPolicy is not a function
+
+      497 |                     Bucket: `${process.env.DB_MEASUREMENT_BUCKET_NAME}`,
+      498 |                 };
+    > 499 |                 const policy = await s3.getBucketPolicy(params);
+          |                                         ^
+      500 |                 const policyJson = JSON.parse(policy.Policy);
+      501 |                 const statement = policyJson.Statement;
+      502 |                 const rootAccount = {
+
+      at Function.setupAccess (measurement-config/entities/measurement-config.entity.ts:499:41)
+      at Function.setupAccessIfRequired (measurement-config/entities/measurement-config.entity.ts:270:47)
+      at MeasurementConfigService.create (measurement-config/measurement-config.service.ts:96:39)
+      at Object.<anonymous> (measurement-config/datastoreMeasurement.gold.spec.ts:246:38)
+
+  ● S3 connector usage delivery › derives the business from the object key and ingests a valid record
+
+    TypeError: usage_controller_1.PrivateAPIUsageController is not a constructor
+
+      266 |     it('derives the business from the object key and ingests a valid record', async () => {
+      267 |         const create = jest.fn(async () => ({ message: 'created' }));
+    > 268 |         const controller = new PrivateAPIUsageController({ create } as any);
+          |                            ^
+      269 |         await expect(
+      270 |             controller.dbUsage({
+      271 |                 s3Key: 'business-1/2023/usage.ndjson',
+
+      at Object.<anonymous> (measurement-config/datastoreMeasurement.gold.spec.ts:268:28)
+
+  ● S3 connector usage delivery › writes malformed connector records to the mirrored message key in the DLQ
+
+    TypeError: usage_controller_1.PrivateAPIUsageController is not a constructor
+
+      279 |
+      280 |     it('writes malformed connector records to the mirrored message key in the DLQ', async () => {
+    > 281 |         const controller = new PrivateAPIUsageController({ create: jest.fn() } as any);
+          |                            ^
+      282 |         await controller.dbUsage({ s3Key: 'business-1/customer/usage.ndjson', message: '{not-json' });
+      283 |         expect(mockS3Send).toHaveBeenCalledTimes(1);
+      284 |         const command = mockS3Send.mock.calls[0][0];
+
+      at Object.<anonymous> (measurement-config/datastoreMeasurement.gold.spec.ts:281:28)
+
+  ● S3 connector usage delivery › keeps the generic DLQ writer usable for an already-relative source key
+
+    TypeError: Cannot read properties of undefined (reading 'length')
+
+      294 |     it('keeps the generic DLQ writer usable for an already-relative source key', async () => {
+      295 |         const publish = StandardMeasurementEntity.publishFailureToDLQ as any;
+    > 296 |         if (publish.length >= 4 && DlqType?.s3) {
+          |                     ^
+      297 |             await publish(
+      298 |                 { message: 'bad' },
+      299 |                 {
+
+      at Object.<anonymous> (measurement-config/datastoreMeasurement.gold.spec.ts:296:21)
+
+[32m[Nest] 265  - [39m08/09/2026, 9:40:08 PM [32m    LOG[39m [38;5;3m[MeasurementConfigService] [39m[32mCreating Measurement Config with the following inputs[39m
+[32m[Nest] 265  - [39m08/09/2026, 9:40:08 PM [32m    LOG[39m [38;5;3m[MeasurementConfigService] [39m[32m[object Object][39m
+PASS src/appControllerHistorical.gold.spec.ts
+
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       9 failed, 1 passed, 10 total
+Snapshots:   0 total
+Time:        2.621 s
+Test results written to: ../tmp/jest-unit.json
+Force exiting Jest: Have you considered using `--detectOpenHandles` to detect async operations that kept running after all tests finished?
+{
+  "tests": [
+    {
+      "name": "S3 datastore measurement configuration accepts datastoreBased S3 configuration and materializes nested validation",
+      "status": "failed"
+    },
+    {
+      "name": "S3 datastore measurement configuration defaults an omitted platform to S3 and region to us-east-1",
+      "status": "failed"
+    },
+    {
+      "name": "S3 datastore measurement configuration persists and restores every datastore access field",
+      "status": "failed"
+    },
+    {
+      "name": "S3 datastore measurement configuration provisions a scoped IAM role and returns ingestion and DLQ locations",
+      "status": "failed"
+    },
+    {
+      "name": "S3 datastore measurement configuration updates account trust while preserving the existing role and external ID",
+      "status": "failed"
+    },
+    {
+      "name": "S3 datastore measurement configuration creates, persists, and returns provisioned datastore configuration",
+      "status": "failed"
+    },
+    {
+      "name": "S3 connector usage delivery derives the business from the object key and ingests a valid record",
+      "status": "failed"
+    },
+    {
+      "name": "S3 connector usage delivery writes malformed connector records to the mirrored message key in the DLQ",
+      "status": "failed"
+    },
+    {
+      "name": "S3 connector usage delivery keeps the generic DLQ writer usable for an already-relative source key",
+      "status": "failed"
+    },
+    {
+      "name": "AppController root should return \"Hello World!\"",
+      "status": "passed"
+    }
+  ]
+}
+
+required passed: 1/10
+  NOT PASSED (failed): S3 datastore measurement configuration accepts datastoreBased S3 configuration and materializes nested validation
+  NOT PASSED (failed): S3 datastore measurement configuration defaults an omitted platform to S3 and region to us-east-1
+  NOT PASSED (failed): S3 datastore measurement configuration persists and restores every datastore access field
+  NOT PASSED (failed): S3 datastore measurement configuration provisions a scoped IAM role and returns ingestion and DLQ locations
+  NOT PASSED (failed): S3 datastore measurement configuration updates account trust while preserving the existing role and external ID
+  NOT PASSED (failed): S3 datastore measurement configuration creates, persists, and returns provisioned datastore configuration
+  NOT PASSED (failed): S3 connector usage delivery derives the business from the object key and ingests a valid record
+  NOT PASSED (failed): S3 connector usage delivery writes malformed connector records to the mirrored message key in the DLQ
+  NOT PASSED (failed): S3 connector usage delivery keeps the generic DLQ writer usable for an already-relative source key
+reward: 0

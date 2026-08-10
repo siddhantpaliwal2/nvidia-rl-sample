@@ -1,0 +1,21 @@
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/dist/grails-plugin-log4j-2.3.11.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/lib/org.slf4j/slf4j-simple/jars/slf4j-simple-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.GrailsSlf4jLoggerFactory]
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/dist/grails-plugin-log4j-2.3.11.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/lib/org.slf4j/slf4j-simple/jars/slf4j-simple-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/app/lib/tika-app-1.14.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/app/lib/traprange-1.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.GrailsSlf4jLoggerFactory]
+FAIL Google storage migration adds GOOGLE target and defaults new documents to it: IllegalArgumentException: No enum constant com.bankScraper.Enums.StaticFileStorageTarget.GOOGLE
+FAIL Google storage migration uploads bytes through the configured storage client: MissingMethodException: No signature of method: static com.bankScraper.HelperMethod.uploadObjectToGoogleCloudStorage() is applicable for argument types: (java.io.File, java.lang.String) values: [/tmp/synthetic-cloud-upload-7871501948400849448.txt, ...]
+FAIL Google storage migration downloads bytes through the configured storage client: MissingMethodException: No signature of method: static com.bankScraper.HelperMethod.downloadObjectFromGoogleCloudStorage() is applicable for argument types: (java.lang.String) values: [synthetic/download.txt]
+FAIL Google storage migration routes persisted GOOGLE documents to cloud storage: IllegalArgumentException: No enum constant com.bankScraper.Enums.StaticFileStorageTarget.GOOGLE
+FAIL Google storage migration leaves blank cloud paths inert: MissingMethodException: No signature of method: static com.bankScraper.HelperMethod.uploadObjectToGoogleCloudStorage() is applicable for argument types: (java.io.File, java.lang.String) values: [/tmp/synthetic-cloud-blank-6678284648437389485.txt, ...]
+2026-08-08 04:49:06 INFO  HelperMethod:152 - === Requesting file for download from Local location ===>>> /tmp/synthetic-local-download-5827968133302668702.txt
+PASS Google storage migration preserves local file download precedence
+2026-08-08 04:49:06 INFO  HelperMethod:152 - === Requesting file for download from Azure location ===>>> /tmp/synthetic-missing-azure-object
+PASS Google storage migration preserves Azure target routing

@@ -1,0 +1,36 @@
+{
+    "job_name": "eng830-opencode-install-check",
+    "jobs_dir": "sample-run/enterprise-controls",
+    "install_only": true,
+    "n_concurrent_trials": 1,
+    "quiet": true,
+    "environment": {
+        "type": "daytona",
+        "kwargs": {
+            "snapshot_template_name": "harbor-probe-paigo-dimension-pricing-tiers-8g",
+            "assume_global_snapshot": true
+        }
+    },
+    "verifier": {
+        "disable": true
+    },
+    "agents": [
+        {
+            "name": "harness.harbor_agents:OpenCodeNode22",
+            "model_name": "amazon-bedrock/global.anthropic.claude-opus-5",
+            "kwargs": {
+                "version": "1.18.13",
+                "opencode_config": {
+                    "permission": {
+                        "task": "deny"
+                    }
+                }
+            }
+        }
+    ],
+    "tasks": [
+        {
+            "path": "tasks/paigo-dimension-pricing-tiers"
+        }
+    ]
+}

@@ -1,0 +1,78 @@
+[31m[Nest] 4257  - [39m08/10/2026, 4:34:42 AM [31m  ERROR[39m [38;5;3m[EmailinfraService] [39m[31mEmail accounts not found: missing[39m
+PASS src/emailinfra/emailinfra.gold.spec.ts (5.668 s)
+[32m[Nest] 4257  - [39m08/10/2026, 4:34:42 AM [32m    LOG[39m [38;5;3m[EmailAccount] [39m[32mSaving email account: inbox-1 (owner@example.com)[39m
+[32m[Nest] 4257  - [39m08/10/2026, 4:34:42 AM [32m    LOG[39m [38;5;3m[EmailinfraService] [39m[32mAssociating 2 email accounts with campaign: campaign-1[39m
+[32m[Nest] 4257  - [39m08/10/2026, 4:34:42 AM [32m    LOG[39m [38;5;3m[EmailAccount] [39m[32mSaving email account: 1 (a@example.com)[39m
+[32m[Nest] 4257  - [39m08/10/2026, 4:34:42 AM [32m    LOG[39m [38;5;3m[EmailAccount] [39m[32mSaving email account: 2 (b@example.com)[39m
+[32m[Nest] 4257  - [39m08/10/2026, 4:34:42 AM [32m    LOG[39m [38;5;3m[EmailinfraService] [39m[32mAssociating 2 email accounts with campaign: campaign-1[39m
+[32m[Nest] 4257  - [39m08/10/2026, 4:34:42 AM [32m    LOG[39m [38;5;3m[EmailinfraService] [39m[32mAssociating 2 email accounts with campaign: campaign-1[39m
+[32m[Nest] 4257  - [39m08/10/2026, 4:34:42 AM [32m    LOG[39m [38;5;3m[EmailinfraService] [39m[32mEmail account 1 is already associated with campaign: campaign-1[39m
+[32m[Nest] 4257  - [39m08/10/2026, 4:34:42 AM [32m    LOG[39m [38;5;3m[EmailAccount] [39m[32mSaving email account: 2 (b@example.com)[39m
+[32m[Nest] 4257  - [39m08/10/2026, 4:34:42 AM [32m    LOG[39m [38;5;3m[EmailinfraService] [39m[32mCampaign campaign-1 for smartlead client client-1 needs 3 inboxes for 650 emails over 10 days[39m
+[32m[Nest] 4257  - [39m08/10/2026, 4:34:42 AM [32m    LOG[39m [38;5;3m[EmailinfraService] [39m[32mCampaign campaign-1 for smartlead client client-1 needs 3 inboxes for 650 emails over 10 days[39m
+[32m[Nest] 4257  - [39m08/10/2026, 4:34:42 AM [32m    LOG[39m [38;5;3m[EmailAccount] [39m[32mGetting smartlead inbox: inbox-1[39m
+[32m[Nest] 4257  - [39m08/10/2026, 4:34:42 AM [32m    LOG[39m [38;5;3m[EmailAccount] [39m[32mSaving email account: inbox-1 (owner@example.com)[39m
+[32m[Nest] 4257  - [39m08/10/2026, 4:34:42 AM [32m    LOG[39m [38;5;3m[EmailAccount] [39m[32mGetting smartlead inbox: missing[39m
+[32m[Nest] 4257  - [39m08/10/2026, 4:34:42 AM [32m    LOG[39m [38;5;3m[EmailAccount] [39m[32mDeleting email account: inbox-1[39m
+PASS src/email-reply-agent/entities/entity.spec.ts
+
+Test Suites: 2 passed, 2 total
+Tests:       12 passed, 12 total
+Snapshots:   0 total
+Time:        5.724 s
+Test results written to: ../tmp/jest-unit.json
+{
+  "tests": [
+    {
+      "name": "Email inbox infrastructure contract derives stable identity, domain, counters, and deliverability bands",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract persists the normalized email account in the dedicated collection",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract looks up accounts through inbox-specific datastore fields",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract rejects a lookup when no account has the requested email",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract deduplicates campaign associations and refuses partial id sets",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract skips existing campaign links and persists each new association once",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract requests the documented multi-factor ranking and page limit",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract sizes a campaign pool from volume, duration, and daily capacity",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract hydrates Smartlead reputation and creation time before saving",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract surfaces a missing Smartlead inbox and delegates deletion safely",
+      "status": "passed"
+    },
+    {
+      "name": "Entity email template  should be defined",
+      "status": "passed"
+    },
+    {
+      "name": "Entity email template  should be able to get email template by id",
+      "status": "passed"
+    }
+  ]
+}
+
+required passed: 12/12
+reward: 1

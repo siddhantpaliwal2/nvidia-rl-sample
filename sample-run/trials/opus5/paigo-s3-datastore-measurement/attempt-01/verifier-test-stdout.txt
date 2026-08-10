@@ -1,0 +1,68 @@
+[31m[Nest] 9926  - [39m08/10/2026, 1:18:48 AM [31m  ERROR[39m [38;5;3m[UsageController] [39m[31mFailed to process the usage record read from business-1/customer/usage.ndjson[39m
+[31m[Nest] 9926  - [39m08/10/2026, 1:18:48 AM [31m  ERROR[39m [38;5;3m[UsageController] [39m[31mSyntaxError: Expected property name or '}' in JSON at position 1[39m
+PASS src/measurement-config/datastoreMeasurement.gold.spec.ts
+[32m[Nest] 9926  - [39m08/10/2026, 1:18:48 AM [32m    LOG[39m [38;5;3m[DatastoreAccessInformation] [39m[32mProvisioning datastore access with the IAM role: datastore-business-1-measurement-1[39m
+[32m[Nest] 9926  - [39m08/10/2026, 1:18:48 AM [32m    LOG[39m [38;5;3m[DatastoreAccessInformation] [39m[32mUpdating the trust of the IAM role: arn:role[39m
+[32m[Nest] 9926  - [39m08/10/2026, 1:18:48 AM [32m    LOG[39m [38;5;3m[MeasurementConfigService] [39m[32mCreating Measurement Config with the following inputs[39m
+[32m[Nest] 9926  - [39m08/10/2026, 1:18:48 AM [32m    LOG[39m [38;5;3m[MeasurementConfigService] [39m[32m[object Object][39m
+[32m[Nest] 9926  - [39m08/10/2026, 1:18:48 AM [32m    LOG[39m [38;5;3m[DatastoreAccessInformation] [39m[32mProvisioning datastore access with the IAM role: datastore-business-1-f5392646-47f2-47db-a706-973bd57ce831[39m
+[32m[Nest] 9926  - [39m08/10/2026, 1:18:48 AM [32m    LOG[39m [38;5;3m[MeasurementConfigService] [39m[32mLoaded information into DB[39m
+[32m[Nest] 9926  - [39m08/10/2026, 1:18:48 AM [32m    LOG[39m [38;5;3m[UsageController] [39m[32mStarting DB Usage Endpoint execution[39m
+[32m[Nest] 9926  - [39m08/10/2026, 1:18:48 AM [32m    LOG[39m [38;5;3m[UsageController] [39m[32mStarting DB Usage Endpoint execution[39m
+[33m[Nest] 9926  - [39m08/10/2026, 1:18:48 AM [33m   WARN[39m [38;5;3m[StandardMeasurementEntity] [39m[33mPublishing a failed measurement to the DLQ: usage-dlq/business-1/customer/usage.ndjson.message.text[39m
+[33m[Nest] 9926  - [39m08/10/2026, 1:18:48 AM [33m   WARN[39m [38;5;3m[StandardMeasurementEntity] [39m[33mPublishing a failed measurement to the DLQ: usage-dlq/business-1/customer/file.json.message.text[39m
+PASS src/appControllerHistorical.gold.spec.ts
+
+Test Suites: 2 passed, 2 total
+Tests:       10 passed, 10 total
+Snapshots:   0 total
+Time:        1.607 s
+Test results written to: ../tmp/jest-unit.json
+Force exiting Jest: Have you considered using `--detectOpenHandles` to detect async operations that kept running after all tests finished?
+{
+  "tests": [
+    {
+      "name": "S3 datastore measurement configuration accepts datastoreBased S3 configuration and materializes nested validation",
+      "status": "passed"
+    },
+    {
+      "name": "S3 datastore measurement configuration defaults an omitted platform to S3 and region to us-east-1",
+      "status": "passed"
+    },
+    {
+      "name": "S3 datastore measurement configuration persists and restores every datastore access field",
+      "status": "passed"
+    },
+    {
+      "name": "S3 datastore measurement configuration provisions a scoped IAM role and returns ingestion and DLQ locations",
+      "status": "passed"
+    },
+    {
+      "name": "S3 datastore measurement configuration updates account trust while preserving the existing role and external ID",
+      "status": "passed"
+    },
+    {
+      "name": "S3 datastore measurement configuration creates, persists, and returns provisioned datastore configuration",
+      "status": "passed"
+    },
+    {
+      "name": "S3 connector usage delivery derives the business from the object key and ingests a valid record",
+      "status": "passed"
+    },
+    {
+      "name": "S3 connector usage delivery writes malformed connector records to the mirrored message key in the DLQ",
+      "status": "passed"
+    },
+    {
+      "name": "S3 connector usage delivery keeps the generic DLQ writer usable for an already-relative source key",
+      "status": "passed"
+    },
+    {
+      "name": "AppController root should return \"Hello World!\"",
+      "status": "passed"
+    }
+  ]
+}
+
+required passed: 10/10
+reward: 1

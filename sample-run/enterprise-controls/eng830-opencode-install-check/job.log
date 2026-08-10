@@ -1,0 +1,9 @@
+Selected strategy: _DaytonaDirect
+Creating new AsyncDaytona client
+Using snapshot: harbor-probe-paigo-dimension-pricing-tiers-8g
+Running command: (apt-get update && apt-get install -y curl) || echo 'Warning: apt failed, continuing with image-provided curl' >&2
+Command outputs captured
+Running command: set -euo pipefail; curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash && export NVM_DIR="$HOME/.nvm" && \. "$NVM_DIR/nvm.sh" || true && command -v nvm &>/dev/null || { echo 'Error: NVM failed to load' >&2; exit 1; } && nvm install 22 && npm -v && npm i -g opencode-ai@1.18.13 && opencode --version
+Command outputs captured
+Running command: . ~/.nvm/nvm.sh; nvm alias default 22 >/dev/null; nvm use 22 >/dev/null; opencode --version
+Command outputs captured

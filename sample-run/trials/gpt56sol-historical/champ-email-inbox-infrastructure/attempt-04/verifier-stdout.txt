@@ -1,0 +1,76 @@
+FAIL src/emailinfra/emailinfra.gold.spec.ts (8.975 s)
+  ● Email inbox infrastructure contract › persists the normalized email account in the dedicated collection
+
+    TypeError: account.save is not a function
+
+      154 |     });
+      155 |
+    > 156 |     await account.save(db);
+          |                   ^
+      157 |     expect(db.store).toHaveBeenCalledTimes(1);
+      158 |     const request = db.store.mock.calls[0][0];
+      159 |     expect(request.context.uniqueId).toBe('inbox-1');
+
+      at Object.<anonymous> (emailinfra/emailinfra.gold.spec.ts:156:19)
+
+  ● Email inbox infrastructure contract › looks up accounts through inbox-specific datastore fields
+
+    expect(received).resolves.toHaveLength(expected)
+
+    Expected length: 1
+    Received length: 0
+    Received array:  []
+
+      194 |     await expect(
+      195 |       service.getAllEmailAccounts({ page: 0, pageSize: 1 }),
+    > 196 |     ).resolves.toHaveLength(1);
+          |                ^
+      197 |   });
+      198 |
+      199 |   it('rejects a lookup when no account has the requested email', async () => {
+
+      at Object.toHaveLength (../node_modules/expect/build/index.js:174:22)
+      at Object.<anonymous> (emailinfra/emailinfra.gold.spec.ts:196:16)
+
+  ● Email inbox infrastructure contract › rejects a lookup when no account has the requested email
+
+    expect(received).rejects.toBeInstanceOf()
+
+    Received promise resolved instead of rejected
+    Resolved to value: undefined
+
+      199 |   it('rejects a lookup when no account has the requested email', async () => {
+      200 |     const { service } = subject(memoryDatastore());
+    > 201 |     await expect(
+          |           ^
+      202 |       service.getEmailAccountByEmail('missing@example.com'),
+      203 |     ).rejects.toBeInstanceOf(NotFoundException);
+      204 |   });
+
+      at expect (../node_modules/expect/build/index.js:113:15)
+      at Object.<anonymous> (emailinfra/emailinfra.gold.spec.ts:201:11)
+
+  ● Email inbox infrastructure contract › skips existing campaign links and persists each new association once
+
+    expect(jest.fn()).toHaveBeenCalledTimes(expected)
+
+    Expected number of calls: 1
+    Received number of calls: 2
+
+      245 |     });
+      246 |
+    > 247 |     expect(db.store).toHaveBeenCalledTimes(1);
+          |                      ^
+      248 |     expect(db.store.mock.calls[0][0].data).toEqual(
+      249 |       expect.objectContaining({
+      250 |         id: '2',
+
+      at Object.<anonymous> (emailinfra/emailinfra.gold.spec.ts:247:22)
+
+PASS src/email-reply-agent/entities/entity.spec.ts
+
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       4 failed, 8 passed, 12 total
+Snapshots:   0 total
+Time:        9.068 s
+Test results written to: ../tmp/jest-unit.json

@@ -1,0 +1,111 @@
+{
+    "id": "360469a0-dd31-4838-8580-00b4ad7ed411",
+    "task_name": "paigo-dimension-pricing-tiers",
+    "trial_name": "paigo-dimension-pricing-tiers__enVNPXk",
+    "trial_uri": "file:///Users/siddhantpaliwal/Desktop/amazon-rl/xai-rl-sample/sample-run/enterprise-controls/eng830-oracle-daytona/paigo-dimension-pricing-tiers__enVNPXk",
+    "task_id": {
+        "path": "tasks/paigo-dimension-pricing-tiers"
+    },
+    "source": null,
+    "task_checksum": "d319d3ba72e773e253634d4a870376600565a93ac44f8b13e96a3b1ce059b894",
+    "config": {
+        "task": {
+            "path": "tasks/paigo-dimension-pricing-tiers",
+            "git_url": null,
+            "git_commit_id": null,
+            "name": null,
+            "ref": null,
+            "overwrite": false,
+            "download_dir": null,
+            "source": null
+        },
+        "trial_name": "paigo-dimension-pricing-tiers__enVNPXk",
+        "trials_dir": "sample-run/enterprise-controls/eng830-oracle-daytona",
+        "install_only": false,
+        "timeout_multiplier": 1.0,
+        "agent_timeout_multiplier": null,
+        "verifier_timeout_multiplier": null,
+        "agent_setup_timeout_multiplier": null,
+        "environment_build_timeout_multiplier": null,
+        "agent": {
+            "name": "oracle",
+            "import_path": null,
+            "model_name": null,
+            "n_concurrent": null,
+            "concurrency_group": null,
+            "skills": [],
+            "override_timeout_sec": null,
+            "override_setup_timeout_sec": null,
+            "max_timeout_sec": null,
+            "extra_allowed_hosts": [],
+            "kwargs": {},
+            "mcp_servers": []
+        },
+        "environment": {
+            "type": "daytona",
+            "import_path": null,
+            "force_build": false,
+            "delete": true,
+            "cpu_enforcement_policy": "auto",
+            "memory_enforcement_policy": "auto",
+            "override_cpus": null,
+            "override_memory_mb": null,
+            "override_storage_mb": null,
+            "override_gpus": null,
+            "override_tpu": null,
+            "mounts": null,
+            "extra_docker_compose": [],
+            "kwargs": {
+                "snapshot_template_name": "harbor-probe-paigo-dimension-pricing-tiers-8g",
+                "assume_global_snapshot": true
+            },
+            "extra_allowed_hosts": []
+        },
+        "verifier": {
+            "override_timeout_sec": null,
+            "max_timeout_sec": null,
+            "disable": false
+        },
+        "artifacts": [],
+        "extra_instruction_paths": [],
+        "job_id": "491fa657-ebc2-44d3-88e5-b07b17ba432c"
+    },
+    "agent_info": {
+        "name": "oracle",
+        "version": "1.0.0",
+        "model_info": null
+    },
+    "agent_result": {
+        "n_input_tokens": null,
+        "n_cache_tokens": null,
+        "n_output_tokens": null,
+        "cost_usd": null,
+        "rollout_details": null,
+        "metadata": null
+    },
+    "verifier_result": {
+        "rewards": {
+            "reward": 0.0
+        }
+    },
+    "exception_info": null,
+    "started_at": "2026-08-08T02:26:34.931388Z",
+    "finished_at": "2026-08-08T02:27:36.824114Z",
+    "environment_setup": {
+        "started_at": "2026-08-08T02:26:34.957254Z",
+        "finished_at": "2026-08-08T02:26:57.809742Z"
+    },
+    "agent_setup": {
+        "started_at": "2026-08-08T02:26:57.809934Z",
+        "finished_at": "2026-08-08T02:26:57.810103Z"
+    },
+    "agent_execution": {
+        "started_at": "2026-08-08T02:26:57.810329Z",
+        "finished_at": "2026-08-08T02:27:01.704269Z"
+    },
+    "verifier": {
+        "started_at": "2026-08-08T02:27:05.805686Z",
+        "finished_at": "2026-08-08T02:27:36.590888Z"
+    },
+    "step_results": null
+}

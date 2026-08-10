@@ -1,0 +1,23 @@
+{
+    "job_name": "eng411-null-daytona-r5",
+    "jobs_dir": "sample-run/enterprise-controls",
+    "n_concurrent_trials": 1,
+    "quiet": true,
+    "environment": {
+        "type": "daytona",
+        "kwargs": {
+            "snapshot_template_name": "harbor-probe-paigo-s3-datastore-measurement-8g",
+            "assume_global_snapshot": true
+        }
+    },
+    "agents": [
+        {
+            "name": "nop"
+        }
+    ],
+    "tasks": [
+        {
+            "path": "tasks/paigo-s3-datastore-measurement"
+        }
+    ]
+}

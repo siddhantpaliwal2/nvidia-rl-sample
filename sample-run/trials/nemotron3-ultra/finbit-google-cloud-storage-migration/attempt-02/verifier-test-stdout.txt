@@ -1,0 +1,29 @@
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/dist/grails-plugin-log4j-2.3.11.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/lib/org.slf4j/slf4j-simple/jars/slf4j-simple-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.GrailsSlf4jLoggerFactory]
+org.codehaus.groovy.control.MultipleCompilationErrorsException: startup failed:
+file:/tmp/finbit-cloud-verifier-source/src/groovy/com/bankScraper/HelperMethod.groovy: 826: Apparent variable 'Paths' was found in a static scope but doesn't refer to a local variable, static field or class. Possible causes:
+You attempted to reference a variable in the binding or an instance variable from a static context.
+You misspelled a classname or statically imported field. Please check the spelling.
+You attempted to use a method 'Paths' but left out brackets in a place not allowed by the grammar.
+ @ line 826, column 37.
+                       blob.downloadTo(Paths.get(file.path))
+                                       ^
+
+1 error
+
+{
+  "tests": []
+}
+
+required passed: 0/7
+  NOT PASSED (not-run): Google storage migration adds GOOGLE target and defaults new documents to it
+  NOT PASSED (not-run): Google storage migration uploads bytes through the configured storage client
+  NOT PASSED (not-run): Google storage migration downloads bytes through the configured storage client
+  NOT PASSED (not-run): Google storage migration routes persisted GOOGLE documents to cloud storage
+  NOT PASSED (not-run): Google storage migration leaves blank cloud paths inert
+  NOT PASSED (not-run): Google storage migration preserves local file download precedence
+  NOT PASSED (not-run): Google storage migration preserves Azure target routing
+reward: 0

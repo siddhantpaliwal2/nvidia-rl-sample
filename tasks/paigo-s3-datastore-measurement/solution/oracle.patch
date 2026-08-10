@@ -1,0 +1,2429 @@
+diff --git a/package-lock.json b/package-lock.json
+index 7d19cac50bc457cbdc2898d7255db7c2a4eeaa08..53df5257d7797b546d90264cfeb5e8fe9ade0191 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -3249,6 +3249,795 @@
+                 }
+             }
+         },
++        "@aws-sdk/client-iam": {
++            "version": "3.272.0",
++            "resolved": "https://registry.npmjs.org/@aws-sdk/client-iam/-/client-iam-3.272.0.tgz",
++            "integrity": "sha512-97VV+6rF/zwtowLeAzSnmBGbpC3aE9h4cxxZJRR0vBv7XlF4QVAn34QAEh4oYIv1IdLpApMIDFUpg/ZWmUo7QQ==",
++            "requires": {
++                "@aws-crypto/sha256-browser": "3.0.0",
++                "@aws-crypto/sha256-js": "3.0.0",
++                "@aws-sdk/client-sts": "3.272.0",
++                "@aws-sdk/config-resolver": "3.272.0",
++                "@aws-sdk/credential-provider-node": "3.272.0",
++                "@aws-sdk/fetch-http-handler": "3.272.0",
++                "@aws-sdk/hash-node": "3.272.0",
++                "@aws-sdk/invalid-dependency": "3.272.0",
++                "@aws-sdk/middleware-content-length": "3.272.0",
++                "@aws-sdk/middleware-endpoint": "3.272.0",
++                "@aws-sdk/middleware-host-header": "3.272.0",
++                "@aws-sdk/middleware-logger": "3.272.0",
++                "@aws-sdk/middleware-recursion-detection": "3.272.0",
++                "@aws-sdk/middleware-retry": "3.272.0",
++                "@aws-sdk/middleware-serde": "3.272.0",
++                "@aws-sdk/middleware-signing": "3.272.0",
++                "@aws-sdk/middleware-stack": "3.272.0",
++                "@aws-sdk/middleware-user-agent": "3.272.0",
++                "@aws-sdk/node-config-provider": "3.272.0",
++                "@aws-sdk/node-http-handler": "3.272.0",
++                "@aws-sdk/protocol-http": "3.272.0",
++                "@aws-sdk/smithy-client": "3.272.0",
++                "@aws-sdk/types": "3.272.0",
++                "@aws-sdk/url-parser": "3.272.0",
++                "@aws-sdk/util-base64": "3.208.0",
++                "@aws-sdk/util-body-length-browser": "3.188.0",
++                "@aws-sdk/util-body-length-node": "3.208.0",
++                "@aws-sdk/util-defaults-mode-browser": "3.272.0",
++                "@aws-sdk/util-defaults-mode-node": "3.272.0",
++                "@aws-sdk/util-endpoints": "3.272.0",
++                "@aws-sdk/util-retry": "3.272.0",
++                "@aws-sdk/util-user-agent-browser": "3.272.0",
++                "@aws-sdk/util-user-agent-node": "3.272.0",
++                "@aws-sdk/util-utf8": "3.254.0",
++                "@aws-sdk/util-waiter": "3.272.0",
++                "fast-xml-parser": "4.0.11",
++                "tslib": "^2.3.1"
++            },
++            "dependencies": {
++                "@aws-crypto/ie11-detection": {
++                    "version": "3.0.0",
++                    "resolved": "https://registry.npmjs.org/@aws-crypto/ie11-detection/-/ie11-detection-3.0.0.tgz",
++                    "integrity": "sha512-341lBBkiY1DfDNKai/wXM3aujNBkXR7tq1URPQDL9wi3AUbI80NR74uF1TXHMm7po1AcnFk8iu2S2IeU/+/A+Q==",
++                    "requires": {
++                        "tslib": "^1.11.1"
++                    },
++                    "dependencies": {
++                        "tslib": {
++                            "version": "1.14.1",
++                            "resolved": "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz",
++                            "integrity": "sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg=="
++                        }
++                    }
++                },
++                "@aws-crypto/sha256-browser": {
++                    "version": "3.0.0",
++                    "resolved": "https://registry.npmjs.org/@aws-crypto/sha256-browser/-/sha256-browser-3.0.0.tgz",
++                    "integrity": "sha512-8VLmW2B+gjFbU5uMeqtQM6Nj0/F1bro80xQXCW6CQBWgosFWXTx77aeOF5CAIAmbOK64SdMBJdNr6J41yP5mvQ==",
++                    "requires": {
++                        "@aws-crypto/ie11-detection": "^3.0.0",
++                        "@aws-crypto/sha256-js": "^3.0.0",
++                        "@aws-crypto/supports-web-crypto": "^3.0.0",
++                        "@aws-crypto/util": "^3.0.0",
++                        "@aws-sdk/types": "^3.222.0",
++                        "@aws-sdk/util-locate-window": "^3.0.0",
++                        "@aws-sdk/util-utf8-browser": "^3.0.0",
++                        "tslib": "^1.11.1"
++                    },
++                    "dependencies": {
++                        "tslib": {
++                            "version": "1.14.1",
++                            "resolved": "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz",
++                            "integrity": "sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg=="
++                        }
++                    }
++                },
++                "@aws-crypto/sha256-js": {
++                    "version": "3.0.0",
++                    "resolved": "https://registry.npmjs.org/@aws-crypto/sha256-js/-/sha256-js-3.0.0.tgz",
++                    "integrity": "sha512-PnNN7os0+yd1XvXAy23CFOmTbMaDxgxXtTKHybrJ39Y8kGzBATgBFibWJKH6BhytLI/Zyszs87xCOBNyBig6vQ==",
++                    "requires": {
++                        "@aws-crypto/util": "^3.0.0",
++                        "@aws-sdk/types": "^3.222.0",
++                        "tslib": "^1.11.1"
++                    },
++                    "dependencies": {
++                        "tslib": {
++                            "version": "1.14.1",
++                            "resolved": "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz",
++                            "integrity": "sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg=="
++                        }
++                    }
++                },
++                "@aws-crypto/supports-web-crypto": {
++                    "version": "3.0.0",
++                    "resolved": "https://registry.npmjs.org/@aws-crypto/supports-web-crypto/-/supports-web-crypto-3.0.0.tgz",
++                    "integrity": "sha512-06hBdMwUAb2WFTuGG73LSC0wfPu93xWwo5vL2et9eymgmu3Id5vFAHBbajVWiGhPO37qcsdCap/FqXvJGJWPIg==",
++                    "requires": {
++                        "tslib": "^1.11.1"
++                    },
++                    "dependencies": {
++                        "tslib": {
++                            "version": "1.14.1",
++                            "resolved": "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz",
++                            "integrity": "sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg=="
++                        }
++                    }
++                },
++                "@aws-crypto/util": {
++                    "version": "3.0.0",
++                    "resolved": "https://registry.npmjs.org/@aws-crypto/util/-/util-3.0.0.tgz",
++                    "integrity": "sha512-2OJlpeJpCR48CC8r+uKVChzs9Iungj9wkZrl8Z041DWEWvyIHILYKCPNzJghKsivj+S3mLo6BVc7mBNzdxA46w==",
++                    "requires": {
++                        "@aws-sdk/types": "^3.222.0",
++                        "@aws-sdk/util-utf8-browser": "^3.0.0",
++                        "tslib": "^1.11.1"
++                    },
++                    "dependencies": {
++                        "tslib": {
++                            "version": "1.14.1",
++                            "resolved": "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz",
++                            "integrity": "sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg=="
++                        }
++                    }
++                },
++                "@aws-sdk/abort-controller": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/abort-controller/-/abort-controller-3.272.0.tgz",
++                    "integrity": "sha512-s2TV3phapcTwZNr4qLxbfuQuE9ZMP4RoJdkvRRCkKdm6jslsWLJf2Zlcxti/23hOlINUMYv2iXE2pftIgWGdpg==",
++                    "requires": {
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/client-sso": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/client-sso/-/client-sso-3.272.0.tgz",
++                    "integrity": "sha512-xn9a0IGONwQIARmngThoRhF1lLGjHAD67sUaShgIMaIMc6ipVYN6alWG1VuUpoUQ6iiwMEt0CHdfCyLyUV/fTA==",
++                    "requires": {
++                        "@aws-crypto/sha256-browser": "3.0.0",
++                        "@aws-crypto/sha256-js": "3.0.0",
++                        "@aws-sdk/config-resolver": "3.272.0",
++                        "@aws-sdk/fetch-http-handler": "3.272.0",
++                        "@aws-sdk/hash-node": "3.272.0",
++                        "@aws-sdk/invalid-dependency": "3.272.0",
++                        "@aws-sdk/middleware-content-length": "3.272.0",
++                        "@aws-sdk/middleware-endpoint": "3.272.0",
++                        "@aws-sdk/middleware-host-header": "3.272.0",
++                        "@aws-sdk/middleware-logger": "3.272.0",
++                        "@aws-sdk/middleware-recursion-detection": "3.272.0",
++                        "@aws-sdk/middleware-retry": "3.272.0",
++                        "@aws-sdk/middleware-serde": "3.272.0",
++                        "@aws-sdk/middleware-stack": "3.272.0",
++                        "@aws-sdk/middleware-user-agent": "3.272.0",
++                        "@aws-sdk/node-config-provider": "3.272.0",
++                        "@aws-sdk/node-http-handler": "3.272.0",
++                        "@aws-sdk/protocol-http": "3.272.0",
++                        "@aws-sdk/smithy-client": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "@aws-sdk/url-parser": "3.272.0",
++                        "@aws-sdk/util-base64": "3.208.0",
++                        "@aws-sdk/util-body-length-browser": "3.188.0",
++                        "@aws-sdk/util-body-length-node": "3.208.0",
++                        "@aws-sdk/util-defaults-mode-browser": "3.272.0",
++                        "@aws-sdk/util-defaults-mode-node": "3.272.0",
++                        "@aws-sdk/util-endpoints": "3.272.0",
++                        "@aws-sdk/util-retry": "3.272.0",
++                        "@aws-sdk/util-user-agent-browser": "3.272.0",
++                        "@aws-sdk/util-user-agent-node": "3.272.0",
++                        "@aws-sdk/util-utf8": "3.254.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/client-sso-oidc": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/client-sso-oidc/-/client-sso-oidc-3.272.0.tgz",
++                    "integrity": "sha512-ECcXu3xoa1yggnGKMTh29eWNHiF/wC6r5Uqbla22eOOosyh0+Z6lkJ3JUSLOUKCkBXA4Cs/tJL9UDFBrKbSlvA==",
++                    "requires": {
++                        "@aws-crypto/sha256-browser": "3.0.0",
++                        "@aws-crypto/sha256-js": "3.0.0",
++                        "@aws-sdk/config-resolver": "3.272.0",
++                        "@aws-sdk/fetch-http-handler": "3.272.0",
++                        "@aws-sdk/hash-node": "3.272.0",
++                        "@aws-sdk/invalid-dependency": "3.272.0",
++                        "@aws-sdk/middleware-content-length": "3.272.0",
++                        "@aws-sdk/middleware-endpoint": "3.272.0",
++                        "@aws-sdk/middleware-host-header": "3.272.0",
++                        "@aws-sdk/middleware-logger": "3.272.0",
++                        "@aws-sdk/middleware-recursion-detection": "3.272.0",
++                        "@aws-sdk/middleware-retry": "3.272.0",
++                        "@aws-sdk/middleware-serde": "3.272.0",
++                        "@aws-sdk/middleware-stack": "3.272.0",
++                        "@aws-sdk/middleware-user-agent": "3.272.0",
++                        "@aws-sdk/node-config-provider": "3.272.0",
++                        "@aws-sdk/node-http-handler": "3.272.0",
++                        "@aws-sdk/protocol-http": "3.272.0",
++                        "@aws-sdk/smithy-client": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "@aws-sdk/url-parser": "3.272.0",
++                        "@aws-sdk/util-base64": "3.208.0",
++                        "@aws-sdk/util-body-length-browser": "3.188.0",
++                        "@aws-sdk/util-body-length-node": "3.208.0",
++                        "@aws-sdk/util-defaults-mode-browser": "3.272.0",
++                        "@aws-sdk/util-defaults-mode-node": "3.272.0",
++                        "@aws-sdk/util-endpoints": "3.272.0",
++                        "@aws-sdk/util-retry": "3.272.0",
++                        "@aws-sdk/util-user-agent-browser": "3.272.0",
++                        "@aws-sdk/util-user-agent-node": "3.272.0",
++                        "@aws-sdk/util-utf8": "3.254.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/client-sts": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/client-sts/-/client-sts-3.272.0.tgz",
++                    "integrity": "sha512-kigxCxURp3WupufGaL/LABMb7UQfzAQkKcj9royizL3ItJ0vw5kW/JFrPje5IW1mfLgdPF7PI9ShOjE0fCLTqA==",
++                    "requires": {
++                        "@aws-crypto/sha256-browser": "3.0.0",
++                        "@aws-crypto/sha256-js": "3.0.0",
++                        "@aws-sdk/config-resolver": "3.272.0",
++                        "@aws-sdk/credential-provider-node": "3.272.0",
++                        "@aws-sdk/fetch-http-handler": "3.272.0",
++                        "@aws-sdk/hash-node": "3.272.0",
++                        "@aws-sdk/invalid-dependency": "3.272.0",
++                        "@aws-sdk/middleware-content-length": "3.272.0",
++                        "@aws-sdk/middleware-endpoint": "3.272.0",
++                        "@aws-sdk/middleware-host-header": "3.272.0",
++                        "@aws-sdk/middleware-logger": "3.272.0",
++                        "@aws-sdk/middleware-recursion-detection": "3.272.0",
++                        "@aws-sdk/middleware-retry": "3.272.0",
++                        "@aws-sdk/middleware-sdk-sts": "3.272.0",
++                        "@aws-sdk/middleware-serde": "3.272.0",
++                        "@aws-sdk/middleware-signing": "3.272.0",
++                        "@aws-sdk/middleware-stack": "3.272.0",
++                        "@aws-sdk/middleware-user-agent": "3.272.0",
++                        "@aws-sdk/node-config-provider": "3.272.0",
++                        "@aws-sdk/node-http-handler": "3.272.0",
++                        "@aws-sdk/protocol-http": "3.272.0",
++                        "@aws-sdk/smithy-client": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "@aws-sdk/url-parser": "3.272.0",
++                        "@aws-sdk/util-base64": "3.208.0",
++                        "@aws-sdk/util-body-length-browser": "3.188.0",
++                        "@aws-sdk/util-body-length-node": "3.208.0",
++                        "@aws-sdk/util-defaults-mode-browser": "3.272.0",
++                        "@aws-sdk/util-defaults-mode-node": "3.272.0",
++                        "@aws-sdk/util-endpoints": "3.272.0",
++                        "@aws-sdk/util-retry": "3.272.0",
++                        "@aws-sdk/util-user-agent-browser": "3.272.0",
++                        "@aws-sdk/util-user-agent-node": "3.272.0",
++                        "@aws-sdk/util-utf8": "3.254.0",
++                        "fast-xml-parser": "4.0.11",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/config-resolver": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/config-resolver/-/config-resolver-3.272.0.tgz",
++                    "integrity": "sha512-Dr4CffRVNsOp3LRNdpvcH6XuSgXOSLblWliCy/5I86cNl567KVMxujVx6uPrdTXYs2h1rt3MNl6jQGnAiJeTbw==",
++                    "requires": {
++                        "@aws-sdk/signature-v4": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "@aws-sdk/util-config-provider": "3.208.0",
++                        "@aws-sdk/util-middleware": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/credential-provider-env": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/credential-provider-env/-/credential-provider-env-3.272.0.tgz",
++                    "integrity": "sha512-QI65NbLnKLYHyTYhXaaUrq6eVsCCrMUb05WDA7+TJkWkjXesovpjc8vUKgFiLSxmgKmb2uOhHNcDyObKMrYQFw==",
++                    "requires": {
++                        "@aws-sdk/property-provider": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/credential-provider-imds": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/credential-provider-imds/-/credential-provider-imds-3.272.0.tgz",
++                    "integrity": "sha512-wwAfVY1jTFQEfxVfdYD5r5ieYGl+0g4nhekVxNMqE8E1JeRDd18OqiwAflzpgBIqxfqvCUkf+vl5JYyacMkNAQ==",
++                    "requires": {
++                        "@aws-sdk/node-config-provider": "3.272.0",
++                        "@aws-sdk/property-provider": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "@aws-sdk/url-parser": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/credential-provider-ini": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/credential-provider-ini/-/credential-provider-ini-3.272.0.tgz",
++                    "integrity": "sha512-iE3CDzK5NcupHYjfYjBdY1JCy8NLEoRUsboEjG0i0gy3S3jVpDeVHX1dLVcL/slBFj6GiM7SoNV/UfKnJf3Gaw==",
++                    "requires": {
++                        "@aws-sdk/credential-provider-env": "3.272.0",
++                        "@aws-sdk/credential-provider-imds": "3.272.0",
++                        "@aws-sdk/credential-provider-process": "3.272.0",
++                        "@aws-sdk/credential-provider-sso": "3.272.0",
++                        "@aws-sdk/credential-provider-web-identity": "3.272.0",
++                        "@aws-sdk/property-provider": "3.272.0",
++                        "@aws-sdk/shared-ini-file-loader": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/credential-provider-node": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/credential-provider-node/-/credential-provider-node-3.272.0.tgz",
++                    "integrity": "sha512-FI8uvwM1IxiRSvbkdKv8DZG5vxU3ezaseTaB1fHWTxEUFb0pWIoHX9oeOKer9Fj31SOZTCNAaYFURbSRuZlm/w==",
++                    "requires": {
++                        "@aws-sdk/credential-provider-env": "3.272.0",
++                        "@aws-sdk/credential-provider-imds": "3.272.0",
++                        "@aws-sdk/credential-provider-ini": "3.272.0",
++                        "@aws-sdk/credential-provider-process": "3.272.0",
++                        "@aws-sdk/credential-provider-sso": "3.272.0",
++                        "@aws-sdk/credential-provider-web-identity": "3.272.0",
++                        "@aws-sdk/property-provider": "3.272.0",
++                        "@aws-sdk/shared-ini-file-loader": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/credential-provider-process": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/credential-provider-process/-/credential-provider-process-3.272.0.tgz",
++                    "integrity": "sha512-hiCAjWWm2PeBFp5cjkxqyam/XADjiS+e7GzwC34TbZn3LisS0uoweLojj9tD11NnnUhyhbLteUvu5+rotOLwrg==",
++                    "requires": {
++                        "@aws-sdk/property-provider": "3.272.0",
++                        "@aws-sdk/shared-ini-file-loader": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/credential-provider-sso": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/credential-provider-sso/-/credential-provider-sso-3.272.0.tgz",
++                    "integrity": "sha512-hwYaulyiU/7chKKFecxCeo0ls6Dxs7h+5EtoYcJJGvfpvCncyOZF35t00OAsCd3Wo7HkhhgfpGdb6dmvCNQAZQ==",
++                    "requires": {
++                        "@aws-sdk/client-sso": "3.272.0",
++                        "@aws-sdk/property-provider": "3.272.0",
++                        "@aws-sdk/shared-ini-file-loader": "3.272.0",
++                        "@aws-sdk/token-providers": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/credential-provider-web-identity": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/credential-provider-web-identity/-/credential-provider-web-identity-3.272.0.tgz",
++                    "integrity": "sha512-ImrHMkcgneGa/HadHAQXPwOrX26sAKuB8qlMxZF/ZCM2B55u8deY+ZVkVuraeKb7YsahMGehPFOfRAF6mvFI5Q==",
++                    "requires": {
++                        "@aws-sdk/property-provider": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/fetch-http-handler": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/fetch-http-handler/-/fetch-http-handler-3.272.0.tgz",
++                    "integrity": "sha512-1Qhm9e0RbS1Xf4CZqUbQyUMkDLd7GrsRXWIvm9b86/vgeV8/WnjO3CMue9D51nYgcyQORhYXv6uVjAYCWbUExA==",
++                    "requires": {
++                        "@aws-sdk/protocol-http": "3.272.0",
++                        "@aws-sdk/querystring-builder": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "@aws-sdk/util-base64": "3.208.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/hash-node": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/hash-node/-/hash-node-3.272.0.tgz",
++                    "integrity": "sha512-40dwND+iAm3VtPHPZu7/+CIdVJFk2s0cWZt1lOiMPMSXycSYJ45wMk7Lly3uoqRx0uWfFK5iT2OCv+fJi5jTng==",
++                    "requires": {
++                        "@aws-sdk/types": "3.272.0",
++                        "@aws-sdk/util-buffer-from": "3.208.0",
++                        "@aws-sdk/util-utf8": "3.254.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/invalid-dependency": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/invalid-dependency/-/invalid-dependency-3.272.0.tgz",
++                    "integrity": "sha512-ysW6wbjl1Y78txHUQ/Tldj2Rg1BI7rpMO9B9xAF6yAX3mQ7t6SUPQG/ewOGvH2208NBIl3qP5e/hDf0Q6r/1iw==",
++                    "requires": {
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/is-array-buffer": {
++                    "version": "3.201.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/is-array-buffer/-/is-array-buffer-3.201.0.tgz",
++                    "integrity": "sha512-UPez5qLh3dNgt0DYnPD/q0mVJY84rA17QE26hVNOW3fAji8W2wrwrxdacWOxyXvlxWsVRcKmr+lay1MDqpAMfg==",
++                    "requires": {
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/middleware-content-length": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/middleware-content-length/-/middleware-content-length-3.272.0.tgz",
++                    "integrity": "sha512-sAbDZSTNmLX+UTGwlUHJBWy0QGQkiClpHwVFXACon+aG0ySLNeRKEVYs6NCPYldw4cj6hveLUn50cX44ukHErw==",
++                    "requires": {
++                        "@aws-sdk/protocol-http": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/middleware-endpoint": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/middleware-endpoint/-/middleware-endpoint-3.272.0.tgz",
++                    "integrity": "sha512-Dk3JVjj7SxxoUKv3xGiOeBksvPtFhTDrVW75XJ98Ymv8gJH5L1sq4hIeJAHRKogGiRFq2J73mnZSlM9FVXEylg==",
++                    "requires": {
++                        "@aws-sdk/middleware-serde": "3.272.0",
++                        "@aws-sdk/protocol-http": "3.272.0",
++                        "@aws-sdk/signature-v4": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "@aws-sdk/url-parser": "3.272.0",
++                        "@aws-sdk/util-config-provider": "3.208.0",
++                        "@aws-sdk/util-middleware": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/middleware-host-header": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/middleware-host-header/-/middleware-host-header-3.272.0.tgz",
++                    "integrity": "sha512-Q8K7bMMFZnioUXpxn57HIt4p+I63XaNAawMLIZ5B4F2piyukbQeM9q2XVKMGwqLvijHR8CyP5nHrtKqVuINogQ==",
++                    "requires": {
++                        "@aws-sdk/protocol-http": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/middleware-logger": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/middleware-logger/-/middleware-logger-3.272.0.tgz",
++                    "integrity": "sha512-u2SQ0hWrFwxbxxYMG5uMEgf01pQY5jauK/LYWgGIvuCmFgiyRQQP3oN7kkmsxnS9MWmNmhbyQguX2NY02s5e9w==",
++                    "requires": {
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/middleware-recursion-detection": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/middleware-recursion-detection/-/middleware-recursion-detection-3.272.0.tgz",
++                    "integrity": "sha512-Gp/eKWeUWVNiiBdmUM2qLkBv+VLSJKoWAO+aKmyxxwjjmWhE0FrfA1NQ1a3g+NGMhRbAfQdaYswRAKsul70ISg==",
++                    "requires": {
++                        "@aws-sdk/protocol-http": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/middleware-retry": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/middleware-retry/-/middleware-retry-3.272.0.tgz",
++                    "integrity": "sha512-pCGvHM7C76VbO/dFerH+Vwf7tGv7j+e+eGrvhQ35mRghCtfIou/WMfTZlD1TNee93crrAQQVZKjtW3dMB3WCzg==",
++                    "requires": {
++                        "@aws-sdk/protocol-http": "3.272.0",
++                        "@aws-sdk/service-error-classification": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "@aws-sdk/util-middleware": "3.272.0",
++                        "@aws-sdk/util-retry": "3.272.0",
++                        "tslib": "^2.3.1",
++                        "uuid": "^8.3.2"
++                    }
++                },
++                "@aws-sdk/middleware-sdk-sts": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/middleware-sdk-sts/-/middleware-sdk-sts-3.272.0.tgz",
++                    "integrity": "sha512-VvYPg7LrDIjUOWueSzo2wBzcNG7dw+cmzV6zAKaLxf0RC5jeAP4hE0OzDiiZfDrjNghEzgq/V+0NO+LewqYL9Q==",
++                    "requires": {
++                        "@aws-sdk/middleware-signing": "3.272.0",
++                        "@aws-sdk/property-provider": "3.272.0",
++                        "@aws-sdk/protocol-http": "3.272.0",
++                        "@aws-sdk/signature-v4": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/middleware-serde": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/middleware-serde/-/middleware-serde-3.272.0.tgz",
++                    "integrity": "sha512-kW1uOxgPSwtXPB5rm3QLdWomu42lkYpQL94tM1BjyFOWmBLO2lQhk5a7Dw6HkTozT9a+vxtscLChRa6KZe61Hw==",
++                    "requires": {
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/middleware-signing": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/middleware-signing/-/middleware-signing-3.272.0.tgz",
++                    "integrity": "sha512-4LChFK4VAR91X+dupqM8fQqYhFGE0G4Bf9rQlVTgGSbi2KUOmpqXzH0/WKE228nKuEhmH8+Qd2VPSAE2JcyAUA==",
++                    "requires": {
++                        "@aws-sdk/property-provider": "3.272.0",
++                        "@aws-sdk/protocol-http": "3.272.0",
++                        "@aws-sdk/signature-v4": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "@aws-sdk/util-middleware": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/middleware-stack": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/middleware-stack/-/middleware-stack-3.272.0.tgz",
++                    "integrity": "sha512-jhwhknnPBGhfXAGV5GXUWfEhDFoP/DN8MPCO2yC5OAxyp6oVJ8lTPLkZYMTW5VL0c0eG44dXpF4Ib01V+PlDrQ==",
++                    "requires": {
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/middleware-user-agent": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/middleware-user-agent/-/middleware-user-agent-3.272.0.tgz",
++                    "integrity": "sha512-Qy7/0fsDJxY5l0bEk7WKDfqb4Os/sCAgFR2zEvrhDtbkhYPf72ysvg/nRUTncmCbo8tOok4SJii2myk8KMfjjw==",
++                    "requires": {
++                        "@aws-sdk/protocol-http": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/node-config-provider": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/node-config-provider/-/node-config-provider-3.272.0.tgz",
++                    "integrity": "sha512-YYCIBh9g1EQo7hm2l22HX5Yr9RoPQ2RCvhzKvF1n1e8t1QH4iObQrYUtqHG4khcm64Cft8C5MwZmgzHbya5Z6Q==",
++                    "requires": {
++                        "@aws-sdk/property-provider": "3.272.0",
++                        "@aws-sdk/shared-ini-file-loader": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/node-http-handler": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/node-http-handler/-/node-http-handler-3.272.0.tgz",
++                    "integrity": "sha512-VrW9PjhhngeyYp4yGYPe5S0vgZH6NwU3Po9xAgayUeE37Inr7LS1YteFMHdpgsUUeNXnh7d06CXqHo1XjtqOKA==",
++                    "requires": {
++                        "@aws-sdk/abort-controller": "3.272.0",
++                        "@aws-sdk/protocol-http": "3.272.0",
++                        "@aws-sdk/querystring-builder": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/property-provider": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/property-provider/-/property-provider-3.272.0.tgz",
++                    "integrity": "sha512-V1pZTaH5eqpAt8O8CzbItHhOtzIfFuWymvwZFkAtwKuaHpnl7jjrTouV482zoq8AD/fF+VVSshwBKYA7bhidIw==",
++                    "requires": {
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/protocol-http": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/protocol-http/-/protocol-http-3.272.0.tgz",
++                    "integrity": "sha512-4JQ54v5Yn08jspNDeHo45CaSn1CvTJqS1Ywgr79eU6jBExtguOWv6LNtwVSBD9X37v88iqaxt8iu1Z3pZZAJeg==",
++                    "requires": {
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/querystring-builder": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/querystring-builder/-/querystring-builder-3.272.0.tgz",
++                    "integrity": "sha512-ndo++7GkdCj5tBXE6rGcITpSpZS4PfyV38wntGYAlj9liL1omk3bLZRY6uzqqkJpVHqbg2fD7O2qHNItzZgqhw==",
++                    "requires": {
++                        "@aws-sdk/types": "3.272.0",
++                        "@aws-sdk/util-uri-escape": "3.201.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/querystring-parser": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/querystring-parser/-/querystring-parser-3.272.0.tgz",
++                    "integrity": "sha512-5oS4/9n6N1LZW9tI3qq/0GnCuWoOXRgcHVB+AJLRBvDbEe+GI+C/xK1tKLsfpDNgsQJHc4IPQoIt4megyZ/1+A==",
++                    "requires": {
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/service-error-classification": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/service-error-classification/-/service-error-classification-3.272.0.tgz",
++                    "integrity": "sha512-REoltM1LK9byyIufLqx9znhSolPcHQgVHIA2S0zu5sdt5qER4OubkLAXuo4MBbisUTmh8VOOvIyUb5ijZCXq1w=="
++                },
++                "@aws-sdk/shared-ini-file-loader": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/shared-ini-file-loader/-/shared-ini-file-loader-3.272.0.tgz",
++                    "integrity": "sha512-lzFPohp5sy2XvwFjZIzLVCRpC0i5cwBiaXmFzXYQZJm6FSCszHO4ax+m9yrtlyVFF/2YPWl+/bzNthy4aJtseA==",
++                    "requires": {
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/signature-v4": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/signature-v4/-/signature-v4-3.272.0.tgz",
++                    "integrity": "sha512-pWxnHG1NqJWMwlhJ6NHNiUikOL00DHROmxah6krJPMPq4I3am2KY2Rs/8ouWhnEXKaHAv4EQhSALJ+7Mq5S4/A==",
++                    "requires": {
++                        "@aws-sdk/is-array-buffer": "3.201.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "@aws-sdk/util-hex-encoding": "3.201.0",
++                        "@aws-sdk/util-middleware": "3.272.0",
++                        "@aws-sdk/util-uri-escape": "3.201.0",
++                        "@aws-sdk/util-utf8": "3.254.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/smithy-client": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/smithy-client/-/smithy-client-3.272.0.tgz",
++                    "integrity": "sha512-pvdleJ3kaRvyRw2pIZnqL85ZlWBOZrPKmR9I69GCvlyrfdjRBhbSjIEZ+sdhZudw0vdHxq25AGoLUXhofVLf5Q==",
++                    "requires": {
++                        "@aws-sdk/middleware-stack": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/token-providers": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/token-providers/-/token-providers-3.272.0.tgz",
++                    "integrity": "sha512-0GISJ4IKN2rXvbSddB775VjBGSKhYIGQnAdMqbvxi9LB6pSvVxcH9aIL28G0spiuL+dy3yGQZ8RlJPAyP9JW9A==",
++                    "requires": {
++                        "@aws-sdk/client-sso-oidc": "3.272.0",
++                        "@aws-sdk/property-provider": "3.272.0",
++                        "@aws-sdk/shared-ini-file-loader": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/types": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/types/-/types-3.272.0.tgz",
++                    "integrity": "sha512-MmmL6vxMGP5Bsi+4wRx4mxYlU/LX6M0noOXrDh/x5FfG7/4ZOar/nDxqDadhJtNM88cuWVHZWY59P54JzkGWmA==",
++                    "requires": {
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/url-parser": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/url-parser/-/url-parser-3.272.0.tgz",
++                    "integrity": "sha512-vX/Tx02PlnQ/Kgtf5TnrNDHPNbY+amLZjW0Z1d9vzAvSZhQ4i9Y18yxoRDIaDTCNVRDjdhV8iuctW+05PB5JtQ==",
++                    "requires": {
++                        "@aws-sdk/querystring-parser": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/util-body-length-browser": {
++                    "version": "3.188.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/util-body-length-browser/-/util-body-length-browser-3.188.0.tgz",
++                    "integrity": "sha512-8VpnwFWXhnZ/iRSl9mTf+VKOX9wDE8QtN4bj9pBfxwf90H1X7E8T6NkiZD3k+HubYf2J94e7DbeHs7fuCPW5Qg==",
++                    "requires": {
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/util-body-length-node": {
++                    "version": "3.208.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/util-body-length-node/-/util-body-length-node-3.208.0.tgz",
++                    "integrity": "sha512-3zj50e5g7t/MQf53SsuuSf0hEELzMtD8RX8C76f12OSRo2Bca4FLLYHe0TZbxcfQHom8/hOaeZEyTyMogMglqg==",
++                    "requires": {
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/util-buffer-from": {
++                    "version": "3.208.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/util-buffer-from/-/util-buffer-from-3.208.0.tgz",
++                    "integrity": "sha512-7L0XUixNEFcLUGPeBF35enCvB9Xl+K6SQsmbrPk1P3mlV9mguWSDQqbOBwY1Ir0OVbD6H/ZOQU7hI/9RtRI0Zw==",
++                    "requires": {
++                        "@aws-sdk/is-array-buffer": "3.201.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/util-config-provider": {
++                    "version": "3.208.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/util-config-provider/-/util-config-provider-3.208.0.tgz",
++                    "integrity": "sha512-DSRqwrERUsT34ug+anlMBIFooBEGwM8GejC7q00Y/9IPrQy50KnG5PW2NiTjuLKNi7pdEOlwTSEocJE15eDZIg==",
++                    "requires": {
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/util-defaults-mode-browser": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/util-defaults-mode-browser/-/util-defaults-mode-browser-3.272.0.tgz",
++                    "integrity": "sha512-W8ZVJSZRuUBg8l0JEZzUc+9fKlthVp/cdE+pFeF8ArhZelOLCiaeCrMaZAeJusaFzIpa6cmOYQAjtSMVyrwRtg==",
++                    "requires": {
++                        "@aws-sdk/property-provider": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "bowser": "^2.11.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/util-defaults-mode-node": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/util-defaults-mode-node/-/util-defaults-mode-node-3.272.0.tgz",
++                    "integrity": "sha512-U0NTcbMw6KFk7uz/avBmfxQSTREEiX6JDMH68oN/3ux4AICd2I4jHyxnloSWGuiER1FxZf1dEJ8ZTwy8Ibl21Q==",
++                    "requires": {
++                        "@aws-sdk/config-resolver": "3.272.0",
++                        "@aws-sdk/credential-provider-imds": "3.272.0",
++                        "@aws-sdk/node-config-provider": "3.272.0",
++                        "@aws-sdk/property-provider": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/util-endpoints": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/util-endpoints/-/util-endpoints-3.272.0.tgz",
++                    "integrity": "sha512-c4MPUaJt2G6gGpoiwIOqDfUa98c1J63RpYvf/spQEKOtC/tF5Gfqlxuq8FnAl5lHnrqj1B9ZXLLxFhHtDR0IiQ==",
++                    "requires": {
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/util-hex-encoding": {
++                    "version": "3.201.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/util-hex-encoding/-/util-hex-encoding-3.201.0.tgz",
++                    "integrity": "sha512-7t1vR1pVxKx0motd3X9rI3m/xNp78p3sHtP5yo4NP4ARpxyJ0fokBomY8ScaH2D/B+U5o9ARxldJUdMqyBlJcA==",
++                    "requires": {
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/util-middleware": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/util-middleware/-/util-middleware-3.272.0.tgz",
++                    "integrity": "sha512-Abw8m30arbwxqmeMMha5J11ESpHUNmCeSqSzE8/C4B8jZQtHY4kq7f+upzcNIQ11lsd+uzBEzNG3+dDRi0XOJQ==",
++                    "requires": {
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/util-retry": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/util-retry/-/util-retry-3.272.0.tgz",
++                    "integrity": "sha512-Ngha5414LR4gRHURVKC9ZYXsEJhMkm+SJ+44wlzOhavglfdcKKPUsibz5cKY1jpUV7oKECwaxHWpBB8r6h+hOg==",
++                    "requires": {
++                        "@aws-sdk/service-error-classification": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/util-uri-escape": {
++                    "version": "3.201.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/util-uri-escape/-/util-uri-escape-3.201.0.tgz",
++                    "integrity": "sha512-TeTWbGx4LU2c5rx0obHeDFeO9HvwYwQtMh1yniBz00pQb6Qt6YVOETVQikRZ+XRQwEyCg/dA375UplIpiy54mA==",
++                    "requires": {
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/util-user-agent-browser": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/util-user-agent-browser/-/util-user-agent-browser-3.272.0.tgz",
++                    "integrity": "sha512-Lp5QX5bH6uuwBlIdr7w7OAcAI50ttyskb++yUr9i+SPvj6RI2dsfIBaK4mDg1qUdM5LeUdvIyqwj3XHjFKAAvA==",
++                    "requires": {
++                        "@aws-sdk/types": "3.272.0",
++                        "bowser": "^2.11.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/util-user-agent-node": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/util-user-agent-node/-/util-user-agent-node-3.272.0.tgz",
++                    "integrity": "sha512-ljK+R3l+Q1LIHrcR+Knhk0rmcSkfFadZ8V+crEGpABf/QUQRg7NkZMsoe814tfBO5F7tMxo8wwwSdaVNNHtoRA==",
++                    "requires": {
++                        "@aws-sdk/node-config-provider": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/util-waiter": {
++                    "version": "3.272.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/util-waiter/-/util-waiter-3.272.0.tgz",
++                    "integrity": "sha512-N25/XsJ2wkPh1EgkFyb/GRgfHDityScfD49Hk1AwJWpfetzgkcEtWdeW4IuPymXlSKhrm5L+SBw49USxo9kBag==",
++                    "requires": {
++                        "@aws-sdk/abort-controller": "3.272.0",
++                        "@aws-sdk/types": "3.272.0",
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "fast-xml-parser": {
++                    "version": "4.0.11",
++                    "resolved": "https://registry.npmjs.org/fast-xml-parser/-/fast-xml-parser-4.0.11.tgz",
++                    "integrity": "sha512-4aUg3aNRR/WjQAcpceODG1C3x3lFANXRo8+1biqfieHmg9pyMt7qB4lQV/Ta6sJCTbA5vfD8fnA8S54JATiFUA==",
++                    "requires": {
++                        "strnum": "^1.0.5"
++                    }
++                }
++            }
++        },
+         "@aws-sdk/client-lambda": {
+             "version": "3.105.0",
+             "resolved": "https://registry.npmjs.org/@aws-sdk/client-lambda/-/client-lambda-3.105.0.tgz",
+@@ -7837,6 +8626,34 @@
+                 }
+             }
+         },
++        "@aws-sdk/util-utf8": {
++            "version": "3.254.0",
++            "resolved": "https://registry.npmjs.org/@aws-sdk/util-utf8/-/util-utf8-3.254.0.tgz",
++            "integrity": "sha512-14Kso/eIt5/qfIBmhEL9L1IfyUqswjSTqO2mY7KOzUZ9SZbwn3rpxmtkhmATkRjD7XIlLKaxBkI7tU9Zjzj8Kw==",
++            "requires": {
++                "@aws-sdk/util-buffer-from": "3.208.0",
++                "tslib": "^2.3.1"
++            },
++            "dependencies": {
++                "@aws-sdk/is-array-buffer": {
++                    "version": "3.201.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/is-array-buffer/-/is-array-buffer-3.201.0.tgz",
++                    "integrity": "sha512-UPez5qLh3dNgt0DYnPD/q0mVJY84rA17QE26hVNOW3fAji8W2wrwrxdacWOxyXvlxWsVRcKmr+lay1MDqpAMfg==",
++                    "requires": {
++                        "tslib": "^2.3.1"
++                    }
++                },
++                "@aws-sdk/util-buffer-from": {
++                    "version": "3.208.0",
++                    "resolved": "https://registry.npmjs.org/@aws-sdk/util-buffer-from/-/util-buffer-from-3.208.0.tgz",
++                    "integrity": "sha512-7L0XUixNEFcLUGPeBF35enCvB9Xl+K6SQsmbrPk1P3mlV9mguWSDQqbOBwY1Ir0OVbD6H/ZOQU7hI/9RtRI0Zw==",
++                    "requires": {
++                        "@aws-sdk/is-array-buffer": "3.201.0",
++                        "tslib": "^2.3.1"
++                    }
++                }
++            }
++        },
+         "@aws-sdk/util-utf8-browser": {
+             "version": "3.55.0",
+             "resolved": "https://registry.npmjs.org/@aws-sdk/util-utf8-browser/-/util-utf8-browser-3.55.0.tgz",
+@@ -7879,6 +8696,233 @@
+                 "tslib": "^2.3.1"
+             }
+         },
++        "@azure/abort-controller": {
++            "version": "1.1.0",
++            "resolved": "https://registry.npmjs.org/@azure/abort-controller/-/abort-controller-1.1.0.tgz",
++            "integrity": "sha512-TrRLIoSQVzfAJX9H1JeFjzAoDGcoK1IYX1UImfceTZpsyYfWr09Ss1aHW1y5TrrR3iq6RZLBwJ3E24uwPhwahw==",
++            "requires": {
++                "tslib": "^2.2.0"
++            }
++        },
++        "@azure/arm-compute": {
++            "version": "20.0.0",
++            "resolved": "https://registry.npmjs.org/@azure/arm-compute/-/arm-compute-20.0.0.tgz",
++            "integrity": "sha512-kqFqztuBf7/yrRHU8ryt/YaELDPQtjXTKfD7JCp6mzuD9aWU7EFZL4tmyn9lfixztEesU89YZhXCyBuNb0jMew==",
++            "requires": {
++                "@azure/abort-controller": "^1.0.0",
++                "@azure/core-auth": "^1.3.0",
++                "@azure/core-client": "^1.6.1",
++                "@azure/core-lro": "^2.2.0",
++                "@azure/core-paging": "^1.2.0",
++                "@azure/core-rest-pipeline": "^1.8.0",
++                "tslib": "^2.2.0"
++            }
++        },
++        "@azure/arm-consumption": {
++            "version": "9.2.0",
++            "resolved": "https://registry.npmjs.org/@azure/arm-consumption/-/arm-consumption-9.2.0.tgz",
++            "integrity": "sha512-oLAElshfdPwN/vuzMWt5S+68EPH6gR8fTdNndClFMNI3tvYuvWATSLgHpbcXA9h2oX0P0NGU9h/h9fgZIptycQ==",
++            "requires": {
++                "@azure/core-auth": "^1.3.0",
++                "@azure/core-client": "^1.6.1",
++                "@azure/core-paging": "^1.2.0",
++                "@azure/core-rest-pipeline": "^1.8.0",
++                "tslib": "^2.2.0"
++            }
++        },
++        "@azure/core-auth": {
++            "version": "1.4.0",
++            "resolved": "https://registry.npmjs.org/@azure/core-auth/-/core-auth-1.4.0.tgz",
++            "integrity": "sha512-HFrcTgmuSuukRf/EdPmqBrc5l6Q5Uu+2TbuhaKbgaCpP2TfAeiNaQPAadxO+CYBRHGUzIDteMAjFspFLDLnKVQ==",
++            "requires": {
++                "@azure/abort-controller": "^1.0.0",
++                "tslib": "^2.2.0"
++            }
++        },
++        "@azure/core-client": {
++            "version": "1.7.1",
++            "resolved": "https://registry.npmjs.org/@azure/core-client/-/core-client-1.7.1.tgz",
++            "integrity": "sha512-85igXpc5V7ns6rvMEpLmIcBDftjUgTWD+0tmYPyQEfPfkAwpPTs1X5rhCDsfqvUZGA8Ksid1hdZGu62r6XXeHg==",
++            "requires": {
++                "@azure/abort-controller": "^1.0.0",
++                "@azure/core-auth": "^1.4.0",
++                "@azure/core-rest-pipeline": "^1.9.1",
++                "@azure/core-tracing": "^1.0.0",
++                "@azure/core-util": "^1.0.0",
++                "@azure/logger": "^1.0.0",
++                "tslib": "^2.2.0"
++            }
++        },
++        "@azure/core-lro": {
++            "version": "2.5.1",
++            "resolved": "https://registry.npmjs.org/@azure/core-lro/-/core-lro-2.5.1.tgz",
++            "integrity": "sha512-JHQy/bA3NOz2WuzOi5zEk6n/TJdAropupxUT521JIJvW7EXV2YN2SFYZrf/2RHeD28QAClGdynYadZsbmP+nyQ==",
++            "requires": {
++                "@azure/abort-controller": "^1.0.0",
++                "@azure/logger": "^1.0.0",
++                "tslib": "^2.2.0"
++            }
++        },
++        "@azure/core-paging": {
++            "version": "1.5.0",
++            "resolved": "https://registry.npmjs.org/@azure/core-paging/-/core-paging-1.5.0.tgz",
++            "integrity": "sha512-zqWdVIt+2Z+3wqxEOGzR5hXFZ8MGKK52x4vFLw8n58pR6ZfKRx3EXYTxTaYxYHc/PexPUTyimcTWFJbji9Z6Iw==",
++            "requires": {
++                "tslib": "^2.2.0"
++            }
++        },
++        "@azure/core-rest-pipeline": {
++            "version": "1.10.1",
++            "resolved": "https://registry.npmjs.org/@azure/core-rest-pipeline/-/core-rest-pipeline-1.10.1.tgz",
++            "integrity": "sha512-Kji9k6TOFRDB5ZMTw8qUf2IJ+CeJtsuMdAHox9eqpTf1cefiNMpzrfnF6sINEBZJsaVaWgQ0o48B6kcUH68niA==",
++            "requires": {
++                "@azure/abort-controller": "^1.0.0",
++                "@azure/core-auth": "^1.4.0",
++                "@azure/core-tracing": "^1.0.1",
++                "@azure/core-util": "^1.0.0",
++                "@azure/logger": "^1.0.0",
++                "form-data": "^4.0.0",
++                "http-proxy-agent": "^5.0.0",
++                "https-proxy-agent": "^5.0.0",
++                "tslib": "^2.2.0",
++                "uuid": "^8.3.0"
++            }
++        },
++        "@azure/core-tracing": {
++            "version": "1.0.1",
++            "resolved": "https://registry.npmjs.org/@azure/core-tracing/-/core-tracing-1.0.1.tgz",
++            "integrity": "sha512-I5CGMoLtX+pI17ZdiFJZgxMJApsK6jjfm85hpgp3oazCdq5Wxgh4wMr7ge/TTWW1B5WBuvIOI1fMU/FrOAMKrw==",
++            "requires": {
++                "tslib": "^2.2.0"
++            }
++        },
++        "@azure/core-util": {
++            "version": "1.1.1",
++            "resolved": "https://registry.npmjs.org/@azure/core-util/-/core-util-1.1.1.tgz",
++            "integrity": "sha512-A4TBYVQCtHOigFb2ETiiKFDocBoI1Zk2Ui1KpI42aJSIDexF7DHQFpnjonltXAIU/ceH+1fsZAWWgvX6/AKzog==",
++            "requires": {
++                "@azure/abort-controller": "^1.0.0",
++                "tslib": "^2.2.0"
++            }
++        },
++        "@azure/identity": {
++            "version": "3.1.3",
++            "resolved": "https://registry.npmjs.org/@azure/identity/-/identity-3.1.3.tgz",
++            "integrity": "sha512-y0jFjSfHsVPwXSwi3KaSPtOZtJZqhiqAhWUXfFYBUd/+twUBovZRXspBwLrF5rJe0r5NyvmScpQjL+TYDTQVvw==",
++            "requires": {
++                "@azure/abort-controller": "^1.0.0",
++                "@azure/core-auth": "^1.3.0",
++                "@azure/core-client": "^1.4.0",
++                "@azure/core-rest-pipeline": "^1.1.0",
++                "@azure/core-tracing": "^1.0.0",
++                "@azure/core-util": "^1.0.0",
++                "@azure/logger": "^1.0.0",
++                "@azure/msal-browser": "^2.32.2",
++                "@azure/msal-common": "^9.0.2",
++                "@azure/msal-node": "^1.14.6",
++                "events": "^3.0.0",
++                "jws": "^4.0.0",
++                "open": "^8.0.0",
++                "stoppable": "^1.1.0",
++                "tslib": "^2.2.0",
++                "uuid": "^8.3.0"
++            },
++            "dependencies": {
++                "jwa": {
++                    "version": "2.0.0",
++                    "resolved": "https://registry.npmjs.org/jwa/-/jwa-2.0.0.tgz",
++                    "integrity": "sha512-jrZ2Qx916EA+fq9cEAeCROWPTfCwi1IVHqT2tapuqLEVVDKFDENFw1oL+MwrTvH6msKxsd1YTDVw6uKEcsrLEA==",
++                    "requires": {
++                        "buffer-equal-constant-time": "1.0.1",
++                        "ecdsa-sig-formatter": "1.0.11",
++                        "safe-buffer": "^5.0.1"
++                    }
++                },
++                "jws": {
++                    "version": "4.0.0",
++                    "resolved": "https://registry.npmjs.org/jws/-/jws-4.0.0.tgz",
++                    "integrity": "sha512-KDncfTmOZoOMTFG4mBlG0qUIOlc03fmzH+ru6RgYVZhPkyiy/92Owlt/8UEN+a4TXR1FQetfIpJE8ApdvdVxTg==",
++                    "requires": {
++                        "jwa": "^2.0.0",
++                        "safe-buffer": "^5.0.1"
++                    }
++                },
++                "open": {
++                    "version": "8.4.1",
++                    "resolved": "https://registry.npmjs.org/open/-/open-8.4.1.tgz",
++                    "integrity": "sha512-/4b7qZNhv6Uhd7jjnREh1NjnPxlTq+XNWPG88Ydkj5AILcA5m3ajvcg57pB24EQjKv0dK62XnDqk9c/hkIG5Kg==",
++                    "requires": {
++                        "define-lazy-prop": "^2.0.0",
++                        "is-docker": "^2.1.1",
++                        "is-wsl": "^2.2.0"
++                    }
++                }
++            }
++        },
++        "@azure/logger": {
++            "version": "1.0.3",
++            "resolved": "https://registry.npmjs.org/@azure/logger/-/logger-1.0.3.tgz",
++            "integrity": "sha512-aK4s3Xxjrx3daZr3VylxejK3vG5ExXck5WOHDJ8in/k9AqlfIyFMMT1uG7u8mNjX+QRILTIn0/Xgschfh/dQ9g==",
++            "requires": {
++                "tslib": "^2.2.0"
++            }
++        },
++        "@azure/msal-browser": {
++            "version": "2.33.0",
++            "resolved": "https://registry.npmjs.org/@azure/msal-browser/-/msal-browser-2.33.0.tgz",
++            "integrity": "sha512-c7CVh1tfUfxiWkEIhoIb11hL4PGo4hz0M+gMy34ATagAKdLK7qyEu/5AXJWAf5lz5eE+vQhm7+LKiuETrcXXGw==",
++            "requires": {
++                "@azure/msal-common": "^10.0.0"
++            },
++            "dependencies": {
++                "@azure/msal-common": {
++                    "version": "10.0.0",
++                    "resolved": "https://registry.npmjs.org/@azure/msal-common/-/msal-common-10.0.0.tgz",
++                    "integrity": "sha512-/LghpT93jsZLy55QzTsRZWMx6R1Mjc1Aktwps8sKSGE3WbrGwbSsh2uhDlpl6FMcKChYjJ0ochThWwwOodrQNg=="
++                }
++            }
++        },
++        "@azure/msal-common": {
++            "version": "9.1.1",
++            "resolved": "https://registry.npmjs.org/@azure/msal-common/-/msal-common-9.1.1.tgz",
++            "integrity": "sha512-we9xR8lvu47fF0h+J8KyXoRy9+G/fPzm3QEa2TrdR3jaVS3LKAyE2qyMuUkNdbVkvzl8Zr9f7l+IUSP22HeqXw=="
++        },
++        "@azure/msal-node": {
++            "version": "1.15.0",
++            "resolved": "https://registry.npmjs.org/@azure/msal-node/-/msal-node-1.15.0.tgz",
++            "integrity": "sha512-fwC5M0c8pxOAzmScPbpx7j28YVTDebUaizlVF7bR0xvlU0r3VWW5OobCcr9ybqKS6wGyO7u4EhXJS9rjRWAuwA==",
++            "requires": {
++                "@azure/msal-common": "^10.0.0",
++                "jsonwebtoken": "^9.0.0",
++                "uuid": "^8.3.0"
++            },
++            "dependencies": {
++                "@azure/msal-common": {
++                    "version": "10.0.0",
++                    "resolved": "https://registry.npmjs.org/@azure/msal-common/-/msal-common-10.0.0.tgz",
++                    "integrity": "sha512-/LghpT93jsZLy55QzTsRZWMx6R1Mjc1Aktwps8sKSGE3WbrGwbSsh2uhDlpl6FMcKChYjJ0ochThWwwOodrQNg=="
++                },
++                "jsonwebtoken": {
++                    "version": "9.0.0",
++                    "resolved": "https://registry.npmjs.org/jsonwebtoken/-/jsonwebtoken-9.0.0.tgz",
++                    "integrity": "sha512-tuGfYXxkQGDPnLJ7SibiQgVgeDgfbPq2k2ICcbgqW8WxWLBAxKQM/ZCu/IT8SOSwmaYl4dpTFCW5xZv7YbbWUw==",
++                    "requires": {
++                        "jws": "^3.2.2",
++                        "lodash": "^4.17.21",
++                        "ms": "^2.1.1",
++                        "semver": "^7.3.8"
++                    }
++                },
++                "semver": {
++                    "version": "7.3.8",
++                    "resolved": "https://registry.npmjs.org/semver/-/semver-7.3.8.tgz",
++                    "integrity": "sha512-NB1ctGL5rlHrPJtFDVIVzTyQylMLu9N9VICA6HSFJo8MCGVTMW6gfpicwKmmK/dAjTOrqu5l63JJOpDSrAis3A==",
++                    "requires": {
++                        "lru-cache": "^6.0.0"
++                    }
++                }
++            }
++        },
+         "@babel/code-frame": {
+             "version": "7.16.7",
+             "resolved": "https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.16.7.tgz",
+@@ -9884,6 +10928,11 @@
+             "integrity": "sha512-OvjF+z51L3ov0OyAU0duzsYuvO01PH7x4t6DJx+guahgTnBHkhJdG7soQeTSFLWN3efnHyibZ4Z8l2EuWwJN3A==",
+             "dev": true
+         },
++        "@tootallnate/once": {
++            "version": "2.0.0",
++            "resolved": "https://registry.npmjs.org/@tootallnate/once/-/once-2.0.0.tgz",
++            "integrity": "sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A=="
++        },
+         "@tsconfig/node10": {
+             "version": "1.0.8",
+             "resolved": "https://registry.npmjs.org/@tsconfig/node10/-/node10-1.0.8.tgz",
+@@ -10675,7 +11724,6 @@
+             "version": "6.0.2",
+             "resolved": "https://registry.npmjs.org/agent-base/-/agent-base-6.0.2.tgz",
+             "integrity": "sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==",
+-            "dev": true,
+             "requires": {
+                 "debug": "4"
+             }
+@@ -11909,7 +12957,7 @@
+         "co": {
+             "version": "4.6.0",
+             "resolved": "https://registry.npmjs.org/co/-/co-4.6.0.tgz",
+-            "integrity": "sha1-bqa989hTrlTMuOR7+gvz+QMfsYQ=",
++            "integrity": "sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==",
+             "dev": true
+         },
+         "code-point-at": {
+@@ -12473,7 +13521,7 @@
+         "dedent": {
+             "version": "0.7.0",
+             "resolved": "https://registry.npmjs.org/dedent/-/dedent-0.7.0.tgz",
+-            "integrity": "sha1-JJXduvbrh0q7Dhvp3yLS5aVEMmw=",
++            "integrity": "sha512-Q6fKUPqnAHAyhiUgFU7BUzLiv0kd8saH9al7tnu5Q/okj6dnupxyTgFIBjVzJATdfIAm9NAsvXNzjaKa+bxVyA==",
+             "dev": true
+         },
+         "deep-equal": {
+@@ -12533,6 +13581,11 @@
+                 "timers-ext": "^0.1.7"
+             }
+         },
++        "define-lazy-prop": {
++            "version": "2.0.0",
++            "resolved": "https://registry.npmjs.org/define-lazy-prop/-/define-lazy-prop-2.0.0.tgz",
++            "integrity": "sha512-Ds09qNh8yw3khSjiJjiUInaGX9xlqZDY7JVryGxdxV7NPeuqQfplOpQ66yJFZut3jLa5zOwkXw1g9EI2uKh4Og=="
++        },
+         "define-properties": {
+             "version": "1.1.4",
+             "resolved": "https://registry.npmjs.org/define-properties/-/define-properties-1.1.4.tgz",
+@@ -13193,7 +14246,7 @@
+         "exit": {
+             "version": "0.1.2",
+             "resolved": "https://registry.npmjs.org/exit/-/exit-0.1.2.tgz",
+-            "integrity": "sha1-BjJjj42HfMghB9MKD/8aF8uhzQw=",
++            "integrity": "sha512-Zk/eNKV2zbjpKzrsQ+n1G6poVbErQxJ0LBOJXaKZ1EViLzH+hrLu9cdXI4zw9dBQJslwBEpbQ2P1oS7nDxs6jQ==",
+             "dev": true
+         },
+         "expand-template": {
+@@ -13660,7 +14713,6 @@
+             "version": "4.0.0",
+             "resolved": "https://registry.npmjs.org/form-data/-/form-data-4.0.0.tgz",
+             "integrity": "sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==",
+-            "dev": true,
+             "requires": {
+                 "asynckit": "^0.4.0",
+                 "combined-stream": "^1.0.8",
+@@ -14098,6 +15150,16 @@
+                 "toidentifier": "1.0.1"
+             }
+         },
++        "http-proxy-agent": {
++            "version": "5.0.0",
++            "resolved": "https://registry.npmjs.org/http-proxy-agent/-/http-proxy-agent-5.0.0.tgz",
++            "integrity": "sha512-n2hY8YdoRE1i7r6M0w9DIw5GgZN0G25P8zLCRQ8rjXtTU3vsNFBI/vWK/UIeE6g5MUUz6avwAPXmL6Fy9D/90w==",
++            "requires": {
++                "@tootallnate/once": "2",
++                "agent-base": "6",
++                "debug": "4"
++            }
++        },
+         "http-signature": {
+             "version": "1.2.0",
+             "resolved": "https://registry.npmjs.org/http-signature/-/http-signature-1.2.0.tgz",
+@@ -14122,7 +15184,6 @@
+             "version": "5.0.1",
+             "resolved": "https://registry.npmjs.org/https-proxy-agent/-/https-proxy-agent-5.0.1.tgz",
+             "integrity": "sha512-dFcAjpTQFgoLMzC2VwU+C/CbS7uRL0lWmxDITmqm7C+7F0Odmj6s9l6alZc6AELXhrnggM2CeWSXHGOdX2YtwA==",
+-            "dev": true,
+             "requires": {
+                 "agent-base": "6",
+                 "debug": "4"
+@@ -14336,8 +15397,7 @@
+         "is-docker": {
+             "version": "2.2.1",
+             "resolved": "https://registry.npmjs.org/is-docker/-/is-docker-2.2.1.tgz",
+-            "integrity": "sha512-F+i2BKsFrH66iaUFc0woD8sLy8getkwTwtOBjvs56Cx4CgJDeKQeqfz8wAYiSb8JOprWhHH5p77PbmYCvvUuXQ==",
+-            "dev": true
++            "integrity": "sha512-F+i2BKsFrH66iaUFc0woD8sLy8getkwTwtOBjvs56Cx4CgJDeKQeqfz8wAYiSb8JOprWhHH5p77PbmYCvvUuXQ=="
+         },
+         "is-extglob": {
+             "version": "2.1.1",
+@@ -14486,7 +15546,6 @@
+             "version": "2.2.0",
+             "resolved": "https://registry.npmjs.org/is-wsl/-/is-wsl-2.2.0.tgz",
+             "integrity": "sha512-fKzAra0rGJUUBwGBgNkHZuToZcn+TtXHpeCgmkMJMMYx1sQDYaCSyjJBSCa2nH1DGm7s3n1oBnohoVTBaN7Lww==",
+-            "dev": true,
+             "requires": {
+                 "is-docker": "^2.0.0"
+             }
+@@ -15534,7 +16593,7 @@
+         "lodash.memoize": {
+             "version": "4.1.2",
+             "resolved": "https://registry.npmjs.org/lodash.memoize/-/lodash.memoize-4.1.2.tgz",
+-            "integrity": "sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=",
++            "integrity": "sha512-t7j+NzmgnQzTAYXcsHYLgimltOV1MXHtlOWf6GjL9Kj8GK5FInw5JotxvbOs+IvV1/Dzo04/fCGfLVs7aXb4Ag==",
+             "dev": true
+         },
+         "lodash.merge": {
+@@ -16130,7 +17189,7 @@
+         "node-int64": {
+             "version": "0.4.0",
+             "resolved": "https://registry.npmjs.org/node-int64/-/node-int64-0.4.0.tgz",
+-            "integrity": "sha1-h6kGXNs1XTGC2PlM4RGIuCXGijs=",
++            "integrity": "sha512-O5lz91xSOeoXP6DulyHfllpq+Eg00MWitZIbtPfoSEvqIHdl5gfcY6hYzDWnj0qD5tz52PI08u9qUvSVeUBeHw==",
+             "dev": true
+         },
+         "node-oojs": {
+@@ -17062,7 +18121,7 @@
+         "rechoir": {
+             "version": "0.6.2",
+             "resolved": "https://registry.npmjs.org/rechoir/-/rechoir-0.6.2.tgz",
+-            "integrity": "sha512-HFM8rkZ+i3zrV+4LQjwQ0W+ez98pApMGM3HUrN04j3CqzPOzl9nmP15Y8YXNm8QHGv/eacOVEjqhmWpkRV0NAw==",
++            "integrity": "sha1-hSBLVNuoLVdC4oyWdW70OvUOM4Q=",
+             "dev": true,
+             "requires": {
+                 "resolve": "^1.1.6"
+@@ -17195,7 +18254,7 @@
+         "require-directory": {
+             "version": "2.1.1",
+             "resolved": "https://registry.npmjs.org/require-directory/-/require-directory-2.1.1.tgz",
+-            "integrity": "sha1-jGStX9MNqxyXbiNE/+f3kqam30I=",
++            "integrity": "sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==",
+             "dev": true
+         },
+         "require-from-string": {
+@@ -18095,6 +19154,11 @@
+             "resolved": "https://registry.npmjs.org/stealthy-require/-/stealthy-require-1.1.1.tgz",
+             "integrity": "sha512-ZnWpYnYugiOVEY5GkcuJK1io5V8QmNYChG62gSit9pQVGErXtrKuPC55ITaVSukmMta5qpMU7vqLt2Lnni4f/g=="
+         },
++        "stoppable": {
++            "version": "1.1.0",
++            "resolved": "https://registry.npmjs.org/stoppable/-/stoppable-1.1.0.tgz",
++            "integrity": "sha512-KXDYZ9dszj6bzvnEMRYvxgeTHU74QBFL54XKtP3nyMuJ81CFYtABZ3bAzL2EdFUaEwJOBOgENyFj3R7oTzDyyw=="
++        },
+         "stream-browserify": {
+             "version": "3.0.0",
+             "resolved": "https://registry.npmjs.org/stream-browserify/-/stream-browserify-3.0.0.tgz",
+@@ -18728,7 +19792,7 @@
+         "to-fast-properties": {
+             "version": "2.0.0",
+             "resolved": "https://registry.npmjs.org/to-fast-properties/-/to-fast-properties-2.0.0.tgz",
+-            "integrity": "sha1-3F5pjL0HkmW8c+A3doGk5Og/YW4=",
++            "integrity": "sha512-/OaKK0xYrs3DmxRYqL/yDc+FxFUVYhDlXMhRmv3z915w2HF1tnN1omB354j8VUGO/hbRzyD6Y3sA7v7GS/ceog==",
+             "dev": true
+         },
+         "to-regex-range": {
+diff --git a/package.json b/package.json
+index 3697fe176ef09eb7b0c2387ccf13dd659d27dd64..54bf896d18c9e0e431da9a708f5260ec02e4b465 100644
+--- a/package.json
++++ b/package.json
+@@ -50,6 +50,7 @@
+         "@aws-sdk/client-cloudwatch": "^3.112.0",
+         "@aws-sdk/client-cost-explorer": "^3.112.0",
+         "@aws-sdk/client-ec2": "^3.112.0",
++        "@aws-sdk/client-iam": "^3.272.0",
+         "@aws-sdk/client-pricing": "^3.112.0",
+         "@aws-sdk/client-s3": "^3.87.0",
+         "@aws-sdk/client-ses": "^3.112.0",
+@@ -62,6 +63,9 @@
+         "@aws-sdk/types": "^3.226.0",
+         "@aws-sdk/url-parser": "^3.78.0",
+         "@aws-sdk/util-format-url": "^3.78.0",
++        "@azure/arm-compute": "^20.0.0",
++        "@azure/arm-consumption": "^9.2.0",
++        "@azure/identity": "^3.1.3",
+         "@influxdata/influxdb-client": "^1.25.0",
+         "@influxdata/influxdb-client-apis": "^1.25.0",
+         "@nestjs/bull": "^0.6.2",
+diff --git a/src/app.module.ts b/src/app.module.ts
+index 3673533bba06c1996f1ef3dd8e254276a8197638..11691fd2b30d3d17b40687698abf0cc37745e3e3 100644
+--- a/src/app.module.ts
++++ b/src/app.module.ts
+@@ -25,7 +25,7 @@ import { SchedulerModule } from './scheduler/scheduler.module';
+ import { EbsVolumeDataGathererModule } from './microservices/ebsVolumeDataGatherer/ebsvolumeDataGatherer.module';
+ import { EbsSnapshotDataGathererModule } from './microservices/ebsSnapshotDataGatherer/ebsSnapshotDataGatherer.module';
+ import { MeasurementConfigModule } from './measurement-config/measurement-config.module';
+-import { UsageModule } from './usage/usage.module';
++import { PrivateApiUsageModule, UsageModule } from './usage/usage.module';
+ import { ScheduleModule } from '@nestjs/schedule';
+ import { CostModule } from './cost/cost.module';
+ import { InstanceUptimeModule } from './microservices/instanceUpTime/instanceUptime.module';
+@@ -38,6 +38,7 @@ import { PrivateInboxModule } from './inbox/inbox.module';
+ import { AuditModule } from './audit/audit.module';
+ import { Ec2InstanceDataGathererModule } from './microservices/ec2InstanceDataGatherer/ec2InstanceDataGatherer.module';
+ import { Ec2EgressDataGathererModule } from './microservices/ec2EgressDataGatherer/ec2EgressDataGatherer.module';
++import { AzureModule } from './azure/azure.module';
+ 
+ @Module({
+     imports: [
+@@ -85,6 +86,8 @@ import { Ec2EgressDataGathererModule } from './microservices/ec2EgressDataGather
+         PrivateInboxModule,
+         AuditModule,
+         Ec2EgressDataGathererModule,
++        PrivateApiUsageModule,
++        AzureModule,
+     ],
+     controllers: [AppController],
+     providers: [AppService],
+diff --git a/src/customer/dto/create-customer.dto.ts b/src/customer/dto/create-customer.dto.ts
+index f57a6f4b99811fab64897d4bdc2f8288bf06ab14..a2e336fce24d11893f134e4efe037acd8f7244d2 100644
+--- a/src/customer/dto/create-customer.dto.ts
++++ b/src/customer/dto/create-customer.dto.ts
+@@ -9,6 +9,7 @@ import {
+     IsUUID,
+     Validate,
+     ValidateNested,
++    ValidationArguments,
+ } from 'class-validator';
+ import { BasicResponseDTO } from '../../basicResponseDTO';
+ import { Type } from 'class-transformer';
+@@ -130,7 +131,14 @@ export class CreateCustomerDto {
+     /**
+      * The payment channel associated with a customer
+      */
+-    @IsEnum(paymentChannel)
++    @IsEnum(paymentChannel, {
++        message: (args: ValidationArguments) => {
++            const { value, constraints } = args;
++            const correctValues = Object.values(constraints[0]);
++            return `paymentChannel: The value ${value} is not a valid value for the paymentChannel field. The correct values are: ${correctValues}`;
++        },
++        each: true,
++    })
+     @IsNotEmpty()
+     @ValidPaymentChannelCustomer('paymentChannelOptions', {
+         message: 'Stripe payment channel requires a stripeCustomerId under paymentChannelOptions',
+@@ -142,7 +150,14 @@ export class CreateCustomerDto {
+      *
+      * Default: `"none"`
+      */
+-    @IsEnum(TaxExempt)
++    @IsEnum(TaxExempt, {
++        message: (args: ValidationArguments) => {
++            const { value, constraints } = args;
++            const correctValues = Object.values(constraints[0]);
++            return `taxExempt: The value ${value} is not a valid value for the taxExempt field. The correct values are: ${correctValues}`;
++        },
++        each: true,
++    })
+     @IsOptional()
+     public taxExempt?: TaxExempt;
+ 
+diff --git a/src/dimensions/dto/create-dimension.dto.ts b/src/dimensions/dto/create-dimension.dto.ts
+index 7f7f414345a5f87b39904409a4cd4ec3853410d1..dbfb7845e75292c77a6176d86572b1929660273f 100644
+--- a/src/dimensions/dto/create-dimension.dto.ts
++++ b/src/dimensions/dto/create-dimension.dto.ts
+@@ -12,6 +12,7 @@ import {
+     IsOptional,
+     IsString,
+     ValidateNested,
++    ValidationArguments,
+ } from 'class-validator';
+ import { BasicResponseDTO } from '../../basicResponseDTO';
+ import { DimensionEntity } from '../entities/dimensions.entity';
+@@ -49,6 +50,7 @@ export enum infrastructureType {
+     reservedInstanceHours = 'reservedInstanceHours',
+     instanceRunningTime = 'instanceRunningTime',
+     ec2Egress = 'ec2Egress',
++    azureVmHours = 'azureVmHours',
+ }
+ 
+ export enum aggregationMethod {
+@@ -73,7 +75,14 @@ export enum dataBasedUnits {
+     gigabyte = 'gigabyte',
+ }
+ export class CountBasedConsumptionUnit {
+-    @IsEnum(countBasedUnits)
++    @IsEnum(countBasedUnits, {
++        message: (args: ValidationArguments) => {
++            const { value, constraints } = args;
++            const correctValues = Object.values(constraints[0]);
++            return `unit: The value ${value} is not a valid value for the unit field. The correct values are: ${correctValues}`;
++        },
++        each: true,
++    })
+     @IsNotEmpty()
+     public unit: countBasedUnits;
+ 
+@@ -83,7 +92,14 @@ export class CountBasedConsumptionUnit {
+ }
+ 
+ export class TimeBasedConsumptionUnit {
+-    @IsEnum(timeBasedUnits)
++    @IsEnum(timeBasedUnits, {
++        message: (args: ValidationArguments) => {
++            const { value, constraints } = args;
++            const correctValues = Object.values(constraints[0]);
++            return `unit: The value ${value} is not a valid value for the unit field. The correct values are: ${correctValues}`;
++        },
++        each: true,
++    })
+     @IsNotEmpty()
+     public unit: timeBasedUnits;
+ 
+@@ -93,7 +109,14 @@ export class TimeBasedConsumptionUnit {
+ }
+ 
+ export class DatabasedConsumptionUnit {
+-    @IsEnum(dataBasedUnits)
++    @IsEnum(dataBasedUnits, {
++        message: (args: ValidationArguments) => {
++            const { value, constraints } = args;
++            const correctValues = Object.values(constraints[0]);
++            return `unit: The value ${value} is not a valid value for the unit field. The correct values are: ${correctValues}`;
++        },
++        each: true,
++    })
+     @IsNotEmpty()
+     public unit: dataBasedUnits;
+ 
+@@ -179,7 +202,14 @@ export class CreateDimensionDto {
+      * depending on the rounding algorithm field of the dimension.
+      * <br><br>
+      **/
+-    @IsEnum(roundingEnum)
++    @IsEnum(roundingEnum, {
++        message: (args: ValidationArguments) => {
++            const { value, constraints } = args;
++            const correctValues = Object.values(constraints[0]);
++            return `roundingEnum: The value ${value} is not a valid value for the roundingEnum field. The correct values are: ${correctValues}`;
++        },
++        each: true,
++    })
+     @IsNotEmpty()
+     public rounding: roundingEnum;
+ 
+@@ -197,7 +227,14 @@ export class CreateDimensionDto {
+      * When the usage entitlement is specified,
+      * this field decides if allowing SaaS customers to use more than entitled amount of the product dimension.
+      */
+-    @IsEnum(overageAllowedEnum)
++    @IsEnum(overageAllowedEnum, {
++        message: (args: ValidationArguments) => {
++            const { value, constraints } = args;
++            const correctValues = Object.values(constraints[0]);
++            return `overageAllowed: The value ${value} is not a valid value for the overageAllowed field. The correct values are: ${correctValues}`;
++        },
++        each: true,
++    })
+     @IsOptional()
+     public overageAllowed?: overageAllowedEnum;
+ 
+@@ -225,7 +262,14 @@ export class CreateDimensionDto {
+      */
+     @ApiHideProperty()
+     @IsOptional()
+-    @IsEnum(SampleType)
++    @IsEnum(SampleType, {
++        message: (args: ValidationArguments) => {
++            const { value, constraints } = args;
++            const correctValues = Object.values(constraints[0]);
++            return `sampleType: The value ${value} is not a valid value for the sampleType field. The correct values are: ${correctValues}`;
++        },
++        each: true,
++    })
+     public sampleType?: SampleType;
+ 
+     /**
+@@ -235,7 +279,14 @@ export class CreateDimensionDto {
+      */
+     @ApiProperty()
+     @IsOptional()
+-    @IsEnum(aggregationInterval)
++    @IsEnum(aggregationInterval, {
++        message: (args: ValidationArguments) => {
++            const { value, constraints } = args;
++            const correctValues = Object.values(constraints[0]);
++            return `aggregationInterval: The value ${value} is not a valid value for the aggregationInterval field. The correct values are: ${correctValues}`;
++        },
++        each: true,
++    })
+     public aggregationInterval?: aggregationInterval;
+ 
+     /**
+@@ -245,7 +296,14 @@ export class CreateDimensionDto {
+      */
+     @ApiProperty()
+     @IsOptional()
+-    @IsEnum(aggregationMethod)
++    @IsEnum(aggregationMethod, {
++        message: (args: ValidationArguments) => {
++            const { value, constraints } = args;
++            const correctValues = Object.values(constraints[0]);
++            return `aggregationMethod: The value ${value} is not a valid value for the aggregationMethod field. The correct values are: ${correctValues}`;
++        },
++        each: true,
++    })
+     public aggregationMethod?: aggregationMethod;
+ 
+     /**
+diff --git a/src/measurement-config/dto/create-measurement-config.dto.ts b/src/measurement-config/dto/create-measurement-config.dto.ts
+index 2d22c69a0d4dcf4e1c0c9ad24c460b7518c5b379..69b004c26e852b64c8f2e2fb67ef8a027c8a22bc 100644
+--- a/src/measurement-config/dto/create-measurement-config.dto.ts
++++ b/src/measurement-config/dto/create-measurement-config.dto.ts
+@@ -89,6 +89,7 @@ export class CreateMeasurementConfigDto {
+             return AgentAccessInformation;
+         else if (object.measurementMode.toLowerCase() === measurementMode.datastoreBased.toLowerCase())
+             return DatastoreAccessInformation;
++
+         // Handle edge case where the previous ifs are not fullfiled
+     })
+     public measurementConfiguration:
+@@ -109,4 +110,25 @@ export class CreateMeasurementConfigurationResponse extends BasicResponseDTO {
+      * Unique identifier assigned by Paigo
+      */
+     public measurementId: MeasurementConfigEntity['measurementId'];
++
++    /**
++     * The IAM role which can be assumed to pass data on a Paigo-hosted datastore.
++     */
++    public iamRoleArn?: string;
++
++    /**
++     * The externalId to be used with the IAM role.
++     */
++    public externalId?: string;
++
++    /**
++     * The URL of the ingestion endpoint associated with the datastore measurement
++     * @example 's3://paigo-datastore-dump-bucket/'
++     **/
++    public ingestion?: string;
++    /**
++     * The URL of the DLQ endpoint associated with the datastore measurement
++     * @example 's3://paigo-datastore-dlq-bucket/'
++     **/
++    public dlq?: string;
+ }
+diff --git a/src/measurement-config/dto/create-standard-measurement.dto.ts b/src/measurement-config/dto/create-standard-measurement.dto.ts
+index c2f1edc208189d15223428d401472780f53c973b..1eccb1276fc1112276339351a32b7b0f4c3d8d6b 100644
+--- a/src/measurement-config/dto/create-standard-measurement.dto.ts
++++ b/src/measurement-config/dto/create-standard-measurement.dto.ts
+@@ -79,7 +79,7 @@ export class CreateStandardMeasurementDto {
+      **/
+     @IsNumberString()
+     @IsString()
+-    public recordValue: number;
++    public recordValue: string;
+ 
+     /**
+      * An optional key-value map of additional metadata to associate with this usage record.
+diff --git a/src/measurement-config/dto/read-measurement-config.dto.ts b/src/measurement-config/dto/read-measurement-config.dto.ts
+index e734fc775f7e987284a0b4c4bbf45e81dc7633b7..a6b22b2e7b4486170bfb53ab9df90dd956d97104 100644
+--- a/src/measurement-config/dto/read-measurement-config.dto.ts
++++ b/src/measurement-config/dto/read-measurement-config.dto.ts
+@@ -1,10 +1,46 @@
+-import { ApiHideProperty, ApiProperty, PickType, IntersectionType, OmitType } from '@nestjs/swagger';
++import { ApiHideProperty, ApiProperty, PickType, IntersectionType, OmitType, getSchemaPath } from '@nestjs/swagger';
+ import { IsOptional, IsString } from 'class-validator';
+ import { BasicResponseDTO } from '../../basicResponseDTO';
+ import { DimensionEntity } from '../../dimensions/entities/dimensions.entity';
+-import { MeasurementConfigEntity } from '../entities/measurement-config.entity';
++import {
++    AgentAccessInformation,
++    DatastoreAccessInformation,
++    InfrastructureAccessInformation,
++    MeasurementConfigEntity,
++} from '../entities/measurement-config.entity';
+ import { CreateMeasurementConfigDto } from './create-measurement-config.dto';
+ 
++export class DatastoreAccessInformationResponse extends DatastoreAccessInformation {
++    /**
++     * The Ingestion endpioint for data to be dropped off at.
++     */
++    @ApiProperty()
++    public ingestion: string;
++
++    /**
++     * The DLQ endpoint for data which has failed to be processed.
++     */
++    @ApiProperty()
++    public dlq: string;
++
++    /**
++     * The IAM role associated with the endpoints for access management
++     */
++    @ApiProperty()
++    public iamRoleArn: string;
++    /**
++     * The externalId associated with the endpoints
++     */
++    @ApiProperty()
++    public externalId: string;
++
++    /**
++     * The region associated with the endpoints, defaults to `us-east-1`
++     */
++    @ApiProperty()
++    public region: string;
++}
++
+ export class ReadMeasurementConfigDto {
+     /**
+      *
+@@ -82,4 +118,18 @@ export class MeasurementResponseEntityEnricher extends PickType(MeasurementConfi
+ export class ReadMeasurementResponseData extends IntersectionType(
+     CreateMeasurementConfigDto,
+     MeasurementResponseEntityEnricher
+-) {}
++) {
++    @ApiProperty({
++        type: 'object',
++
++        oneOf: [
++            { $ref: getSchemaPath('InfrastructureAccessInformation') },
++            { $ref: getSchemaPath('AgentAccessInformation') },
++            { $ref: getSchemaPath('DatastoreAccessInformationResponse') },
++        ],
++    })
++    public measurementConfiguration:
++        | InfrastructureAccessInformation
++        | AgentAccessInformation
++        | DatastoreAccessInformationResponse;
++}
+diff --git a/src/measurement-config/dto/update-measurement-config.dto.ts b/src/measurement-config/dto/update-measurement-config.dto.ts
+index 7c2b94544329682dc4d87ca0b7e6874574d70013..35c3f3044725073fa08785e4cef78f898e1b031e 100644
+--- a/src/measurement-config/dto/update-measurement-config.dto.ts
++++ b/src/measurement-config/dto/update-measurement-config.dto.ts
+@@ -6,6 +6,7 @@ import { IsNotEmpty, IsOptional, IsString, Matches, ValidateNested } from 'class
+ 
+ import {
+     AgentAccessInformation,
++    DatastoreAccessInformation,
+     InfrastructureAccessInformation,
+     MeasurementConfigEntity,
+ } from '../entities/measurement-config.entity';
+@@ -62,6 +63,7 @@ export class UpdateMeasurementConfigDto {
+         oneOf: [
+             { $ref: getSchemaPath('UpdateInfrastructureAccessInformation') },
+             { $ref: getSchemaPath('UpdateAgentAccessInformation') },
++            { $ref: getSchemaPath('UpdateDatastoreAccessInformation') },
+         ],
+     })
+     @IsOptional()
+@@ -76,6 +78,8 @@ export class UpdateMeasurementConfigDto {
+             return UpdateInfrastructureAccessInformation;
+         else if (object.measurementMode.toLowerCase() === measurementMode.agentBased.toLowerCase())
+             return UpdateAgentAccessInformation;
++        else if (object.measurementMode.toLowerCase() === measurementMode.datastoreBased.toLowerCase())
++            return UpdateDatastoreAccessInformation;
+         // Handle edge case where the previous ifs are not fullfiled
+     })
+     public measurementConfiguration?: UpdateInfrastructureAccessInformation | UpdateAgentAccessInformation;
+@@ -84,3 +88,5 @@ export class UpdateMeasurementConfigDto {
+ export class UpdateInfrastructureAccessInformation extends PartialType(InfrastructureAccessInformation) {}
+ 
+ export class UpdateAgentAccessInformation extends PartialType(AgentAccessInformation) {}
++
++export class UpdateDatastoreAccessInformation extends PartialType(DatastoreAccessInformation) {}
+diff --git a/src/measurement-config/entities/measurement-config.entity.ts b/src/measurement-config/entities/measurement-config.entity.ts
+index fe6f4694ca8309fc0f25940fca0ce32f7c462fc9..44564c43ec7c7ac638ddbdb93e3abd732556b49a 100644
+--- a/src/measurement-config/entities/measurement-config.entity.ts
++++ b/src/measurement-config/entities/measurement-config.entity.ts
+@@ -1,7 +1,7 @@
+ import { Point } from '@influxdata/influxdb-client';
+ import { BadRequestException, InternalServerErrorException } from '@nestjs/common';
+ import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
+-import { IsArray, IsEnum, IsNotEmpty, IsOptional, IsString, Matches, Validate } from 'class-validator';
++import { IsArray, IsEnum, IsNotEmpty, IsOptional, IsString, Matches, ValidationArguments } from 'class-validator';
+ import { aggregationType } from '../../dimensions/entities/dimensions.entity';
+ 
+ import { InfluxService } from '../../influx/influx.service';
+@@ -9,7 +9,8 @@ import { CreateUserDto } from '../../users/dto/create-user.dto';
+ import { measurementMode } from '../dto/create-measurement-config.dto';
+ import { ReadMeasurementResponseData } from '../dto/read-measurement-config.dto';
+ import { ValidIAMRole } from '../../setting/dto/customIAMAuthorizer';
+-import { S3 } from '@aws-sdk/client-s3';
++import { IAM } from '@aws-sdk/client-iam';
++import { randomUUID } from 'crypto';
+ 
+ /**
+  * @author Daniel Wasserlauf <daniel.wasserlauf@paigo.tech>
+@@ -149,7 +150,6 @@ export class MeasurementConfigEntity {
+         } else if (argumentMeasurementMode.toLowerCase() === measurementMode.datastoreBased.toLowerCase()) {
+             this.measurementConfiguration = new DatastoreAccessInformation({
+                 ...measurementConfiguration,
+-                businessID,
+             } as DatastoreAccessInformation);
+         }
+         this.measurementId = measurementId;
+@@ -264,12 +264,29 @@ export class MeasurementConfigEntity {
+             throw new InternalServerErrorException('Couldnt create Aggregation Schedule for Dimension');
+         }
+     }
+-    static async setupAccessIfRequired(measurementConfig: MeasurementConfigEntity) {
++    static async setupAccessIfRequired(
++        measurementConfig: MeasurementConfigEntity
++    ): Promise<{ iamRoleArn: string; externalId: string; dlq: string; ingestion: string } | any> {
+         if (measurementConfig.measurementMode.toLowerCase() === measurementMode.datastoreBased.toLowerCase()) {
+-            console.log('setting up access');
+-            return DatastoreAccessInformation.setupAccess(
+-                measurementConfig.measurementConfiguration as DatastoreAccessInformation
+-            );
++            return DatastoreAccessInformation.setupAccess(measurementConfig);
++        } else {
++            return Promise.resolve();
++        }
++    }
++    static async updateAccessIfRequired(
++        updatedMeasurementConfig: MeasurementConfigEntity,
++        oldMeasurementConfig: MeasurementConfigEntity
++    ): Promise<{ iamRoleArn: string; externalId: string; dlq: string; ingestion: string } | any> {
++        if (
++            updatedMeasurementConfig.measurementMode.toLowerCase() === measurementMode.datastoreBased.toLowerCase() &&
++            //eslint-disable-next-line
++            // @ts-ignore
++            updatedMeasurementConfig.measurementConfiguration?.accountId !==
++                //eslint-disable-next-line
++                // @ts-ignore
++                oldMeasurementConfig.measurementConfiguration?.accountId
++        ) {
++            return DatastoreAccessInformation.updateAccess(updatedMeasurementConfig);
+         } else {
+             return Promise.resolve();
+         }
+@@ -397,155 +414,222 @@ export enum SupportedDatastores {
+  * */
+ export class DatastoreAccessInformation {
+     /**
+-     * Underlying resource type which paigo connects to. Default is s3.
++     * Underlying resource type which paigo connects to.
+      *
+      */
+-    @Matches(
+-        `^${Object.values(SupportedDatastores)
+-            .filter((v) => typeof v !== 'number')
+-            .join('|')}$`,
+-        'i'
+-    )
+-    @IsOptional()
++    @IsEnum(SupportedDatastores, {
++        message: (args: ValidationArguments) => {
++            const { value, constraints } = args;
++            const correctValues = Object.values(constraints[0]);
++            return `platform: The value ${value} is not a valid value for the platform field. The correct values are: ${correctValues}`;
++        },
++        each: true,
++    })
+     @ApiProperty({
+         enum: SupportedDatastores,
+         isArray: false,
+-        required: false,
++        required: true,
+         examples: ['s3'],
+     })
+-    public datastoreType?: SupportedDatastores;
+-
+-    /**
+-     *
+-     * Whether paigo is hosting the ingestion endpoint, or it is hosted by the client. Optional, default is `true`.
+-     * @example 'true'
+-     */
+-    @IsString()
+-    @IsOptional()
+-    public paigoHosted?: 'true';
+-
+-    /**
+-     *
+-     * What is the cloud environment associated with the ingestion endpoint. Optional, default is `aws`.
+-     * @example "aws"
+-     */
+-    @IsEnum(supportedCloudPlatforms)
+-    @IsOptional()
+-    public hostedCloud?: supportedCloudPlatforms;
++    public platform?: SupportedDatastores;
+ 
+     /**
+-     * The Unqiue ID for the cloud env where the resource is hosted. Required.
++     * The Unqiue ID for your cloud account.
+      * @example "623673123435"
+      */
+     @IsString()
+     @IsNotEmpty()
+-    public cloudId: string;
++    public accountId: string;
+ 
+     @ApiHideProperty()
+-    @IsOptional()
+-    public businessID: string;
++    public ingestion: string;
++    @ApiHideProperty()
++    public dlq: string;
++    @ApiHideProperty()
++    public iamRoleArn: string;
++    @ApiHideProperty()
++    public externalId: string;
++    @ApiHideProperty()
++    public region: string;
+ 
+     constructor(datastoreAccessInformation: DatastoreAccessInformation) {
+         if (datastoreAccessInformation) {
+-            const { cloudId, hostedCloud, paigoHosted, datastoreType, businessID } = datastoreAccessInformation;
+-            this.cloudId = cloudId;
+-            this.hostedCloud = hostedCloud ? hostedCloud : supportedCloudPlatforms.aws;
+-            this.paigoHosted = paigoHosted ? paigoHosted : 'true';
+-            this.datastoreType = datastoreType ? datastoreType : SupportedDatastores.s3;
+-            this.businessID = businessID;
++            const { accountId, platform, dlq, ingestion, iamRoleArn, externalId, region } = datastoreAccessInformation;
++            this.accountId = accountId;
++            this.platform = platform ? platform : SupportedDatastores.s3;
++            this.dlq = dlq;
++            this.ingestion = ingestion;
++            this.iamRoleArn = iamRoleArn;
++            this.externalId = externalId;
++            this.region = region ? region : 'us-east-1';
+         }
+     }
+ 
+     public static transformer(datastoreAccessInformation: DatastoreAccessInformation, influxPoint: Point) {
+         if (datastoreAccessInformation) {
+-            const { datastoreType: supportedDbs, paigoHosted, hostedCloud, cloudId } = datastoreAccessInformation;
+-            if (supportedDbs) influxPoint.tag('supportedDbs', supportedDbs);
+-            if (paigoHosted) influxPoint.tag('paigoHosted', paigoHosted);
+-            if (hostedCloud) influxPoint.tag('hostedCloud', hostedCloud);
+-            if (cloudId) influxPoint.tag('cloudId', cloudId);
++            const { platform, accountId, dlq, ingestion, iamRoleArn, externalId, region } = datastoreAccessInformation;
++            if (platform) influxPoint.tag('platform', platform);
++            if (accountId) influxPoint.tag('accountId', accountId);
++            if (dlq) influxPoint.tag('dlq', dlq);
++            if (ingestion) influxPoint.tag('ingestion', ingestion);
++            if (iamRoleArn) influxPoint.tag('iamRoleArn', iamRoleArn);
++            if (externalId) influxPoint.tag('externalId', externalId);
++            if (region) influxPoint.tag('region', region);
+         }
+         return influxPoint;
+     }
+ 
+     public static dbModelToEntity({
+-        datastoreType,
+-        paigoHosted,
+-        hostedCloud,
+-        cloudId,
+-        businessID,
++        iamRoleArn,
++        platform,
++        accountId,
++        externalId,
++        dlq,
++        ingestion,
++        region,
+     }: {
+         [x: string]: any;
+     }) {
+         return new DatastoreAccessInformation({
+-            datastoreType,
+-            paigoHosted,
+-            hostedCloud,
+-            cloudId,
+-            businessID,
++            platform,
++            accountId,
++            dlq,
++            ingestion,
++            externalId,
++            iamRoleArn,
++            region,
+         });
+     }
+-    public static async setupAccess(dbAccessInformation: DatastoreAccessInformation) {
+-        const { paigoHosted, cloudId, datastoreType, businessID } = dbAccessInformation;
++    public static async setupAccess(MeasurementConfigEntity: MeasurementConfigEntity) {
++        const { measurementConfiguration, businessID, measurementId } = MeasurementConfigEntity;
++
++        const { platform, accountId } = measurementConfiguration as DatastoreAccessInformation;
++
++        if (platform === SupportedDatastores.s3) {
++            const externalId = randomUUID();
++            // Create a new IAM role for the business with the measurementId in the name
++            // It will use the following Policy ARN: arn:aws:iam::647662420899:policy/datastore-measurement-policy
++            // The trust policy will enable their account to assume the role and the policy will allow them to access the bucket
++            // The cloudId is their AWS accountId
++            const iam = new IAM({});
++            // Create the Policy
++            const policyParams = {
++                Version: '2012-10-17',
++                Statement: [
++                    {
++                        Sid: 'VisualEditor0',
++                        Effect: 'Allow',
++                        Action: [
++                            's3:PutObject',
++                            's3:GetObject',
++                            's3:DeleteObject',
++                            's3:GetBucketLocation',
++                            's3:GetObjectVersion',
++                        ],
++                        Resource: [
++                            `arn:aws:s3:::${process.env.DB_MEASUREMENT_BUCKET_NAME}/${businessID}/*`,
++                            `arn:aws:s3:::${process.env.DB_MEASUREMENT_DLQ_BUCKET_NAME}/${businessID}/*`,
++                            `arn:aws:s3:::${process.env.DB_MEASUREMENT_BUCKET_NAME}/${businessID}`,
++                            `arn:aws:s3:::${process.env.DB_MEASUREMENT_DLQ_BUCKET_NAME}/${businessID}`,
++                        ],
++                    },
++                ],
++            };
+ 
+-        if (paigoHosted && datastoreType === SupportedDatastores.s3) {
++            const policy = await iam.createPolicy({
++                PolicyName: `datastore-${businessID}-${measurementId}`,
++                PolicyDocument: JSON.stringify(policyParams),
++            });
++            const roleParams = {
++                RoleName: `datastore-${businessID}-${measurementId}`,
++                Permissions: {},
++                AssumeRolePolicyDocument: JSON.stringify({
++                    Version: '2012-10-17',
++                    Statement: [
++                        {
++                            Effect: 'Allow',
++                            Principal: {
++                                AWS: `arn:aws:iam::${accountId}:root`,
++                            },
++                            Action: 'sts:AssumeRole',
++                            Condition: {
++                                StringEquals: {
++                                    'sts:ExternalId': `${externalId}`,
++                                },
++                            },
++                        },
++                    ],
++                }),
++            };
+             try {
+-                // Add the cloudId as a root account on the policy of the S3 bucket, two hardcoded buckets for now: paigo-usage-record-dlq-bucket and paigo-usage-record-dump-bucket
+-
+-                // Get the current policy of the bucket
+-                const s3 = new S3({});
+-                const params = {
+-                    Bucket: `${process.env.DB_MEASUREMENT_BUCKET_NAME}`,
+-                };
+-                const policy = await s3.getBucketPolicy(params);
+-                const policyJson = JSON.parse(policy.Policy);
+-                const statement = policyJson.Statement;
+-                const rootAccount = {
+-                    Sid: `RootAccount-${businessID}`,
+-                    Effect: 'Allow',
+-                    Principal: {
+-                        AWS: `arn:aws:iam::${cloudId}:root`,
+-                    },
+-                    Action: ['s3:GetObject', 's3:PutObject'],
+-                    Resource: [`arn:aws:s3:::${process.env.DB_MEASUREMENT_BUCKET_NAME}/${businessID}/*`],
+-                };
+-                statement.push(rootAccount);
+-                const newPolicy = { ...policyJson };
+-                newPolicy.Statement = statement;
+-                const newParams = {
+-                    Bucket: `${process.env.DB_MEASUREMENT_BUCKET_NAME}`,
+-                    Policy: JSON.stringify(newPolicy),
+-                };
+-                await s3.putBucketPolicy(newParams);
+-                // Same for DLQ
+-                const dlqParams = {
+-                    Bucket: `${process.env.DB_MEASUREMENT_DLQ_BUCKET_NAME}`,
+-                };
+-                const dlqPolicy = await s3.getBucketPolicy(dlqParams);
+-                const dlqPolicyJson = JSON.parse(dlqPolicy.Policy);
+-                const dlqStatement = dlqPolicyJson.Statement;
+-                const rootAccountForDLQ = {
+-                    Sid: `RootAccount-${businessID}`,
+-                    Effect: 'Allow',
+-                    Principal: {
+-                        AWS: `arn:aws:iam::${cloudId}:root`,
+-                    },
+-                    Action: ['s3:GetObject'], // Only need read for DLQ
+-                    Resource: [`arn:aws:s3:::${process.env.DB_MEASUREMENT_DLQ_BUCKET_NAME}/${businessID}/*`],
++                const res = await iam.createRole(roleParams);
++
++                // Attach policy to role
++                await iam.attachRolePolicy({
++                    PolicyArn: policy.Policy.Arn,
++                    RoleName: `datastore-${businessID}-${measurementId}`,
++                });
++
++                // Return the role arn
++                return {
++                    iamRoleArn: res.Role.Arn,
++                    externalId,
++                    dlq: `s3://${process.env.DB_MEASUREMENT_DLQ_BUCKET_NAME}/${businessID}`,
++                    ingestion: `s3://${process.env.DB_MEASUREMENT_BUCKET_NAME}/${businessID}`,
++                    region: 'us-east-1',
+                 };
+-                dlqStatement.push(rootAccountForDLQ);
+-                const newDLQPolicy = { ...dlqPolicyJson };
+-                newDLQPolicy.Statement = dlqStatement;
+-                const newDLQParams = {
+-                    Bucket: `${process.env.DB_MEASUREMENT_DLQ_BUCKET_NAME}`,
+-                    Policy: JSON.stringify(newDLQPolicy),
++            } catch (e) {
++                if (e?.Error?.Code === 'MalformedPolicyDocument') {
++                    throw new BadRequestException(`The provided accountId: ${accountId} is not valid`);
++                }
++                throw e;
++            }
++        }
++    }
++    public static async updateAccess(MeasurementConfigEntity: MeasurementConfigEntity) {
++        const { measurementConfiguration, businessID, measurementId } = MeasurementConfigEntity;
++
++        const { platform, accountId, externalId, iamRoleArn } = measurementConfiguration as DatastoreAccessInformation;
++        if (platform === SupportedDatastores.s3) {
++            // Get the current Role for a business: datastore-${businessID}-${measurementId}
++            // Change the Statement[0] on the role to the new accountId, reuse the externalId on the role
++            const iam = new IAM({});
++            const roleParams = {
++                RoleName: `datastore-${businessID}-${measurementId}`,
++                PolicyDocument: JSON.stringify({
++                    Version: '2012-10-17',
++                    Statement: [
++                        {
++                            Effect: 'Allow',
++                            Principal: {
++                                AWS: `arn:aws:iam::${accountId}:root`,
++                            },
++                            Action: 'sts:AssumeRole',
++                            Condition: {
++                                StringEquals: {
++                                    'sts:ExternalId': `${externalId}`,
++                                },
++                            },
++                        },
++                    ],
++                }),
++            };
++            try {
++                await iam.updateAssumeRolePolicy(roleParams);
++
++                // Return the role arn and additional information
++                return {
++                    iamRoleArn,
++                    externalId,
++                    dlq: `s3://${process.env.DB_MEASUREMENT_DLQ_BUCKET_NAME}/${businessID}`,
++                    ingestion: `s3://${process.env.DB_MEASUREMENT_BUCKET_NAME}/${businessID}`,
++                    region: 'us-east-1',
+                 };
+-                await s3.putBucketPolicy(newDLQParams);
+             } catch (e) {
+-                if (e?.Code === 'MalformedPolicy') {
+-                    throw new BadRequestException(`CloudId: ${cloudId} is invalid`);
+-                } else {
+-                    throw e;
++                if (e?.Error?.Code === 'MalformedPolicyDocument') {
++                    throw new BadRequestException(`The provided accountId: ${accountId} is not valid`);
+                 }
++                throw e;
+             }
+         }
+     }
+diff --git a/src/measurement-config/entities/standardMeasurement.entity.ts b/src/measurement-config/entities/standardMeasurement.entity.ts
+index b24007fe331d567a5831801318bd1591b69a8da8..1f6744589d2ef20a03328d57c4fe8857c1f36930 100644
+--- a/src/measurement-config/entities/standardMeasurement.entity.ts
++++ b/src/measurement-config/entities/standardMeasurement.entity.ts
+@@ -1,4 +1,5 @@
+ import { Tag } from '@aws-sdk/client-ec2';
++import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+ import { randomUUID } from 'crypto';
+ import EventEmitter from 'events';
+ import { AuditService } from '../../audit/audit.service';
+@@ -7,6 +8,9 @@ import { InfluxService } from '../../influx/influx.service';
+ import { MeasurementFormat } from './measurement.interface';
+ 
+ const eventEmitter = new EventEmitter();
++export enum DlqType {
++    s3 = 's3',
++}
+ export class StandardMeasurementEntity implements MeasurementFormat {
+     public timeStamp?: string;
+     public dimensionId?: string;
+@@ -66,4 +70,54 @@ export class StandardMeasurementEntity implements MeasurementFormat {
+             return {};
+         }
+     }
++
++    static async publishFailureToDLQ(
++        failedDocument,
++        metadata: MeasurementFailureMetadata,
++        dlqType: DlqType,
++        businessID
++    ) {
++        if (dlqType === DlqType.s3) {
++            // Write to the DLQ S3 bucket which is in env variables:DB_MEASUREMENT_DLQ_BUCKET_NAME
++            // The folder name is the businessID
++            // File name is orginalProcessedName
++            // File content is the failedDocument and the metadata
++
++            const s3 = new S3Client({ region: process.env.AWS_REGION });
++            const originalKey = metadata.orginalProcessedName.replace(new RegExp(`^${businessID}/?`), '');
++            const params = {
++                Bucket: process.env.DB_MEASUREMENT_DLQ_BUCKET_NAME,
++                Key: `${businessID}/${originalKey}.message.text`,
++                Body: JSON.stringify({ failedDocument, metadata }),
++            };
++            try {
++                await s3.send(new PutObjectCommand(params));
++            } catch (e) {
++                AuditService.publishEvent({
++                    topic: AuditScope.ERROR,
++                    message: 'Failed to write to DLQ',
++                    data: [{ error: e, failedDocument, metadata, dlqType }],
++                });
++            }
++        }
++    }
++}
++
++export class MeasurementFailureMetadata {
++    message: string;
++    id: string;
++    timestamp: string;
++    results: string;
++    /**
++     * This is the processed name from the system where the measurement occured
++     * In S3 its the complete fileName
++     * */
++    orginalProcessedName: string;
++
++    constructor({ message, id, timestamp, results }: MeasurementFailureMetadata) {
++        this.message = message;
++        this.id = id;
++        this.timestamp = timestamp;
++        this.results = results;
++    }
+ }
+diff --git a/src/measurement-config/measurement-config.controller.ts b/src/measurement-config/measurement-config.controller.ts
+index 9a9b5cd60ef0aadf2611c31cc4a4e08fe165e69a..aa8dfca696349ffb77334317cc06c82ec7d1c0e4 100644
+--- a/src/measurement-config/measurement-config.controller.ts
++++ b/src/measurement-config/measurement-config.controller.ts
+@@ -15,9 +15,14 @@ import {
+     ApiTags,
+ } from '@nestjs/swagger';
+ import { Request } from 'express';
+-import { MeasurementResponseEntityEnricher, ReadMeasurementConfigResponse } from './dto/read-measurement-config.dto';
++import {
++    DatastoreAccessInformationResponse,
++    MeasurementResponseEntityEnricher,
++    ReadMeasurementConfigResponse,
++} from './dto/read-measurement-config.dto';
+ import {
+     UpdateAgentAccessInformation,
++    UpdateDatastoreAccessInformation,
+     UpdateInfrastructureAccessInformation,
+     UpdateMeasurementConfigDto,
+ } from './dto/update-measurement-config.dto';
+@@ -34,6 +39,8 @@ import {
+ @ApiExtraModels(MeasurementResponseEntityEnricher)
+ @ApiExtraModels(UpdateAgentAccessInformation)
+ @ApiExtraModels(UpdateInfrastructureAccessInformation)
++@ApiExtraModels(DatastoreAccessInformationResponse)
++@ApiExtraModels(UpdateDatastoreAccessInformation)
+ @Controller('measurements')
+ @ApiTags('Measurements')
+ export class MeasurementConfigController {
+diff --git a/src/measurement-config/measurement-config.module.ts b/src/measurement-config/measurement-config.module.ts
+index e3b23e913ace64a70f2db7ded9c60a9252bf9a82..749684691d2b2eb5098dfbbe5462e058641988e5 100644
+--- a/src/measurement-config/measurement-config.module.ts
++++ b/src/measurement-config/measurement-config.module.ts
+@@ -10,7 +10,7 @@ import { InfluxService } from '../influx/influx.service';
+ @Module({
+     controllers: [MeasurementConfigController],
+     providers: [MeasurementConfigService],
+-    imports: [InfluxModule, forwardRef(() => SchedulerModule), forwardRef(() => PrivateAPIDimensionsModule)],
++    imports: [InfluxModule, forwardRef(() => PrivateAPIDimensionsModule)],
+     exports: [MeasurementConfigService],
+ })
+ export class MeasurementConfigModule implements OnModuleInit {
+diff --git a/src/measurement-config/measurement-config.service.ts b/src/measurement-config/measurement-config.service.ts
+index 511932ecee6a8e5c5d229d89714c87c6e92c8c5e..234b2bad3c0da0b610e2fa3065abd4b3eefa07b8 100644
+--- a/src/measurement-config/measurement-config.service.ts
++++ b/src/measurement-config/measurement-config.service.ts
+@@ -26,15 +26,11 @@ import {
+     ReadAllMeasurementConfigs,
+     ReadMeasurementConfigDto,
+     ReadMeasurementConfigResponse,
+-    ReadMeasurementResponseData,
+ } from './dto/read-measurement-config.dto';
+-import { SchedulerService } from '../scheduler/scheduler.service';
+-import { SchedulerStatus, schedulerType, SupportedMeasurementFrequencies } from '../scheduler/dto/scheduler.dto';
+ import {
+     aggregationInterval,
+     aggregationMethod,
+     CreateDimensionDto,
+-    infrastructureType,
+     roundingEnum,
+     SampleType,
+ } from '../dimensions/dto/create-dimension.dto';
+@@ -46,7 +42,6 @@ export class MeasurementConfigService {
+ 
+     constructor(
+         readonly InfluxService: InfluxService,
+-        @Inject(forwardRef(() => SchedulerService)) readonly SchedulerService: SchedulerService,
+         @Inject(forwardRef(() => DimensionsService)) readonly dimensionsService: DimensionsService
+     ) {}
+ 
+@@ -84,7 +79,7 @@ export class MeasurementConfigService {
+         const { loadPoints } = this.InfluxService;
+         const measurementId = v4();
+ 
+-        const measurementConfigEntity = new MeasurementConfigEntity({
++        let measurementConfigEntity = new MeasurementConfigEntity({
+             measurementId,
+             measurementMode: chosenMeasurementMode,
+             measurementConfiguration,
+@@ -92,12 +87,37 @@ export class MeasurementConfigService {
+             subject,
+             measurementName,
+         });
++        const accessInformation = await MeasurementConfigEntity.setupAccessIfRequired(measurementConfigEntity);
++        if (accessInformation) {
++            measurementConfigEntity = new MeasurementConfigEntity({
++                measurementId,
++                measurementMode: chosenMeasurementMode,
++                measurementConfiguration: { ...measurementConfiguration, ...accessInformation },
++                businessID,
++                subject,
++                measurementName,
++            });
++        }
+         const dbModel = MeasurementConfigEntity.transformer(measurementConfigEntity, this.InfluxService);
+-        await MeasurementConfigEntity.setupAccessIfRequired(measurementConfigEntity);
++
+         await loadPoints(`${process.env.STAGE}-config`, 'paigo', dbModel);
+         MeasurementConfigService.logger.log('Loaded information into DB');
+ 
+-        return { message: 'Created Measurement Configuration', measurementId };
++        return {
++            message: 'Created Measurement Configuration',
++            measurementId,
++            iamRoleArn: measurementConfigEntity?.measurementConfiguration?.iamRoleArn,
++            externalId: measurementConfigEntity?.measurementConfiguration?.externalId,
++            //eslint-disable-next-line
++            // @ts-ignore
++            ingestion: measurementConfigEntity?.measurementConfiguration?.ingestion,
++            //eslint-disable-next-line
++            // @ts-ignore
++            dlq: measurementConfigEntity?.measurementConfiguration?.dlq,
++            //eslint-disable-next-line
++            // @ts-ignore
++            region: measurementConfigEntity?.measurementConfiguration?.region,
++        };
+     }
+ 
+     async findAll({ businessID }: ReadAllMeasurementConfigs): Promise<ReadMeasurementConfigResponse> {
+@@ -146,6 +166,12 @@ export class MeasurementConfigService {
+             data: [createMeasurementConfigDto],
+         } = await this.findOne({ measurementId, businessID });
+ 
++        const oldMeasurementEntity = new MeasurementConfigEntity({
++            ...createMeasurementConfigDto,
++            businessID,
++            measurementId,
++            subject,
++        });
+         const {
+             measurementMode: chosenMeasurementMode,
+             measurementConfiguration: { ...rest },
+@@ -161,18 +187,33 @@ export class MeasurementConfigService {
+         }
+ 
+         const { loadPoints } = this.InfluxService;
+-
++        const updatedMeasurementConfiguration = { ...rest, ...restOfUpdate?.measurementConfiguration };
+         const measurementConfigEntity = new MeasurementConfigEntity({
+             measurementId,
+             measurementMode: chosenMeasurementMode,
+-            measurementConfiguration: { ...rest, ...restOfUpdate?.measurementConfiguration },
++            measurementConfiguration: updatedMeasurementConfiguration,
+             businessID,
+             subject,
+             measurementName: updatedMeasurementName ? updatedMeasurementName : measurementName,
+         });
++        await MeasurementConfigEntity.updateAccessIfRequired(measurementConfigEntity, oldMeasurementEntity);
+         const dbModel = MeasurementConfigEntity.transformer(measurementConfigEntity, this.InfluxService);
+         await loadPoints(`${process.env.STAGE}-config`, 'paigo', dbModel);
+-        return { measurementId, message: 'Updated Measurement Configuration' };
++        return {
++            measurementId,
++            message: 'Updated Measurement Configuration',
++            iamRoleArn: measurementConfigEntity?.measurementConfiguration?.iamRoleArn,
++            externalId: measurementConfigEntity?.measurementConfiguration?.externalId,
++            //eslint-disable-next-line
++            // @ts-ignore
++            ingestion: measurementConfigEntity?.measurementConfiguration?.ingestion,
++            //eslint-disable-next-line
++            // @ts-ignore
++            dlq: measurementConfigEntity?.measurementConfiguration?.dlq,
++            //eslint-disable-next-line
++            // @ts-ignore
++            region: measurementConfigEntity?.measurementConfiguration?.region,
++        };
+     }
+ 
+     async remove({ measurementId, businessID }) {
+@@ -333,28 +374,4 @@ export class MeasurementConfigService {
+             );
+         }
+     }
+-
+-    /**
+-     * A method to compare a measurement to the stored measurements in DB.
+-     * Initally this is needed to make sure that duplicate measurements don't get added
+-     *
+-     * @returns true when a measurement equals a measurement found in the DB
+-     * @returns false when there is no measurement found.
+-     */
+-    private measurementComparision(
+-        argumentMeasurement: CreateMeasurementConfigDto,
+-        foundMeasurements: ReadMeasurementResponseData[]
+-    ): boolean {
+-        const storedCreatedMeasurements = foundMeasurements.map(
+-            ({ measurementId, ...rest }): CreateMeasurementConfigDto => rest
+-        );
+-        const results = foundMeasurements.filter(
+-            ({ measurementMode }) => argumentMeasurement['measurementMode'] === measurementMode
+-        );
+-        if (results.length) {
+-            return true;
+-        } else {
+-            return false;
+-        }
+-    }
+ }
+diff --git a/src/usage/usage.controller.ts b/src/usage/usage.controller.ts
+index 3031adbf9724342a0782f9a9ce9e953e79733ca1..6fc24c8d188610b4df19dd6ea0f2572dc7cd5880 100644
+--- a/src/usage/usage.controller.ts
++++ b/src/usage/usage.controller.ts
+@@ -1,18 +1,22 @@
+ import { Body, Controller, Logger, Post, Req, UseGuards } from '@nestjs/common';
+ import { AuthGuard } from '@nestjs/passport';
+-import { ApiBadRequestResponse, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
++import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+ import { BasicResponseDTO } from '../basicResponseDTO';
+ import { CreateUsageDto } from './dto/create-usage.dto';
+ import { UsageService } from './usage.service';
+ import { Request } from 'express';
+-import { DbMeasuredusageDto } from './dto/dbmeasuredUsage.dto';
+ import { LogGaurd } from '../authz/logGaurd';
++import { DlqType, StandardMeasurementEntity } from '../measurement-config/entities/standardMeasurement.entity';
++import { randomUUID } from 'crypto';
++import { AuditService } from '../audit/audit.service';
++import { AuditScope } from '../audit/entities/audit.interface';
+ 
++@ApiBearerAuth('bearer')
+ @ApiTags('Usage')
+ @Controller('usage')
+ export class UsageController {
+-    private static readonly logger = new Logger(UsageController.name);
+-    constructor(private readonly usageService: UsageService) {}
++    public static readonly logger = new Logger(UsageController.name);
++    constructor(public readonly usageService: UsageService) {}
+ 
+     /**
+      * Collect usage data by API-based method.
+@@ -40,7 +44,12 @@ export class UsageController {
+         const { businessID } = request.user;
+         return this.usageService.create({ ...createUsageDto, businessID });
+     }
++}
+ 
++@ApiBearerAuth('bearer')
++@Controller('services')
++@ApiTags('Services')
++export class PrivateAPIUsageController extends UsageController {
+     @UseGuards(LogGaurd, AuthGuard('jwt'))
+     @Post('db')
+     dbUsage(@Body() createUsageDto) {
+@@ -52,12 +61,31 @@ export class UsageController {
+         // TODO: check if the passed in BusinessID is an authorized producer, if not throw message away
+         if (s3Key) {
+             const [businessID] = s3Key.split('/');
+-            const parsed = JSON.parse(message);
+-            const input = { ...parsed, businessID };
+-            return this.usageService.create(input);
++            try {
++                const parsed = JSON.parse(message);
++                const input = { ...parsed, businessID };
++                return this.usageService.create(input);
++            } catch (e) {
++                UsageController.logger.error('Error parsing DB usage message', e);
++                return StandardMeasurementEntity.publishFailureToDLQ(
++                    createUsageDto,
++                    {
++                        timestamp: new Date().toISOString(),
++                        id: randomUUID(),
++                        message: e?.message,
++                        results: 'failed to load data',
++                        orginalProcessedName: s3Key,
++                    },
++                    DlqType.s3,
++                    businessID
++                );
++            }
+         } else {
+-            // TODO push to DLQ
+-            return '';
++            AuditService.publishEvent({
++                topic: AuditScope.ERROR,
++                message: 'Failed to write to DLQ',
++                data: [{ e: 'Unknown S3 Key and BusinessID In DB measurement system', createUsageDto }],
++            });
+         }
+     }
+ }
+diff --git a/src/usage/usage.module.ts b/src/usage/usage.module.ts
+index 92d656c40939da478150d5cbac2b80023e4ab871..6fc5e5f3e07953a0279805ef220c2635c1edcbec 100644
+--- a/src/usage/usage.module.ts
++++ b/src/usage/usage.module.ts
+@@ -1,6 +1,6 @@
+ import { Module, forwardRef } from '@nestjs/common';
+ import { UsageService } from './usage.service';
+-import { UsageController } from './usage.controller';
++import { PrivateAPIUsageController, UsageController } from './usage.controller';
+ import { InfluxModule } from '../influx/influx.module';
+ import { MeasurementConfigModule } from '../measurement-config/measurement-config.module';
+ import { PublicAPIDimensionsModule } from '../dimensions/dimensions.module';
+@@ -20,3 +20,8 @@ import { PublicAPIOfferingModule } from '../offering/offering.module';
+     ],
+ })
+ export class UsageModule {}
++
++@Module({
++    controllers: [PrivateAPIUsageController],
++})
++export class PrivateApiUsageModule extends UsageModule {}
+diff --git a/src/usage/usage.service.ts b/src/usage/usage.service.ts
+index 0c22bc3592e1f995c91817a42df02cd8082cb275..c130325f50804e7de77323ce7e6b695beabccaf6 100644
+--- a/src/usage/usage.service.ts
++++ b/src/usage/usage.service.ts
+@@ -64,7 +64,11 @@ export class UsageService {
+     }
+ 
+     async create(createUsageDto: CreateUsageDto): Promise<BasicResponseDTO> {
+-        const entity = new StandardMeasurementEntity({ ...createUsageDto, _measurement: UsageEntity._measurement });
++        const entity = new StandardMeasurementEntity({
++            ...createUsageDto,
++            recordValue: parseFloat(createUsageDto?.recordValue),
++            _measurement: UsageEntity._measurement,
++        });
+         StandardMeasurementEntity.publish(entity);
+         return { message: 'Measurement created' };
+     }

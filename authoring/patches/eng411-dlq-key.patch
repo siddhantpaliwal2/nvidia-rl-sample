@@ -1,0 +1,29 @@
+diff --git a/src/measurement-config/entities/standardMeasurement.entity.ts b/src/measurement-config/entities/standardMeasurement.entity.ts
+index e297dd2f..1f674458 100644
+--- a/src/measurement-config/entities/standardMeasurement.entity.ts
++++ b/src/measurement-config/entities/standardMeasurement.entity.ts
+@@ -84,9 +84,10 @@ export class StandardMeasurementEntity implements MeasurementFormat {
+             // File content is the failedDocument and the metadata
+ 
+             const s3 = new S3Client({ region: process.env.AWS_REGION });
++            const originalKey = metadata.orginalProcessedName.replace(new RegExp(`^${businessID}/?`), '');
+             const params = {
+                 Bucket: process.env.DB_MEASUREMENT_DLQ_BUCKET_NAME,
+-                Key: `${businessID}/${metadata.orginalProcessedName}`,
++                Key: `${businessID}/${originalKey}.message.text`,
+                 Body: JSON.stringify({ failedDocument, metadata }),
+             };
+             try {
+diff --git a/src/usage/usage.controller.ts b/src/usage/usage.controller.ts
+index 0f7632e8..6fc24c8d 100644
+--- a/src/usage/usage.controller.ts
++++ b/src/usage/usage.controller.ts
+@@ -67,7 +67,7 @@ export class PrivateAPIUsageController extends UsageController {
+                 return this.usageService.create(input);
+             } catch (e) {
+                 UsageController.logger.error('Error parsing DB usage message', e);
+-                StandardMeasurementEntity.publishFailureToDLQ(
++                return StandardMeasurementEntity.publishFailureToDLQ(
+                     createUsageDto,
+                     {
+                         timestamp: new Date().toISOString(),

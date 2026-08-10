@@ -1,0 +1,178 @@
+FAIL src/emailinfra/emailinfra.gold.spec.ts (7.006 s)
+  ● Email inbox infrastructure contract › derives stable identity, domain, counters, and deliverability bands
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "inbox-1"
+    Received: undefined
+
+      136 |         deliverabilityScore: score,
+      137 |       });
+    > 138 |       expect(account.id).toBe('inbox-1');
+          |                          ^
+      139 |       expect(account.domain).toBe('example.com');
+      140 |       expect(account.numberOfCampaignAssociated).toBe(1);
+      141 |       expect(account.deliverability).toBe(expected);
+
+      at Object.<anonymous> (emailinfra/emailinfra.gold.spec.ts:138:26)
+
+  ● Email inbox infrastructure contract › persists the normalized email account in the dedicated collection
+
+    TypeError: account.save is not a function
+
+      154 |     });
+      155 |
+    > 156 |     await account.save(db);
+          |                   ^
+      157 |     expect(db.store).toHaveBeenCalledTimes(1);
+      158 |     const request = db.store.mock.calls[0][0];
+      159 |     expect(request.context.uniqueId).toBe('inbox-1');
+
+      at Object.<anonymous> (emailinfra/emailinfra.gold.spec.ts:156:19)
+
+  ● Email inbox infrastructure contract › looks up accounts through inbox-specific datastore fields
+
+    expect(received).resolves.toEqual(expected) // deep equality
+
+    - Expected  -  2
+    + Received  + 12
+
+    - ObjectContaining {
+    -   "id": "1",
+    + Object {
+    +   "campaignIds": Array [],
+    +   "createdAt": undefined,
+    +   "deliverabilityScore": undefined,
+    +   "deliverabilityStatus": "Unknown",
+    +   "domain": "example.com",
+    +   "email": "a@example.com",
+    +   "numberOfCampaignAssociated": 0,
+    +   "smartleadClientId": "client-1",
+    +   "smartleadInboxId": "1",
+    +   "tags": Array [],
+    +   "warmupReputation": undefined,
+      }
+
+      185 |     const { service } = subject(db);
+      186 |
+    > 187 |     await expect(service.getEmailAccount('1')).resolves.toEqual(
+          |                                                         ^
+      188 |       expect.objectContaining({ id: '1' }),
+      189 |     );
+      190 |     await expect(service.getEmailAccountByEmail('a@example.com')).resolves.toEqual(
+
+      at Object.toEqual (../node_modules/expect/build/index.js:174:22)
+      at Object.<anonymous> (emailinfra/emailinfra.gold.spec.ts:187:57)
+
+  ● Email inbox infrastructure contract › rejects a lookup when no account has the requested email
+
+    expect(received).rejects.toBeInstanceOf()
+
+    Received promise resolved instead of rejected
+    Resolved to value: undefined
+
+      199 |   it('rejects a lookup when no account has the requested email', async () => {
+      200 |     const { service } = subject(memoryDatastore());
+    > 201 |     await expect(
+          |           ^
+      202 |       service.getEmailAccountByEmail('missing@example.com'),
+      203 |     ).rejects.toBeInstanceOf(NotFoundException);
+      204 |   });
+
+      at expect (../node_modules/expect/build/index.js:113:15)
+      at Object.<anonymous> (emailinfra/emailinfra.gold.spec.ts:201:11)
+
+  ● Email inbox infrastructure contract › skips existing campaign links and persists each new association once
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  2
+    + Received  + 11
+
+    - ObjectContaining {
+    + Object {
+        "campaignIds": Array [
+          "campaign-1",
+        ],
+    -   "id": "2",
+    +   "createdAt": undefined,
+    +   "deliverabilityScore": undefined,
+    +   "deliverabilityStatus": "Unknown",
+    +   "documentType": "EMAIL_ACCOUNT",
+    +   "domain": "example.com",
+    +   "email": "b@example.com",
+        "numberOfCampaignAssociated": 1,
+    +   "smartleadClientId": "undefined",
+    +   "smartleadInboxId": "2",
+    +   "tags": Array [],
+    +   "warmupReputation": undefined,
+      }
+
+      246 |
+      247 |     expect(db.store).toHaveBeenCalledTimes(1);
+    > 248 |     expect(db.store.mock.calls[0][0].data).toEqual(
+          |                                            ^
+      249 |       expect.objectContaining({
+      250 |         id: '2',
+      251 |         campaignIds: ['campaign-1'],
+
+      at Object.<anonymous> (emailinfra/emailinfra.gold.spec.ts:248:44)
+
+  ● Email inbox infrastructure contract › requests the documented multi-factor ranking and page limit
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      313 |       aggregationIsCorrect ||
+      314 |         JSON.stringify(applicationOrder) === JSON.stringify(['old', 'new', 'shared']),
+    > 315 |     ).toBe(true);
+          |       ^
+      316 |   });
+      317 |
+      318 |   it('sizes a campaign pool from volume, duration, and daily capacity', async () => {
+
+      at Object.<anonymous> (emailinfra/emailinfra.gold.spec.ts:315:7)
+
+  ● Email inbox infrastructure contract › hydrates Smartlead reputation and creation time before saving
+
+    SmartleadService is not configured
+
+      277 |     }
+      278 |     if (requireSmartlead && !this.smartleadService) {
+    > 279 |       throw new Error('SmartleadService is not configured');
+          |             ^
+      280 |     }
+      281 |   }
+      282 | }
+
+      at EmailinfraService.assertDependencies (emailinfra/emailinfra.service.ts:279:13)
+      at EmailinfraService.saveEmailAccount (emailinfra/emailinfra.service.ts:114:10)
+      at Object.<anonymous> (emailinfra/emailinfra.gold.spec.ts:348:19)
+
+  ● Email inbox infrastructure contract › surfaces a missing Smartlead inbox and delegates deletion safely
+
+    expect(received).rejects.toBeInstanceOf(expected)
+
+    Expected constructor: NotFoundException
+    Received constructor: Error
+
+      374 |         smartleadInboxId: 'missing',
+      375 |       }),
+    > 376 |     ).rejects.toBeInstanceOf(NotFoundException);
+          |               ^
+      377 |
+      378 |     const deletionDb = memoryDatastore([
+      379 |       {
+
+      at Object.toBeInstanceOf (../node_modules/expect/build/index.js:218:22)
+      at Object.<anonymous> (emailinfra/emailinfra.gold.spec.ts:376:15)
+
+PASS src/email-reply-agent/entities/entity.spec.ts
+
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       8 failed, 4 passed, 12 total
+Snapshots:   0 total
+Time:        7.095 s
+Test results written to: ../tmp/jest-unit.json

@@ -1,0 +1,181 @@
+ts-jest[backports] (WARN) "[jest-config].globals.ts-jest.tsConfig" is deprecated, use "[jest-config].globals.ts-jest.tsconfig" instead.
+ts-jest[backports] (WARN) Your Jest configuration is outdated. Use the CLI to help migrating it: ts-jest config:migrate <config-file>.
+FAIL src/billing/customerBillingScheduleMigration.gold.spec.ts
+  ● Customer billing schedule migration › creates a monthly billing schedule only when a new customer has an offering
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: {"businessID": "business-1", "rate": "0 4 1 * *", "scheduleParameters": {"businessID": "business-1", "customerId": "e89ef001-5545-49d6-8976-1267695f24d9"}, "schedulerID": "e89ef001-5545-49d6-8976-1267695f24d9", "schedulerStatus": "live", "schedulerType": "billing", "subject": "subject-1"}
+
+      49 |             'subject-1',
+      50 |         );
+    > 51 |         expect(scheduler.create).not.toHaveBeenCalled();
+         |                                      ^
+      52 |     });
+      53 |
+      54 |     it('replaces the billing schedule when an enrolled customer changes offering', async () => {
+
+      at Object.<anonymous> (billing/customerBillingScheduleMigration.gold.spec.ts:51:38)
+
+  ● Customer billing schedule migration › replaces the billing schedule when an enrolled customer changes offering
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: {"businessID": "business-1", "isBillingQueue": true, "schedulerID": "customer-1"}
+
+    Number of calls: 0
+
+      70 |             'subject-1',
+      71 |         );
+    > 72 |         expect(scheduler.remove).toHaveBeenCalledWith({
+         |                                  ^
+      73 |             schedulerID: 'customer-1',
+      74 |             businessID: 'business-1',
+      75 |             isBillingQueue: true,
+
+      at Object.<anonymous> (billing/customerBillingScheduleMigration.gold.spec.ts:72:34)
+
+  ● Customer billing schedule migration › continues an offering update when the previous billing schedule is already absent
+
+    expect(jest.fn()).toHaveBeenCalledTimes(expected)
+
+    Expected number of calls: 1
+    Received number of calls: 0
+
+      105 |             ),
+      106 |         ).resolves.toEqual(expect.objectContaining({ customerId: 'customer-1' }));
+    > 107 |         expect(scheduler.create).toHaveBeenCalledTimes(1);
+          |                                  ^
+      108 |     });
+      109 |
+      110 |     it('builds an invoice from customer usage and records its billed time range', async () => {
+
+      at Object.<anonymous> (billing/customerBillingScheduleMigration.gold.spec.ts:107:34)
+
+  ● Customer billing schedule migration › builds an invoice from customer usage and records its billed time range
+
+    TypeError: this.servicesService.findAllServicesWithCustomerId is not a function
+
+      23 |         // 1. Called via the scheduler contains a customerId, and BusinessID, gets set when a customer is created
+      24 |         // 2, Get all services for the customer
+    > 25 |         const { data } = await this.servicesService.findAllServicesWithCustomerId({ customerId, businessID });
+         |                                                     ^
+      26 |         if (data.length) {
+      27 |             const lineItems = await Billing.generateLineItemsFromServices({
+      28 |                 data,
+
+      at BillingService.create (billing/billing.service.ts:25:53)
+      at Object.<anonymous> (billing/customerBillingScheduleMigration.gold.spec.ts:125:23)
+
+  ● Customer billing schedule migration › routes billing scheduler emissions exclusively to the billing queue
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: "billingReport", ObjectContaining {"businessID": "business-1", "scheduleParameters": {"customerId": "customer-1"}, "schedulerID": "customer-1"}
+
+    Number of calls: 0
+
+      156 |             },
+      157 |         } as any);
+    > 158 |         expect(billingQueue.add).toHaveBeenCalledWith(
+          |                                  ^
+      159 |             billingScheduleConsumers.billingReport,
+      160 |             expect.objectContaining({
+      161 |                 schedulerID: 'customer-1',
+
+      at Object.<anonymous> (billing/customerBillingScheduleMigration.gold.spec.ts:158:34)
+
+  ● Customer billing schedule migration › returns no usage rather than failing when a customer has no offering
+
+    expect(received).resolves.toEqual()
+
+    Received promise rejected instead of resolved
+    Rejected to value: [ConflictException: No offering found for customer cannot get usage]
+
+      195 |             {} as any,
+      196 |         );
+    > 197 |         await expect(
+          |               ^
+      198 |             service.findUsageForCustomer({ customerId: 'customer-1', businessID: 'business-1' }, {} as any),
+      199 |         ).resolves.toEqual([]);
+      200 |     });
+
+      at expect (../node_modules/@jest/expect/node_modules/expect/build/index.js:128:15)
+      at Object.<anonymous> (billing/customerBillingScheduleMigration.gold.spec.ts:197:15)
+
+[32m[Nest] 265  - [39m08/08/2026, 4:21:54 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mCustomer DTO[39m
+[32m[Nest] 265  - [39m08/08/2026, 4:21:54 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mObject:[39m
+{
+  "businessID": "business-1",
+  "customerName": "Acme",
+  "paymentChannel": "manual",
+  "offeringId": "offering-1"
+}
+
+[32m[Nest] 265  - [39m08/08/2026, 4:21:54 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mPoints[39m
+[32m[Nest] 265  - [39m08/08/2026, 4:21:54 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mObject:[39m
+[
+  {}
+]
+
+[32m[Nest] 265  - [39m08/08/2026, 4:21:54 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mCustomer DTO[39m
+[32m[Nest] 265  - [39m08/08/2026, 4:21:54 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mObject:[39m
+{
+  "businessID": "business-1",
+  "customerName": "No plan",
+  "paymentChannel": "manual"
+}
+
+[32m[Nest] 265  - [39m08/08/2026, 4:21:54 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mPoints[39m
+[32m[Nest] 265  - [39m08/08/2026, 4:21:54 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mObject:[39m
+[
+  {}
+]
+
+[32m[Nest] 265  - [39m08/08/2026, 4:21:54 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mAttempting to update saasClientID: customer-1 for business-1[39m
+[32m[Nest] 265  - [39m08/08/2026, 4:21:54 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mPoints[39m
+[32m[Nest] 265  - [39m08/08/2026, 4:21:54 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mObject:[39m
+[
+  {}
+]
+
+[32m[Nest] 265  - [39m08/08/2026, 4:21:54 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mAttempting to update saasClientID: customer-1 for business-1[39m
+[32m[Nest] 265  - [39m08/08/2026, 4:21:54 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mPoints[39m
+[32m[Nest] 265  - [39m08/08/2026, 4:21:54 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mObject:[39m
+[
+  {}
+]
+
+FAIL src/billing/billing.service.spec.ts
+  ● BillingService › should be defined
+
+    Nest can't resolve dependencies of the BillingService (InfluxService, ?, InvoicesService). Please make sure that the argument ServicesService at index [1] is available in the RootTestModule context.
+
+    Potential solutions:
+    - Is RootTestModule a valid NestJS module?
+    - If ServicesService is a provider, is it part of the current RootTestModule?
+    - If ServicesService is exported from a separate @Module, is that module imported within RootTestModule?
+      @Module({
+        imports: [ /* the Module containing ServicesService */ ]
+      })
+
+      at TestingInjector.lookupComponentInParentModules (../node_modules/@nestjs/core/injector/injector.js:241:19)
+      at TestingInjector.resolveComponentInstance (../node_modules/@nestjs/core/injector/injector.js:194:33)
+      at TestingInjector.resolveComponentInstance (../node_modules/@nestjs/testing/testing-injector.js:16:45)
+      at resolveParam (../node_modules/@nestjs/core/injector/injector.js:116:38)
+          at async Promise.all (index 1)
+      at TestingInjector.resolveConstructorParams (../node_modules/@nestjs/core/injector/injector.js:131:27)
+      at TestingInjector.loadInstance (../node_modules/@nestjs/core/injector/injector.js:57:13)
+      at TestingInjector.loadProvider (../node_modules/@nestjs/core/injector/injector.js:84:9)
+          at async Promise.all (index 3)
+      at TestingInstanceLoader.createInstancesOfProviders (../node_modules/@nestjs/core/injector/instance-loader.js:47:9)
+
+Test Suites: 2 failed, 2 total
+Tests:       7 failed, 1 passed, 8 total
+Snapshots:   0 total
+Time:        4.185 s
+Test results written to: ../tmp/jest-unit.json
+Force exiting Jest: Have you considered using `--detectOpenHandles` to detect async operations that kept running after all tests finished?

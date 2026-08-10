@@ -1,0 +1,68 @@
+{
+    "schema_version": 2,
+    "created_at": "2026-08-08T02:40:50.913492Z",
+    "harbor": {
+        "version": "0.18.0",
+        "is_editable": false
+    },
+    "n_concurrent_trials": 1,
+    "retry": {
+        "max_retries": 0,
+        "exclude_exceptions": [
+            "AgentTimeoutError",
+            "VerifierOutputParseError",
+            "VerifierTimeoutError",
+            "ApiUsageLimitError",
+            "RewardFileEmptyError",
+            "RewardFileNotFoundError"
+        ],
+        "wait_multiplier": 1.0,
+        "min_wait_sec": 1.0,
+        "max_wait_sec": 60.0
+    },
+    "trials": [
+        {
+            "schema_version": 1,
+            "task": {
+                "name": "paigo-dimension-pricing-tiers",
+                "type": "local",
+                "digest": "sha256:447cadd5206cb001d8012108fce0065728214fc69db440dbc9ef1270aa9fe254",
+                "path": "tasks/paigo-dimension-pricing-tiers"
+            },
+            "install_only": true,
+            "timeout_multiplier": 1.0,
+            "agent": {
+                "name": "harness.harbor_agents:OpenCodeNode22",
+                "model_name": "amazon-bedrock/global.anthropic.claude-opus-5",
+                "skills": [],
+                "extra_allowed_hosts": [],
+                "kwargs": {
+                    "version": "1.18.13",
+                    "opencode_config": {
+                        "permission": {
+                            "task": "deny"
+                        }
+                    }
+                },
+                "mcp_servers": []
+            },
+            "skills": [],
+            "environment": {
+                "type": "daytona",
+                "force_build": false,
+                "delete": true,
+                "cpu_enforcement_policy": "auto",
+                "memory_enforcement_policy": "auto",
+                "extra_docker_compose": [],
+                "kwargs": {
+                    "snapshot_template_name": "harbor-probe-paigo-dimension-pricing-tiers-8g",
+                    "assume_global_snapshot": true
+                },
+                "extra_allowed_hosts": []
+            },
+            "verifier": {
+                "disable": true
+            }
+        }
+    ]
+}

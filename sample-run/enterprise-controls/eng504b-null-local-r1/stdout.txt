@@ -1,0 +1,67 @@
+ts-jest[backports] (WARN) "[jest-config].globals.ts-jest.tsConfig" is deprecated, use "[jest-config].globals.ts-jest.tsconfig" instead.
+ts-jest[backports] (WARN) Your Jest configuration is outdated. Use the CLI to help migrating it: ts-jest config:migrate <config-file>.
+FAIL src/billing/customerBillingScheduleMigration.gold.spec.ts
+  ● Test suite failed to run
+
+    Cannot find module './billing.service.js' from 'billing/customerBillingScheduleMigration.gold.spec.ts'
+
+      1 | import { NotFoundException } from '@nestjs/common';
+      2 |
+    > 3 | import { BillingService } from './billing.service.js';
+        | ^
+      4 | import { Billing, billingScheduleConsumers } from './entities/billing.entity.js';
+      5 | import { CustomerService } from '../customer/customer.service.js';
+      6 | import { schedulerType, SupportedMeasurementFrequencies } from '../scheduler/dto/scheduler.dto.js';
+
+      at Resolver._throwModNotFoundError (../node_modules/jest-resolve/build/resolver.js:491:11)
+      at Object.<anonymous> (billing/customerBillingScheduleMigration.gold.spec.ts:3:1)
+
+FAIL src/billing/billing.service.spec.ts
+  ● BillingService › should be defined
+
+    Nest can't resolve dependencies of the BillingService (InfluxService, ?, InvoicesService). Please make sure that the argument ServicesService at index [1] is available in the RootTestModule context.
+
+    Potential solutions:
+    - Is RootTestModule a valid NestJS module?
+    - If ServicesService is a provider, is it part of the current RootTestModule?
+    - If ServicesService is exported from a separate @Module, is that module imported within RootTestModule?
+      @Module({
+        imports: [ /* the Module containing ServicesService */ ]
+      })
+
+      at TestingInjector.lookupComponentInParentModules (../node_modules/@nestjs/core/injector/injector.js:241:19)
+      at TestingInjector.resolveComponentInstance (../node_modules/@nestjs/core/injector/injector.js:194:33)
+      at TestingInjector.resolveComponentInstance (../node_modules/@nestjs/testing/testing-injector.js:16:45)
+      at resolveParam (../node_modules/@nestjs/core/injector/injector.js:116:38)
+          at async Promise.all (index 1)
+      at TestingInjector.resolveConstructorParams (../node_modules/@nestjs/core/injector/injector.js:131:27)
+      at TestingInjector.loadInstance (../node_modules/@nestjs/core/injector/injector.js:57:13)
+      at TestingInjector.loadProvider (../node_modules/@nestjs/core/injector/injector.js:84:9)
+          at async Promise.all (index 3)
+      at TestingInstanceLoader.createInstancesOfProviders (../node_modules/@nestjs/core/injector/instance-loader.js:47:9)
+
+Test Suites: 2 failed, 2 total
+Tests:       1 failed, 1 total
+Snapshots:   0 total
+Time:        2.441 s
+Test results written to: ../tmp/jest-unit.json
+Force exiting Jest: Have you considered using `--detectOpenHandles` to detect async operations that kept running after all tests finished?
+{
+  "tests": [
+    {
+      "name": "BillingService should be defined",
+      "status": "failed"
+    }
+  ]
+}
+
+required passed: 0/8
+  NOT PASSED (not-run): Customer billing schedule migration creates a monthly billing schedule only when a new customer has an offering
+  NOT PASSED (not-run): Customer billing schedule migration replaces the billing schedule when an enrolled customer changes offering
+  NOT PASSED (not-run): Customer billing schedule migration continues an offering update when the previous billing schedule is already absent
+  NOT PASSED (not-run): Customer billing schedule migration builds an invoice from customer usage and records its billed time range
+  NOT PASSED (not-run): Customer billing schedule migration routes billing scheduler emissions exclusively to the billing queue
+  NOT PASSED (not-run): Customer billing schedule migration keeps non-billing scheduler emissions on the data queue
+  NOT PASSED (not-run): Customer billing schedule migration returns no usage rather than failing when a customer has no offering
+  NOT PASSED (failed): BillingService should be defined
+reward: 0

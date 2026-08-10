@@ -1,0 +1,1598 @@
+diff --git a/grails-app/services/com/bankScraper/bank/BankService.groovy b/grails-app/services/com/bankScraper/bank/BankService.groovy
+index 413699b413f73af13ab5492ca0e6a88ba1424154..a9d6c28daff27637262c737b05d93e97e28dea2b 100644
+--- a/grails-app/services/com/bankScraper/bank/BankService.groovy
++++ b/grails-app/services/com/bankScraper/bank/BankService.groovy
+@@ -739,9 +739,6 @@ class BankService implements ApplicationContextAware {
+                 case Enums.Bank.CENTRAL_BANK:
+                     centralBankPdfService.resolveBankStatementAccountTypeForBasicDetails(processedBankStatementVO)
+                     break
+-                case Enums.Bank.CITY_UNION:
+-                    cityUnionBankPdfService.resolveBankStatementAccountTypeForBasicDetails(processedBankStatementVO)
+-                    break
+                 case Enums.Bank.CORPORATION:
+                     corporationPdfService.resolveBankStatementAccountTypeForBasicDetails(processedBankStatementVO)
+                     break
+@@ -784,9 +781,6 @@ class BankService implements ApplicationContextAware {
+                 case Enums.Bank.NAINITAL:
+                     nainitalBankPdfService.resolveBankStatementAccountTypeForBasicDetails(processedBankStatementVO)
+                     break
+-                case Enums.Bank.PNB:
+-                    pnbPdfService.resolveBankStatementAccountTypeForBasicDetails(processedBankStatementVO)
+-                    break
+                 case Enums.Bank.PUNJAB_MAHARASHTRA_CO_OP_BANK:
+                     punjabAndMaharashtraBankPdfService.resolveBankStatementAccountTypeForBasicDetails(processedBankStatementVO)
+                     break
+@@ -799,15 +793,9 @@ class BankService implements ApplicationContextAware {
+                 case Enums.Bank.MODEL_CO_OPERATIVE_BANK:
+                     modelCoOperativePdfService.resolveBankStatementAccountTypeForBasicDetails(processedBankStatementVO)
+                     break
+-                case Enums.Bank.HSBC:
+-                    hsbcPdfService.resolveBankStatementAccountTypeForBasicDetails(processedBankStatementVO)
+-                    break
+                 case Enums.Bank.YES:
+                     yesPdfService.resolveBankStatementAccountTypeForBasicDetails(processedBankStatementVO)
+                     break
+-                case Enums.Bank.KOTAK:
+-                    kotakPdfService.resolveBankStatementAccountTypeForBasicDetails(processedBankStatementVO)
+-                    break
+                 case Enums.Bank.UNITED_BANK:
+                     unitedBankOfIndiaPdfService.resolveBankStatementAccountTypeForBasicDetails(processedBankStatementVO)
+                     break
+diff --git a/grails-app/services/com/bankScraper/bank/pdf/AndhraBankPdfService.groovy b/grails-app/services/com/bankScraper/bank/pdf/AndhraBankPdfService.groovy
+index f11dea682ea69a6c946f0b415c6e5ceb24883940..4ac5f8f5f823a767309492ce932b4c17cf7d7e3b 100644
+--- a/grails-app/services/com/bankScraper/bank/pdf/AndhraBankPdfService.groovy
++++ b/grails-app/services/com/bankScraper/bank/pdf/AndhraBankPdfService.groovy
+@@ -12,13 +12,13 @@ class AndhraBankPdfService extends MainBankService {
+ 
+     public void parsePDFStatementForTransactions(ProcessedBankStatementVO processedBankStatementVO) {
+         try {
+-            String fileContent = processedBankStatementVO.processBankStatementCO.textFile.getText("UTF-8").toLowerCase()
+-            if (fileContent.find("micr") || (fileContent.find("account\\s*statement\\s*(of|for)") && fileContent.find("ifsc\\s*code"))) {
++            String fileContent = processedBankStatementVO.processBankStatementCO.textFile.getText("UTF-8")
++            if (fileContent.find("WHERE[\\s]*INDIA[\\s]*BANKS")) {
++                LogEntry.debug("========== Extracting transactions from Andhra bank account using regex ==========")
++                AndhraBankUtil.extractTransactionsUsingRegex(processedBankStatementVO)
++            } else if (fileContent.find("particulars[\\s]*chq[\\s]*no")) {
+                 LogEntry.debug("========== Extracting transactions from Andhra bank account ==========")
+                 BankTransactionUtil.extractTransactionsFromHTMLHavingDescriptionBelowDate(processedBankStatementVO)
+-            } else if (fileContent.find("particulars[\\s]*chq[\\s]*no")) {
+-                LogEntry.debug("========== Extracting transactions from Andhra bank current account ==========")
+-                AndhraBankUtil.extractTransactionsFromCurrentAccount(processedBankStatementVO)
+             }
+         } catch (Exception e) {
+             processedBankStatementVO.statementStatus.message = "Error occured during parsing pdf file for Andhra bank statement transactions. \n${e.message}"
+diff --git a/grails-app/services/com/bankScraper/bank/pdf/BankOfBarodaPdfService.groovy b/grails-app/services/com/bankScraper/bank/pdf/BankOfBarodaPdfService.groovy
+index c28ff59d50cc405a97cb9c40112996f13317a208..006af45a0b46952dff309e86ad8c0bb7627819ad 100644
+--- a/grails-app/services/com/bankScraper/bank/pdf/BankOfBarodaPdfService.groovy
++++ b/grails-app/services/com/bankScraper/bank/pdf/BankOfBarodaPdfService.groovy
+@@ -35,12 +35,9 @@ class BankOfBarodaPdfService extends MainBankService {
+     public void parsePDFStatementForTransactions(ProcessedBankStatementVO processedBankStatementVO) {
+         try {
+             String fileContent = processedBankStatementVO.processBankStatementCO.textFile.getText('UTF-8')
+-            if (fileContent.find("BRANCH[\\s]*DETAILS")) {
+-                log.debug("=== Parsing Bank Of Baroda Downloaded Current Account Statement for Transactions ***********")
+-                BankOfBarodaUtil.extractTransactionsFromDownloadedCurrentAccount(processedBankStatementVO)
+-            } else if (fileContent.find("Statement[\\s]*Criteria") && fileContent.find("Transactions[\\s]*in[\\s]*the[\\s]*date[\\s]*range") && fileContent.find("SrN")) {
++            if (fileContent.find("Statement[\\s]*Criteria") && fileContent.find("Transactions[\\s]*in[\\s]*the[\\s]*date[\\s]*range") && fileContent.find("SrN")) {
+                 log.debug("=== Parsing Bank Of Baroda Current Account Statement for Transactions ***********")
+-                BankOfBarodaUtil.extractTransactionsFromCurrentAccount(processedBankStatementVO)
++                BankTransactionUtil.extractTransactionsFromHTMLHavingDescriptionAboveDate(processedBankStatementVO)
+             } else if (fileContent.find("Joint[\\s]*Holders") && fileContent.find("PARTICULARS")) {
+                 log.debug("=== Parsing Bank Of Baroda Saving Account Statement for Transactions ***********")
+                 BankOfBarodaUtil.extractTransactionsFromSavingAccount(processedBankStatementVO)
+diff --git a/grails-app/services/com/bankScraper/bank/pdf/CentralBankPdfService.groovy b/grails-app/services/com/bankScraper/bank/pdf/CentralBankPdfService.groovy
+index d3605fd1f17e56bbc81842956c4b3a30c61762a6..85155ed751e066cb3b8790b778a4f2a4f17b2360 100644
+--- a/grails-app/services/com/bankScraper/bank/pdf/CentralBankPdfService.groovy
++++ b/grails-app/services/com/bankScraper/bank/pdf/CentralBankPdfService.groovy
+@@ -30,7 +30,7 @@ class CentralBankPdfService extends MainBankService {
+             if (fileContent.find("Account\\s*Description") && !fileContent.find("Email")) {
+                 BankTransactionUtil.extractTransactionsFromHTMLHavingDescriptionAboveDate(processedBankStatementVO)
+             } else
+-                BankTransactionUtil.extractTransactions(processedBankStatementVO)
++                BankTransactionUtil.extractTransactionsFromHTMLHavingDescriptionBelowDate(processedBankStatementVO)
+         } catch (Exception e) {
+             processedBankStatementVO.statementStatus.message = "Error occured during parsing pdf file for Central bank statement for transactions.  ${e.message}"
+             processedBankStatementVO.statementStatus.statementParsedStatus = Enums.StatementParsedStatus.ERROR
+diff --git a/grails-app/services/com/bankScraper/bank/pdf/CityUnionBankPdfService.groovy b/grails-app/services/com/bankScraper/bank/pdf/CityUnionBankPdfService.groovy
+index 3f62f9de06acc246f4c2d02f44753ca7533a0c80..82322ed50d36508dad0a123d5bfec2ffc806f090 100644
+--- a/grails-app/services/com/bankScraper/bank/pdf/CityUnionBankPdfService.groovy
++++ b/grails-app/services/com/bankScraper/bank/pdf/CityUnionBankPdfService.groovy
+@@ -3,7 +3,6 @@ package com.bankScraper.bank.pdf
+ import com.bankScraper.AppUtil
+ import com.bankScraper.Enums
+ import com.bankScraper.bank.BankTransactionUtil
+-import com.bankScraper.bank.CityUnionBankUtil
+ import com.bankScraper.bank.MainBankService
+ import com.bankScraper.bank.ProcessedBankStatementVO
+ 
+@@ -11,25 +10,6 @@ class CityUnionBankPdfService extends MainBankService {
+ 
+     //  ======================= Resolve Bank Account Type For Basic Details ======================================
+ 
+-    public void resolveBankStatementAccountTypeForBasicDetails(ProcessedBankStatementVO processedBankStatementVO) {
+-        try {
+-            String fileContent = processedBankStatementVO.processBankStatementCO.textFile.getText("UTF-8")
+-            if (fileContent.find("CUSTOMER\\s*DETAILS")) {
+-                log.debug("====== Extracting basic information from City Union Bank Downloaded current account TYPE-2 statement =======")
+-                CityUnionBankUtil.extractBasicInformationFromDownloadedCurrentAccountType2(processedBankStatementVO)
+-            } else {
+-                log.debug("====== Extracting basic information from City Union Bank Downloaded current account statement =======")
+-                CityUnionBankUtil.extractBasicInformationFromDownloadedCurrentAccount(processedBankStatementVO)
+-            }
+-        } catch (Exception e) {
+-            processedBankStatementVO.statementStatus.message = "Error occured during parsing pdf file for Citi bank statement basic details.  ${e.message}"
+-            processedBankStatementVO.statementStatus.statementParsedStatus = Enums.StatementParsedStatus.ERROR
+-            processedBankStatementVO.statementStatus.exceptionStackTrace = AppUtil.getStackTraceAsString(e)
+-            log.error(processedBankStatementVO.statementStatus.message, e)
+-        }
+-        log.debug("Original Map ===>>>>   ${processedBankStatementVO.basicDetails.properties}")
+-    }
+-
+     public void parsePDFStatementForTransactions(ProcessedBankStatementVO processedBankStatementVO) {
+         try {
+             log.debug("========== Extracting transactions from City Union Bank Downloaded current account ==========")
+diff --git a/grails-app/services/com/bankScraper/bank/pdf/HsbcPdfService.groovy b/grails-app/services/com/bankScraper/bank/pdf/HsbcPdfService.groovy
+index 281b6249f698563a9de6a34d987837e88400d579..201180ae53f42485abd0c414f8f99225851e4fe6 100644
+--- a/grails-app/services/com/bankScraper/bank/pdf/HsbcPdfService.groovy
++++ b/grails-app/services/com/bankScraper/bank/pdf/HsbcPdfService.groovy
+@@ -8,25 +8,6 @@ import com.bankScraper.bank.ProcessedBankStatementVO
+ 
+ class HsbcPdfService extends MainBankService {
+ 
+-    public void resolveBankStatementAccountTypeForBasicDetails(ProcessedBankStatementVO processedBankStatementVO) {
+-        try {
+-            String fileContent = processedBankStatementVO.processBankStatementCO.textFile.getText("UTF-8")
+-            if (fileContent.find("Additional[\\s]*narrative")) {
+-                log.debug("====== Extracting basic information from HSBC bank current account type 2 statement =======")
+-                HSBCBankUtil.extractBasicInformationFromDownloadedCurrentAccountTypeTwo(processedBankStatementVO)
+-            } else {
+-                log.debug("====== Extracting basic information from HSBC bank Downloaded current account statement =======")
+-                HSBCBankUtil.extractBasicInformationFromDownloadedCurrentAccount(processedBankStatementVO)
+-            }
+-        } catch (Exception e) {
+-            processedBankStatementVO.statementStatus.message = "Error occured during parsing pdf file for HSBC bank statement basic details.  ${e.message}"
+-            processedBankStatementVO.statementStatus.statementParsedStatus = Enums.StatementParsedStatus.ERROR
+-            processedBankStatementVO.statementStatus.exceptionStackTrace = AppUtil.getStackTraceAsString(e)
+-            log.error(processedBankStatementVO.statementStatus.message, e)
+-        }
+-        log.debug("Original Map ===>>>>   ${processedBankStatementVO.basicDetails.properties}")
+-    }
+-
+     public void parsePDFStatementForTransactions(ProcessedBankStatementVO processedBankStatementVO) {
+         try {
+             String fileContent = processedBankStatementVO.processBankStatementCO.textFile.getText("UTF-8")
+diff --git a/grails-app/services/com/bankScraper/bank/pdf/IndianOverseasPdfService.groovy b/grails-app/services/com/bankScraper/bank/pdf/IndianOverseasPdfService.groovy
+index 82832102cd062652995aa9df2b29cde10007eb10..3ec523daf4ba0ba7750d5aa2b932d69815442546 100644
+--- a/grails-app/services/com/bankScraper/bank/pdf/IndianOverseasPdfService.groovy
++++ b/grails-app/services/com/bankScraper/bank/pdf/IndianOverseasPdfService.groovy
+@@ -18,7 +18,7 @@ class IndianOverseasPdfService extends MainBankService {
+                 IndianOverseasBankUtil.extractTransactionsFromDownloadedCurrentAccount(processedBankStatementVO)
+             } else {
+                 LogEntry.debug("====== Extracting transactions from Indian Overseas Bank Account Statement =======")
+-                BankTransactionUtil.extractTransactions(processedBankStatementVO)
++                BankTransactionUtil.extractTransactionsFromHTMLHavingDescriptionBelowDate(processedBankStatementVO)
+             }
+         } catch (Exception e) {
+             processedBankStatementVO.statementStatus.message = "Error occured during parsing pdf file for Canara bank statement transactions.  ${e.message}"
+diff --git a/grails-app/services/com/bankScraper/bank/pdf/KarurVysyaPdfService.groovy b/grails-app/services/com/bankScraper/bank/pdf/KarurVysyaPdfService.groovy
+index b15857d21e9d29fdedf1a152687809236591218f..59c0147b61f366bbca43691bb39dc464f95983c3 100644
+--- a/grails-app/services/com/bankScraper/bank/pdf/KarurVysyaPdfService.groovy
++++ b/grails-app/services/com/bankScraper/bank/pdf/KarurVysyaPdfService.groovy
+@@ -2,9 +2,7 @@ package com.bankScraper.bank.pdf
+ 
+ import com.bankScraper.AppUtil
+ import com.bankScraper.Enums
+-import com.bankScraper.LogEntry
+ import com.bankScraper.bank.BankTransactionUtil
+-import com.bankScraper.bank.KarurVysyaBankUtil
+ import com.bankScraper.bank.MainBankService
+ import com.bankScraper.bank.ProcessedBankStatementVO
+ import org.apache.commons.io.FileUtils
+@@ -15,22 +13,22 @@ class KarurVysyaPdfService extends MainBankService {
+         try {
+             String fileContent = FileUtils.readFileToString(processedBankStatementVO.processBankStatementCO.textFile)
+             if (fileContent.find("Account[\\s]*Statement") && !fileContent.find("Account[\\s]*Summary")) {
+-                LogEntry.debug("========== Extracting transactions from Karur Vysya bank saving account ==========")
++                log.debug("========== Extracting transactions from Karur Vysya bank saving account ==========")
+                 BankTransactionUtil.extractTransactionsFromHTMLHavingDescriptionBelowDate(processedBankStatementVO)
+             } else if (fileContent.find("Account[\\s]*Activity")) {
+-                LogEntry.debug("====== Extracting transactionsfrom Karur Vysya bank  current account statement =======")
+-                KarurVysyaBankUtil.extractTransactionsFromCurrentAccount(processedBankStatementVO)
+-                //TODO after fixing the issue in library, call the below method
+-                //BankTransactionUtil.extractTransactionsFromHTMLHavingDescriptionAboveDate(processedBankStatementVO)
++                log.debug("====== Extracting transactionsfrom Karur Vysya bank  current account statement =======")
++                //KarurVysyaBankUtil.extractTransactionsFromCurrentAccount(processedBankStatementVO)
++                //statement have both above and below date formats.
++                BankTransactionUtil.extractTransactionsFromHTMLHavingDescriptionAboveDate(processedBankStatementVO)
+             } else {
+-                LogEntry.debug("====== Extracting transactions from Karur Vysya bank estatement current account statement =======")
++                log.debug("====== Extracting transactions from Karur Vysya bank estatement current account statement =======")
+                 BankTransactionUtil.extractTransactions(processedBankStatementVO)
+             }
+         } catch (Exception e) {
+             processedBankStatementVO.statementStatus.message = "Error occured during parsing pdf file for Karur Vysya bank statement transactions.  ${e.message}"
+             processedBankStatementVO.statementStatus.exceptionStackTrace = AppUtil.getStackTraceAsString(e)
+             processedBankStatementVO.statementStatus.statementParsedStatus = Enums.StatementParsedStatus.ERROR
+-            LogEntry.error(processedBankStatementVO.statementStatus.message, e)
++            log.error(processedBankStatementVO.statementStatus.message, e)
+         }
+     }
+ 
+diff --git a/grails-app/services/com/bankScraper/bank/pdf/KotakPdfService.groovy b/grails-app/services/com/bankScraper/bank/pdf/KotakPdfService.groovy
+index 5ad15bd6c54f00c452ebe41a7e852d32d100a59b..07b02b70a78a9c121cbe5c151101d009ec608cff 100644
+--- a/grails-app/services/com/bankScraper/bank/pdf/KotakPdfService.groovy
++++ b/grails-app/services/com/bankScraper/bank/pdf/KotakPdfService.groovy
+@@ -13,35 +13,6 @@ class KotakPdfService extends MainBankService {
+ 
+     //    ========================================= General Methods =================================
+ 
+-    public void resolveBankStatementAccountTypeForBasicDetails(ProcessedBankStatementVO processedBankStatementVO) {
+-        try {
+-            File textFile = processedBankStatementVO.processBankStatementCO.textFile
+-            String fileContent = processedBankStatementVO.processBankStatementCO.textFile.getText("UTF-8")
+-            List<String> lines = FileUtils.readLines(textFile)
+-            String titleLine = lines.get(getTitleLineIndex(lines))
+-            if (fileContent.toLowerCase().find("statement[\\s]*of[\\s]*banking[\\s]*account")) {
+-                log.debug("=== Parsing Emailed KOTAK Statement ***********")
+-                KotakBankUtil.extractBasicInformationFromEStatementSavingAccount(processedBankStatementVO)
+-            } else if (titleLine && titleLine.toLowerCase().contains("account statement")) {
+-                log.debug("=== Parsing Kotak Current Account Statement ***********")
+-                KotakBankUtil.extractBasicInformationFromDownloadedCurrentAccount(processedBankStatementVO)
+-            } else if (fileContent.find("Statement[\\s]*of[\\s]*Account[\\s]*for[\\s]*the[\\s]*Period")) {
+-                log.debug("===== Parsing Kotak Downloaded Saving Account Type-2 Statement")
+-                KotakBankUtil.extractBasicInformationFromDownloadedSavingAccountTypeTwo(processedBankStatementVO)
+-            } else {
+-                log.debug("=== Parsing Downloaded KOTAK Statement ***********")
+-                KotakBankUtil.extractBasicInformationFromDownloadedSavingAccount(processedBankStatementVO)
+-            }
+-        } catch (Exception e) {
+-            processedBankStatementVO.statementStatus.message = "Error occured during parsing pdf file for KOTAK bank statement.  ${e.message}"
+-            processedBankStatementVO.statementStatus.exceptionStackTrace = AppUtil.getStackTraceAsString(e)
+-            processedBankStatementVO.statementStatus.statementParsedStatus = Enums.StatementParsedStatus.ERROR
+-            log.error(processedBankStatementVO.statementStatus.message)
+-            e.printStackTrace()
+-        }
+-        log.debug("Original Map ===>>>>   ${processedBankStatementVO.basicDetails.properties}")
+-    }
+-
+     Integer getTitleLineIndex(List<String> lines) {
+         Integer titleLineIndex = -1
+         for (String line : lines) {
+diff --git a/grails-app/services/com/bankScraper/bank/pdf/OrientalBankOfCommercePdfService.groovy b/grails-app/services/com/bankScraper/bank/pdf/OrientalBankOfCommercePdfService.groovy
+index 237a14b8e99c02e60068057d06a47665b50e7aa7..706c0f598a77a047d2691b08a7af23f336085662 100644
+--- a/grails-app/services/com/bankScraper/bank/pdf/OrientalBankOfCommercePdfService.groovy
++++ b/grails-app/services/com/bankScraper/bank/pdf/OrientalBankOfCommercePdfService.groovy
+@@ -11,8 +11,14 @@ class OrientalBankOfCommercePdfService extends MainBankService {
+ 
+     public void parsePDFStatementForTransactions(ProcessedBankStatementVO processedBankStatementVO) {
+         try {
+-            LogEntry.debug("======Extract Transaction for statement ============")
+-            OrientalBankOfCommerceUtil.extractTransactionsFromStatement(processedBankStatementVO)
++            String fileContent = processedBankStatementVO.processBankStatementCO.textFile.getText("UTF-8")
++            if (fileContent.find("^[\\s]*REP_\\d+[\\s]+")) {
++                LogEntry.debug("======Extract Transaction for statement using regex============")
++                OrientalBankOfCommerceUtil.extractTransactionsUsingRegex(processedBankStatementVO)
++            } else {
++                LogEntry.debug("======Extract Transaction for statement ============")
++                OrientalBankOfCommerceUtil.extractTransactionsFromStatement(processedBankStatementVO)
++            }
+         } catch (Exception e) {
+             processedBankStatementVO.statementStatus.message = "Error occured during parsing pdf file for Oriental Bank of Commerce statement transactions.\n${e.message}"
+             processedBankStatementVO.statementStatus.exceptionStackTrace = AppUtil.getStackTraceAsString(e)
+diff --git a/grails-app/services/com/bankScraper/bank/pdf/PnbPdfService.groovy b/grails-app/services/com/bankScraper/bank/pdf/PnbPdfService.groovy
+index ebe92c5d0ee11c0e33b1d1601cc6d87192f06392..e22223c4dd2770f6e3fb59f131d62e51ac736ad4 100644
+--- a/grails-app/services/com/bankScraper/bank/pdf/PnbPdfService.groovy
++++ b/grails-app/services/com/bankScraper/bank/pdf/PnbPdfService.groovy
+@@ -11,28 +11,6 @@ class PnbPdfService extends MainBankService {
+ 
+     //    =================================== General Methods =====================================================
+ 
+-    public void resolveBankStatementAccountTypeForBasicDetails(ProcessedBankStatementVO processedBankStatementVO) {
+-        try {
+-            String fileContent = processedBankStatementVO.processBankStatementCO.textFile.getText("UTF-8")
+-            if (fileContent.find("Account[\\s]*Statement[\\s]*for[\\s]*Account[\\s]*Number")) {
+-                log.debug("========== Extracting basic details from Downloaded Current Account Punjab National Bank ==========")
+-                PnbBankUtil.extractBasicInformationFromDownloadedCurrentAccount(processedBankStatementVO)
+-            } else if (fileContent.find("Name\\s*&\\s*Address") && fileContent.find("Your\\s*Statement")) {
+-                log.debug("========== Extracting basic details from Downloaded Current Account Type 2 Punjab National Bank ==========")
+-                PnbBankUtil.extractBasicInformationFromDownloadedCurrentAccountTypeTwo(processedBankStatementVO)
+-            } else {
+-                log.debug("========== Extracting basic details from Emailed Saving Account Punjab National Bank ==========")
+-                PnbBankUtil.extractBasicInformationFromEmailedSavingAccount(processedBankStatementVO)
+-            }
+-        } catch (Exception e) {
+-            processedBankStatementVO.statementStatus.message = "Error occured during parsing pdf file for PNB bank statement.  ${e.message}"
+-            processedBankStatementVO.statementStatus.exceptionStackTrace = AppUtil.getStackTraceAsString(e)
+-            processedBankStatementVO.statementStatus.statementParsedStatus = Enums.StatementParsedStatus.ERROR
+-            log.error(processedBankStatementVO.statementStatus.message, e)
+-        }
+-        log.debug("Original Map ===>>>>   ${processedBankStatementVO.basicDetails.properties}")
+-    }
+-
+     public void parsePDFStatementForTransactions(ProcessedBankStatementVO processedBankStatementVO) {
+         try {
+             String fileContent = processedBankStatementVO.processBankStatementCO.textFile.getText("UTF-8")
+diff --git a/src/groovy/com/bankScraper/bank/AndhraBankUtil.groovy b/src/groovy/com/bankScraper/bank/AndhraBankUtil.groovy
+index 1a0b384bf35334a181a4e89b6b39ee2af248fbe1..7ba417988237d71c631323f4bc5457d6fa83a5c3 100644
+--- a/src/groovy/com/bankScraper/bank/AndhraBankUtil.groovy
++++ b/src/groovy/com/bankScraper/bank/AndhraBankUtil.groovy
+@@ -1,18 +1,19 @@
+ package com.bankScraper.bank
+ 
+-import com.bankScraper.*
++import com.bankScraper.AppUtil
++import com.bankScraper.BankTransactionCategory
++import com.bankScraper.Enums
++import com.bankScraper.HelperMethod
+ import com.constants.AppConstant
+-import com.giaybac.traprange.entity.Table
+ import org.apache.commons.lang.StringUtils
+-import org.jsoup.Jsoup
+-import org.jsoup.nodes.Element
+-import org.jsoup.select.Elements
++import org.apache.commons.logging.LogFactory
+ 
+-import java.text.ParseException
+ import java.text.SimpleDateFormat
+ 
+ class AndhraBankUtil {
+ 
++    private static final log = LogFactory.getLog(this)
++
+     public
+     static BankTransactionCategory calculateCorporateBankTransactionCategory(BankTransactionResponse transaction) {
+         Map<BankTransactionCategory, String> patternMap = [:]
+@@ -41,7 +42,10 @@ class AndhraBankUtil {
+                 if (StringUtils.isBlank(line)) {
+                     continue
+                 } else if (line.find("Name")) {
+-                    if (line.find("Account[\\s]*Name")) {
++                    if (line.find("A/c[.]No")) {
++                        accountHolder = line.split("A/c")[0]
++                        accountHolder = accountHolder ? accountHolder.replaceAll("Name[\\s]*:[\\s]*", "") : null
++                    } else if (line.find("Account[\\s]*Name")) {
+                         accountHolder = line.split("Account[\\s]*Name[\\s]*:")[1]
+                     } else {
+                         line = header.get(lineNumber - 1)
+@@ -61,120 +65,64 @@ class AndhraBankUtil {
+         accountHolder.trim()
+     }
+ 
+-    public static void extractTransactionsFromCurrentAccount(ProcessedBankStatementVO processedBankStatementVO) {
+-        String password = processedBankStatementVO.processBankStatementCO.password
+-        List<SimpleDateFormat> dateFormats = [new SimpleDateFormat("dd/MM/yy"), new SimpleDateFormat("dd-MMM-yyyy")]
+-        List<File> pdfFiles = HelperMethod.splitPdfDocument(processedBankStatementVO.processBankStatementCO.bankStatement, password)
+-        Integer count = 0
+-        Boolean firstDescriptionThenChqColumn = Boolean.FALSE
+-        while (count < pdfFiles.size()) {
+-            File file = pdfFiles.get(count)
+-            List<Table> tables = HelperMethod.getPDFTableList(file, password, null, null)
+-            String html = tables.get(0).toHtml()
+-            Integer firstTableIndex = -1
+-            Integer lastTableIndex = -1
+-            Integer lastPageSize = 0
+-            org.jsoup.nodes.Document document = Jsoup.parse(html)
+-            if (!document.select("table").empty) {
+-                document.select("tr").eachWithIndex { tr, index ->
+-                    if (tr.text().find("Transaction[\\s]*Description|(Particulars[\\s]*Chq[\\s]*No)")) {
+-                        firstTableIndex = index
+-                    } else if (tr.text().find("Grand[\\s]*Total")) {
+-                        lastTableIndex = index - 1
+-                    }
+-                }
+-                lastPageSize = document.select("tr").size()
+-            }
+-            lastTableIndex = lastTableIndex >= 0 ? lastPageSize - lastTableIndex : -1
+-            List<Table> finalTables = []
+-            if (firstTableIndex >= 0 && lastTableIndex >= 0) {
+-                int[] exceptLinesFirstPage = (0..firstTableIndex - 1)
+-                int[] exceptLinesLastPage = (-1..-(lastTableIndex - 1))
+-                finalTables = HelperMethod.getPDFTableList(file, password, exceptLinesFirstPage, exceptLinesLastPage)
+-            } else {
+-                int[] exceptLinesFirstPage = (0..firstTableIndex - 1)
+-                int[] exceptLinesMedianPages = []
+-                int[] exceptLinesLastPage = (-1..-(lastTableIndex - 1))
+-                def exceptLineArr = firstTableIndex >= 0 ? exceptLinesFirstPage : (lastTableIndex >= 0 ? exceptLinesLastPage : exceptLinesMedianPages)
+-                finalTables = HelperMethod.getPDFTableList(file, password, exceptLineArr, null)
+-            }
+-            String finalHTML = finalTables.empty ? "" : finalTables.get(0).toHtml()
+-            org.jsoup.nodes.Document htmlDocuemnt = Jsoup.parse(finalHTML)
+-            if (!htmlDocuemnt.select("table").empty) {
+-                Elements elements = htmlDocuemnt.select("tr")
+-                Element firstTableHeader = elements.get(0)
+-                if (firstTableHeader.hasText() && firstTableHeader.text().find("Transaction[\\s]*Description")) {
+-                    elements.remove(0)
+-                } else if (firstTableHeader.hasText() && firstTableHeader.text().find("Particulars[\\s]*Chq[\\s]*No")) {
+-                    elements.remove(0)
+-                    firstDescriptionThenChqColumn = Boolean.TRUE
+-                }
+-                if (!processedBankStatementVO.bankTransactionList && elements?.first()?.text()?.find("B/F")) {
+-                    String amount = elements.first().text().find(AppConstant.currencyRegex)
+-                    Double openingBalance = HelperMethod.getSanitizeDouble(amount)
+-                    processedBankStatementVO.bankTransactionList << BankUtil.createOpeningBalanceTransaction(openingBalance)
+-                    elements.remove(0)
+-                }
+-                Integer columnCount = elements ? elements.first().select("td").size() : 0
+-                Integer dateIndex = 0
+-                Integer balanceIndex = columnCount - 1
+-                Integer creditIndex = balanceIndex - 1
+-                Integer debitIndex = balanceIndex - 2
+-                Integer remarkIndex = dateIndex + 1
+-                Integer descriptionIndex = dateIndex + 2
+-                if (firstDescriptionThenChqColumn) {
+-                    remarkIndex = dateIndex + 2
+-                    descriptionIndex = dateIndex + 1
+-                }
+-                Integer elementCount = elements ? elements.size() : 0
+-                Integer tempCount = 0
+-                while (tempCount < elementCount) {
+-                    String date = ""
+-                    StringBuilder description = new StringBuilder("")
+-                    String amount = ""
+-                    String type = ""
+-                    String balance = ""
+-                    Element element = elements.get(tempCount)
+-                    date = element.select("td").eq(dateIndex).text()
+-                    if (StringUtils.isNotBlank(date) && StringUtils.isNotEmpty(date)) {
+-                        description.append(element.select("td").eq(descriptionIndex).text())
+-                        Integer tempDescCount = 1
+-                        while (tempCount + tempDescCount < elements.size() && StringUtils.isBlank(elements.get(tempCount + tempDescCount).select("td").eq(balanceIndex).text())) {
+-                            Element tempElement = elements.get(tempCount + tempDescCount)
+-                            if (tempElement.select("td").eq(descriptionIndex).hasText())
+-                                description.append(" " + tempElement.select("td").eq(descriptionIndex).text())
+-                            tempDescCount += 1
+-                        }
+-                        amount = element.select("td").eq(creditIndex).text() ? element.select("td").eq(creditIndex).text() : element.select("td").eq(debitIndex).text()
+-                        type = element.select("td").eq(debitIndex).text() ? Enums.BankTransactionType.DEBIT.toString() : Enums.BankTransactionType.CREDIT.toString()
+-                        balance = element.select("td").eq(balanceIndex).text()
+-                        try {
+-                            BankTransactionResponse transactionResponse = new BankTransactionResponse()
+-                            for (SimpleDateFormat format : dateFormats) {
+-                                try {
+-                                    transactionResponse.transactionDate = format.parse(date)
+-                                } catch (ParseException pe) {
+-                                }
+-                            }
+-                            transactionResponse.description = description.toString()
+-                            transactionResponse.amount = HelperMethod.getSanitizeDouble(amount)
+-                            transactionResponse.type = type
+-                            transactionResponse.balanceAfterTransaction = BankUtil.processBalanceAmount(balance)
+-                            transactionResponse.remark = element.select("td").eq(remarkIndex).text()
+-                            processedBankStatementVO.bankTransactionList << transactionResponse
+-                        } catch (Exception e) {
+-                            processedBankStatementVO.statementStatus.statementParsedStatus = Enums.StatementParsedStatus.TRANSACTION_PARTIALLY_PARSED
+-                            processedBankStatementVO.statementStatus.message = "Exception occurred during parsing Andhra Bank Current Account statement using pdf2table block====>>>>>> ${e.message}"
+-                            processedBankStatementVO.statementStatus.exceptionStackTrace = AppUtil.getStackTraceAsString(e)
+-                            LogEntry.error(processedBankStatementVO.statementStatus.message, e)
++    public static void extractTransactionsUsingRegex(ProcessedBankStatementVO processedBankStatementVO) {
++        File textFile = processedBankStatementVO.processBankStatementCO.textFile
++        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy")
++        List<StringBuilder> transactions = []
++        Double prevBalance = 0
++        String line = ""
++        textFile.withReader("UTF-8") { bufferedReader ->
++            while ((line = bufferedReader.readLine()) != null) {
++                if (StringUtils.isBlank(line)) continue
++                else if (line.find("WITHDRAWALS[\\s]*DEPOSITS[\\s]*BALANCE[\\s]*\$")) {
++                    while ((line = bufferedReader.readLine()) != null && !line.find("^[\\s]*(Page[\\s]*Total[\\s]*:)|(Unless[\\s]*the[\\s]*constituent)")) {
++                        if (StringUtils.isBlank(line) || line.find("^[\\s]*(-+[\\s]*\$)|(BROUGHT[\\s]*FORWARD)|(NEXT[\\s]*PAGE)")) continue
++                        if (line.find("^[\\s]*${AppConstant.dateRegex}")) {
++                            transactions << new StringBuilder(line)
++                        } else {
++                            transactions.last().append(line)
+                         }
+                     }
+-                    tempCount += 1
+                 }
+             }
+-            count += 1
+-            firstTableIndex = -1
+-            lastTableIndex = -1
++        }
++        line = transactions.first().toString()
++        if (line.find("B/F")) {
++            transactions.remove(0)
++            prevBalance = BankUtil.processBalanceAmount(line.find("${AppConstant.currencyRegex}[\\s]*[CcDd][Rr]"))
++            processedBankStatementVO.bankTransactionList << BankUtil.createOpeningBalanceTransaction(prevBalance)
++            processedBankStatementVO.bankTransactionList.first().transactionDate = dateFormat.parse(line.find("^[\\s]*${AppConstant.dateRegex}").trim())
++        }
++        transactions.eachWithIndex { StringBuilder transaction, int index ->
++            String date = null
++            String remark = null
++            Double balance = null
++            String description = null
++            List<String> amounts = []
++            try {
++                date = transaction.find("^[\\s]*${AppConstant.dateRegex}")?.replaceAll("[\\s]+", "")
++                amounts = transaction.findAll("[\\s]${AppConstant.currencyRegex}([\\s]*[CcDd][Rr])?[\\s]")*.replaceAll("[\\s]+", "")
++                remark = transaction.find("[\\s]\\d{3,6}[\\s]+${AppConstant.currencyRegex}[\\s]")
++                remark = remark ? remark.find("^[\\s]\\d{3,6}[\\s]").replaceAll("[\\s]+", "") : null
++                description = transaction.replaceAll(date, "").replaceAll("[\\s]${AppConstant.currencyRegex}([\\s]*[CcDd][Rr])?[\\s]", "")
++                description = remark ? description.replaceAll(remark, "") : description.trim()
++                balance = BankUtil.processBalanceAmount(amounts.last().toString())
++                BankTransactionResponse transactionResponse = new BankTransactionResponse()
++                transactionResponse.transactionDate = dateFormat.parse(date)
++                transactionResponse.description = description.replaceAll("[\\s]+", " ")
++                transactionResponse.amount = HelperMethod.getSanitizeDouble(amounts.first().toString())
++                transactionResponse.balanceAfterTransaction = balance
++                transactionResponse.remark = remark
++                transactionResponse.type = prevBalance < transactionResponse.balanceAfterTransaction ?
++                        Enums.BankTransactionType.CREDIT : Enums.BankTransactionType.DEBIT
++                processedBankStatementVO.bankTransactionList << transactionResponse
++                prevBalance = balance
++            } catch (Exception e) {
++                processedBankStatementVO.statementStatus.statementParsedStatus = Enums.StatementParsedStatus.TRANSACTION_PARTIALLY_PARSED
++                processedBankStatementVO.statementStatus.message = "Exception occurred during parsing Andhra Bank Current Account statement using regex ====>>>>>> ${e.message}"
++                processedBankStatementVO.statementStatus.exceptionStackTrace = AppUtil.getStackTraceAsString(e)
++                log.error(processedBankStatementVO.statementStatus.message, e)
++            }
+         }
+         BankUtil.checkForOpeningBalanceTransaction(processedBankStatementVO.bankTransactionList,
+                 processedBankStatementVO.basicDetails.fromDate?.getTime())
+diff --git a/src/groovy/com/bankScraper/bank/BankOfBarodaUtil.groovy b/src/groovy/com/bankScraper/bank/BankOfBarodaUtil.groovy
+index ae293751350df90d3adf8168002e21a02d9609c8..1cab1aee6eb9ae0a539fcd7ceca5fc0664f6a969 100644
+--- a/src/groovy/com/bankScraper/bank/BankOfBarodaUtil.groovy
++++ b/src/groovy/com/bankScraper/bank/BankOfBarodaUtil.groovy
+@@ -2,11 +2,7 @@ package com.bankScraper.bank
+ 
+ import com.bankScraper.*
+ import com.constants.AppConstant
+-import com.giaybac.traprange.entity.Table
+ import org.apache.commons.lang.StringUtils
+-import org.jsoup.Jsoup
+-import org.jsoup.nodes.Element
+-import org.jsoup.select.Elements
+ 
+ import java.text.SimpleDateFormat
+ import java.util.regex.Matcher
+@@ -148,217 +144,6 @@ class BankOfBarodaUtil {
+         reader.close()
+     }
+ 
+-    public
+-    static void extractTransactionsFromDownloadedCurrentAccount(ProcessedBankStatementVO processedBankStatementVO) {
+-        String password = processedBankStatementVO.processBankStatementCO.password
+-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+-        List<File> pdfFiles = HelperMethod.splitPdfDocument(processedBankStatementVO.processBankStatementCO.bankStatement, password)
+-        Integer count = 0
+-        println("Total Count of Files generated========>>>>>>>>>   ${pdfFiles.size()}")
+-        Integer firstTableIndex = -1
+-        Integer lastTableIndex = -1
+-        while (count < pdfFiles.size()) {
+-            File file = pdfFiles.get(count)
+-            List<Table> tables = HelperMethod.getPDFTableList(file, password, null, null)
+-            String html = tables.get(0).toHtml()
+-            Integer lastPageSize = 0
+-            org.jsoup.nodes.Document jsoupDocument = Jsoup.parse(html)
+-            if (!jsoupDocument.select("table").empty) {
+-                jsoupDocument.select("tr").eachWithIndex { tr, index ->
+-                    if (tr.text().find("DETAILS")) {
+-                        firstTableIndex = index + 2
+-                    }
+-                    if (tr.text().find("Visit[\\s]*us[\\s]*at") && lastTableIndex <= -1) {
+-                        lastTableIndex = index - 1
+-                    }
+-                    if (tr.text().find("NEW[\\s]*BEGINNING[\\s]*with|CLEARING") && lastTableIndex <= -1) {
+-                        lastTableIndex = index - 1
+-                    }
+-                }
+-                lastPageSize = jsoupDocument.select("tr").size()
+-            }
+-            lastTableIndex = lastTableIndex >= 0 ? lastPageSize - lastTableIndex : -1
+-            println("First Index====>>>>>  ${firstTableIndex}       page = ${count + 1}        Last Index  ===>>>>> ${lastTableIndex}")
+-            List<Table> finalTables = []
+-            if (firstTableIndex >= 0 && lastTableIndex >= 0) {
+-                int[] exceptLinesFirstPage = (0..firstTableIndex - 1)
+-                int[] exceptLinesLastPage = (-1..-(lastTableIndex - 1))
+-                finalTables = HelperMethod.getPDFTableList(file, password, exceptLinesFirstPage, exceptLinesLastPage)
+-            } else {
+-                int[] exceptLinesFirstPage = (0..firstTableIndex - 1)
+-                int[] exceptLinesMedianPages = []
+-                int[] exceptLinesLastPage = (-1..-(lastTableIndex - 1))
+-                def exceptLineArr = firstTableIndex >= 0 ? exceptLinesFirstPage : (lastTableIndex >= 0 ? exceptLinesLastPage : exceptLinesMedianPages)
+-                finalTables = HelperMethod.getPDFTableList(file, password, exceptLineArr, null)
+-            }
+-            String finalHTML = finalTables.empty ? "" : finalTables.get(0).toHtml()
+-            org.jsoup.nodes.Document jsoupDoc = Jsoup.parse(finalHTML)
+-            if (!jsoupDoc.select("table").empty) {
+-                Elements elements = jsoupDoc.select("tr")
+-                if (elements.first().text().find("OPENING[\\s]*BALANCE") && count == 0) {
+-                    Double openingBalance = HelperMethod.getSanitizeDouble(elements.first().text()
+-                            .find("[+-]?[0-9]{1,3}(?:,?[0-9]{3})*\\.[0-9]{1,2}"))
+-                    BankTransactionResponse openingBalanceTransaction = BankUtil.createOpeningBalanceTransaction(openingBalance)
+-                    processedBankStatementVO.bankTransactionList << openingBalanceTransaction
+-                    elements.remove(0)
+-                }
+-                Integer elementCount = elements.size()
+-                Integer tempCount = 0
+-                while (tempCount <= elementCount - 1) {
+-                    String date
+-                    StringBuilder description = new StringBuilder("")
+-                    String amount
+-                    String balance
+-                    Element element = elements.get(tempCount)
+-                    date = element.text().find("[0-3]?[0-9]-[0-3]?[0-9]-(?:[0-9]{2})?[0-9]{2}")
+-                    try {
+-                        if (StringUtils.isNotBlank(date) && StringUtils.isNotEmpty(date) && date) {
+-                            BankTransactionResponse transactionResponse = new BankTransactionResponse()
+-                            String textString = element.text()
+-                            transactionResponse.transactionDate = dateFormat.parse(date.toString())
+-                            textString = textString.replace(date, "")
+-                            balance = element.text().findAll("[+-]?[0-9]{1,3}(?:,?[0-9]{3})*\\.[0-9]{1,2}[\\s]*(Cr|Dr|CR|DR)?").last().toString()
+-                            transactionResponse.balanceAfterTransaction = BankUtil.processBalanceAmount(balance)
+-                            textString = textString.replace(balance, "")
+-                            amount = textString.find("[+-]?[0-9]{1,3}(?:,?[0-9]{3})*\\.[0-9]{1,2}")
+-                            transactionResponse.amount = HelperMethod.getSanitizeDouble(amount)
+-                            textString = textString.replace(amount, "")
+-                            description.append(textString)
+-                            if (!elements.get(tempCount + 1).text().find("[0-3]?[0-9]-[0-3]?[0-9]-(?:[0-9]{2})?[0-9]{2}")) {
+-                                description.append(elements.get(tempCount + 1).text())
+-                                tempCount++
+-                            }
+-                            transactionResponse.description = description.toString().replaceAll("\\|", "").trim()
+-                            transactionResponse.type = (!processedBankStatementVO.bankTransactionList ?
+-                                    processedBankStatementVO.bankTransactionList.first().balanceAfterTransaction :
+-                                    processedBankStatementVO.bankTransactionList.last().balanceAfterTransaction) > transactionResponse.balanceAfterTransaction ?
+-                                    Enums.BankTransactionType.DEBIT : Enums.BankTransactionType.CREDIT
+-                            processedBankStatementVO.bankTransactionList << transactionResponse
+-                        }
+-                    }
+-                    catch (Exception e) {
+-                        processedBankStatementVO.statementStatus.statementParsedStatus = Enums.StatementParsedStatus.TRANSACTION_PARTIALLY_PARSED
+-                        processedBankStatementVO.statementStatus.exceptionStackTrace = AppUtil.getStackTraceAsString(e)
+-                        processedBankStatementVO.statementStatus.message = "Exception occurred during parsing Bank of baroda current account statement\n${e.message}"
+-                        println(processedBankStatementVO.statementStatus.message)
+-                        e.printStackTrace()
+-                    }
+-                    tempCount += 1
+-                }
+-            }
+-            count += 1
+-            firstTableIndex = -1
+-            lastTableIndex = -1
+-        }
+-        BankUtil.checkForOpeningBalanceTransaction(processedBankStatementVO.bankTransactionList,
+-                processedBankStatementVO.basicDetails.fromDate?.getTime())
+-        BankUtil.findFromAndToDate(processedBankStatementVO.bankTransactionList.first(),
+-                processedBankStatementVO.bankTransactionList.last(),
+-                processedBankStatementVO.basicDetails)
+-        pdfFiles*.delete()
+-    }
+-
+-    public
+-    static void extractTransactionsFromCurrentAccount(ProcessedBankStatementVO processedBankStatementVO) {
+-//      Unit test for method is written in BankOfBarodaUtilSpec with name "2: BankOfBaroda : extractTransactionsFromDownloadedSavingAccount()"
+-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy")
+-        String password = processedBankStatementVO.processBankStatementCO.password
+-        List<File> pdfFiles = HelperMethod.splitPdfDocument(processedBankStatementVO.processBankStatementCO.bankStatement, password)
+-        println("Total Count of Files generated========>>>>>>>>>   ${pdfFiles.size()}")
+-        Integer firstTableIndex = -1
+-        Integer lastTableIndex = -1
+-        Integer count = 0
+-        while (count < pdfFiles.size()) {
+-            File file = pdfFiles.get(count)
+-            List<Table> tables = HelperMethod.getPDFTableList(file, password, null, null)
+-            String html = tables.get(0).toHtml()
+-            Integer lastPageSize = 0
+-            org.jsoup.nodes.Document jsoupDocument = Jsoup.parse(html)
+-            if (!jsoupDocument.select("table").empty) {
+-                jsoupDocument.select("tr").eachWithIndex { tr, index ->
+-                    if (tr.text().find("Date[\\s]*Description")) {
+-                        firstTableIndex = index + 1
+-                    }
+-                    if (tr.text().find("Total[\\s]*no.[\\s]*of[\\s]*Transactions")) {
+-                        lastTableIndex = index - 1
+-                    }
+-                }
+-                lastPageSize = jsoupDocument.select("tr").size()
+-            }
+-            lastTableIndex = lastTableIndex >= 0 ? lastPageSize - lastTableIndex : -1
+-            println("First Index====>>>>>  ${firstTableIndex}               Last Index  ===>>>>> ${lastTableIndex}")
+-            List<Table> finalTables = []
+-            if (firstTableIndex >= 0 && lastTableIndex >= 0) {
+-                int[] exceptLinesFirstPage = (0..firstTableIndex - 1)
+-                int[] exceptLinesLastPage = (-1..-(lastTableIndex - 1))
+-                finalTables = HelperMethod.getPDFTableList(file, password, exceptLinesFirstPage, exceptLinesLastPage)
+-            } else {
+-                int[] exceptLinesFirstPage = (0..firstTableIndex - 1)
+-                int[] exceptLinesMedianPages = []
+-                int[] exceptLinesLastPage = (-1..-(lastTableIndex - 1))
+-                def exceptLineArr = firstTableIndex >= 0 ? exceptLinesFirstPage : (lastTableIndex >= 0 ? exceptLinesLastPage : exceptLinesMedianPages)
+-                finalTables = HelperMethod.getPDFTableList(file, password, exceptLineArr, null)
+-            }
+-            String finalHTML = finalTables.empty ? "" : finalTables.get(0).toHtml()
+-            org.jsoup.nodes.Document jsoupDoc = Jsoup.parse(finalHTML)
+-            if (!jsoupDoc.select("table").empty) {
+-                Elements elements = jsoupDoc.select("tr")
+-                Integer dateIndex = 1
+-                Integer descriptionIndex = dateIndex + 1
+-                Integer valueDateIndex = elements.get(0).select("td").size() - 1
+-                Integer balanceIndex = valueDateIndex - 1
+-                Integer creditIndex = balanceIndex - 1
+-                Integer debitIndex = creditIndex - 1
+-                Integer elementCount = elements.size()
+-                Integer tempCount = 0
+-                while (tempCount < elementCount) {
+-                    String date = ""
+-                    StringBuilder description = new StringBuilder("")
+-                    String type = ""
+-                    String amount = ""
+-                    try {
+-                        Elements colElements = elements.get(tempCount).select("td")
+-                        date = colElements.eq(dateIndex).text()
+-                        if (date && date.find(AppConstant.dateRegex)) {
+-                            description.append(colElements.eq(descriptionIndex).text())
+-                            amount = colElements.eq(creditIndex).text().find("-\$") ? colElements.eq(debitIndex).text() : colElements.eq(creditIndex).text()
+-                            Integer tempDesCount = tempCount + 1
+-                            while (tempDesCount < elementCount && !elements.get(tempDesCount).select("td").eq(dateIndex).hasText()) {
+-                                Elements tempElements = elements.get(tempDesCount).select("td")
+-                                description.append(" " + tempElements.eq(descriptionIndex).text().trim())
+-                                tempDesCount += 1
+-                            }
+-                            BankTransactionResponse bankTransactionResponse = new BankTransactionResponse()
+-                            bankTransactionResponse.description = description.toString()
+-                            bankTransactionResponse.balanceAfterTransaction = BankUtil.processBalanceAmount(colElements.eq(balanceIndex).text())
+-                            bankTransactionResponse.amount = HelperMethod.getSanitizeDouble(amount)
+-                            bankTransactionResponse.transactionDate = dateFormat.parse(date.toString())
+-                            bankTransactionResponse.valueDate = dateFormat.parse(colElements.eq(valueDateIndex).text())
+-                            bankTransactionResponse.type = colElements.eq(debitIndex).text().find("-\$") ? Enums.BankTransactionType.CREDIT : Enums.BankTransactionType.DEBIT
+-                            processedBankStatementVO.bankTransactionList << bankTransactionResponse
+-                        }
+-                    } catch (Exception e) {
+-                        processedBankStatementVO.statementStatus.message = "======== Exception occurred during parsing Bank of Baroda statement====>>>>>> ${e.message}"
+-                        processedBankStatementVO.statementStatus.statementParsedStatus = Enums.StatementParsedStatus.TRANSACTION_PARTIALLY_PARSED
+-                        processedBankStatementVO.statementStatus.exceptionStackTrace = AppUtil.getStackTraceAsString(e)
+-                        LogEntry.error(processedBankStatementVO.statementStatus.message, e)
+-                    }
+-                    tempCount += 1
+-                }
+-            }
+-            count += 1
+-            firstTableIndex = -1
+-            lastTableIndex = -1
+-        }
+-
+-        BankUtil.checkForOpeningBalanceTransaction(processedBankStatementVO.bankTransactionList,
+-                processedBankStatementVO.basicDetails.fromDate?.getTime())
+-        BankUtil.findFromAndToDate(processedBankStatementVO.bankTransactionList.first(),
+-                processedBankStatementVO.bankTransactionList.last(), processedBankStatementVO.basicDetails)
+-        pdfFiles*.delete()
+-
+-    }
+-
+     public
+     static void extractTransactionsFromSavingAccount(ProcessedBankStatementVO processedBankStatementVO) {
+         BufferedReader reader = new BufferedReader(
+diff --git a/src/groovy/com/bankScraper/bank/BankTransactionUtil.groovy b/src/groovy/com/bankScraper/bank/BankTransactionUtil.groovy
+index 30b48c981ac415fb515d324e8cedda3a5f5029ff..a97b27a016dc821b8cf906cb6911330b2908ff1e 100644
+--- a/src/groovy/com/bankScraper/bank/BankTransactionUtil.groovy
++++ b/src/groovy/com/bankScraper/bank/BankTransactionUtil.groovy
+@@ -23,20 +23,20 @@ class BankTransactionUtil {
+ //TODO : to change to lower case
+     public static Map<String, String> headerDictionary() {
+         Map<String, String> headerMap = [:]
+-        headerMap.put("date", "(TRAN[\\s]*DT)|(Trans.[\\s]*Date)|(^n[\\s]*Date\$)|(TXN[\\s]*DATE)|(Date[\\s]*Txn)|(Transaction[\\s]*Date)|(Txn[.][\\s]*Date)|(Txn Date)|(Txn\$)|(Tran[\\s]*[Dd]ate)|(^DATE\$)|(^Transactio\$)|(^Date\$)|(Post Date)|(TRAN DATE)|(Post)|(Txn Posted Date)|(TDATE)|(^Transaction\$)|(DATE[.])|(Txn[.][\\s]*Date)")
++        headerMap.put("date", "(TRAN[\\s]*DT)|(Trans.[\\s]*Date)|(^n[\\s]*Date\$)|(TXN[\\s]*DATE)|(Date[\\s]*Txn)|(Transaction[\\s]*Date)|(Txn[.][\\s]*Date)|(Txn Date)|(Txn\$)|(Tran[\\s]*[Dd]ate)|(^DATE\$)|(^Transactio\$)|(^Date\$)|(Post Date)|(TRAN DATE)|(Post)|(Txn Posted Date)|(TDATE)|(^Transaction\$)|(DATE[.])|(Txn[.][\\s]*Date)|(Transac[\\s]*Date[\\s]*on)")
+         headerMap.put("value_date", "(Value Date)|(Value)|(VALUE DATE)")
+-        headerMap.put("description", "(DESCRIPTION)|(Transaction Details)|(Transaction Particulars)|(Transaction Remarks)|(Description)|(Particulars)|(PARTICULARS)|(Transaction\$)|(Narration)|(^Transactio\$)|(^Account\$)|(NARATION)|(Details)|(Remarks)|(Description\\\\(Remark\\\\))|(DESCRIP)|(Particular)|(DESCRIPION)|(TRANSACTION[\\s]*DETAILS)|(TRANSACTION[\\s]*DETAILS)")
++        headerMap.put("description", "(DETAILS)|(DESCRIPTION)|(Transaction Details)|(Transaction Particulars)|(Transaction Remarks)|(Description)|(Particulars)|(PARTICULARS)|(Transaction\$)|(Narration)|(^Transactio\$)|(^Account\$)|(NARATION)|(Details)|(Remarks)|(Description\\\\(Remark\\\\))|(DESCRIP)|(Particular)|(DESCRIPION)|(TRANSACTION[\\s]*DETAILS)")
+         headerMap.put("branch_code", "(Branch Code)|(Branch)|(Location)|(Branch[\\s]*Name)")
+         headerMap.put("cheque_no", "(REFERENCE)|(Ref No./Cheque)|(Ref)|(Chq.No.)|(Chq./Ref.No.)|(Cheque)|(Cheque Number)|(Cheque No)|(ChequeN[\\s]*o[\\s]*.)|(Cheque No.)|(Chq No)|(CHQ NO)|(Chq.No)|(CHEQUE[\\s]*NO[.])|(Chq[\\s]*no[.])|(Cheque[\\s]*Num)|(CHQ[.]NO[.])")
+-        headerMap.put("credit", "(CREDITS)|(Credit Amt)|(Deposit Amt)|(Credit[\\s]*\\(INR\\)[\\s]*Balance)|(Credit\$)|(Deposit Amount)|(Deposits)|(DEPOSITS)|(Deposit)|(CR)|(CREDIT)|(Credit[\\s]*Amount)|(DEPOSIT)|(Cr[\\s]*Amount)")
++        headerMap.put("credit", "(Credit\\(Rs\\))|(CREDITS)|(Credit Amt)|(Deposit Amt)|(Credit[\\s]*\\(INR\\)[\\s]*Balance)|(Credit\$)|(Deposit Amount)|(Deposits)|(DEPOSITS)|(Deposit)|(CR)|(CREDIT)|(Credit[\\s]*Amount)|(DEPOSIT)|(Cr[\\s]*Amount)")
+         headerMap.put("debit", "(Withdrawal[\\s]*Amt.)|(DEBITS)|(Debit Amt)|(Withdrawl Amt)|(Debit[\\s]*\\(INR\\)[\\s]*Balance)|(Debit)|(Withdrawal Amount)|(Withdrawals)|(WITHDRAWALS)|(Withdrawal\$)|(WITHDRAWLS)|(DR)|(DEBIT)|(WithDrawal)|(Debit[\\s]*Amount)|(WITHDRAWAL)|(Dr[\\s]*Amount)")
+         headerMap.put("amount_type", "(CR/DR)|(Cr/D[\\s]*r)|(DR/CR)|(Debit\\/)|(DR[|]CR)")
+         headerMap.put("amount", "(Withdrawal Deposit \\(Cr\\) \\(Dr\\)\\/)|(Transaction[\\s]*Amount)|(Withdrawal[\\s]*\\(Dr\\)\\/)|(Trxn Amount)|(Amount[\\s]*\\(INR\\))|(Transaction\$)|(Amount\\(in Rs.\\))|(^Amount)")
+-        headerMap.put("balance_brought_forward", "(B/F[\\s]*[.]{3})|(Balance Brought Forward)|(^B/F\$)|(B/f)|(Opening Balance)|(Brought[\\s]*Forward)|(BALANCE[\\s]*FORWARD)|(BALANCE[\\s]*B/F)|(Balance[\\s]*B/F)")
++        headerMap.put("balance_brought_forward", "(OPENING[\\s]*BALANCE)|(B/F[\\s]*[.]{3})|(Balance Brought Forward)|(^B/F\$)|(B/f)|(Opening Balance)|(Brought[\\s]*Forward)|(BALANCE[\\s]*FORWARD)|(BALANCE[\\s]*B/F)|(Balance[\\s]*B/F)")
+         headerMap.put("balance_after_transaction", "(Balance[\\s]*Amount)|(Day's[\\s]*Closing)|(Balance[(]IN)|(Closing)|(Running[\\s]*Balance)|(Closing[\\s]*Balance)|(BALANCE AMT)|(^Balance)|(BALANCE)|(Closing Balnace*)|(Available)|(Balance\\(in RS.\\))|(Account[\\s]*Bala([n])?ce)|(Account[\\s]*Balance[\\s]*\\(INR\\))|(Total)")
+         headerMap.put("instrument_id", "(Instrument[\\s]*ID)")
+         headerMap.put("closing_balance", "(Closing[\\s]*Balance)|(TOTAL)|(Total)")
+-        headerMap.put("junk_date", "(^TOTAL\$)|(Final Tally)|(Account Total)|(Branch Total)|(Closing Balance)|(Grand Total)")
++        headerMap.put("junk_date", "(^TOTAL\$)|(Final Tally)|(Account Total)|(Branch Total)|(Closing Balance)|(Grand Total)|(Txn[.][\\s]*Date)")
+         headerMap.put("acceptable_date", "(^(0[0-9]|1[1-2]):[0-5][0-9]:[0-5][0-9])")
+         return headerMap
+     }
+@@ -60,6 +60,8 @@ class BankTransactionUtil {
+     public static SimpleDateFormat dateFormatFromString(String date) {
+         if (date.find("([0-3]?[0-9] [A-z]{3,4} [0-9]{4})")) {
+             return new SimpleDateFormat("dd MMM yyyy")
++        } else if (date.find("([0-3]?[0-9][A-z]{3,4}[0-9]{4})")) {
++            return new SimpleDateFormat("ddMMMyyyy")
+         } else if (date.find("[0-3]?[0-9]/[0-1]?[0-9]/[0-9]{4}")) {
+             return new SimpleDateFormat("dd/MM/yyyy")
+         } else if (date.find("[0-3][0-9]-[0-1][0-9]-[0-9]{4}")) {
+@@ -167,8 +169,9 @@ class BankTransactionUtil {
+             headerValue = headerValue.replaceAll(" ", "")
+         } else if (headerValue.find("^[0-3][0-9]-[A-Z][a-z]{2}-[0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2}")) {
+             headerValue = headerValue.replaceAll("[0-9]{2}:[0-9]{2}:[0-9]{2}", "").trim()
+-        } else if (headerValue.find("([0-3]?[0-9]-[\\s]*[A-z]{3,4}-[\\s]*[0-9]{2,4})")) {
+-            headerValue = headerValue.replaceAll(" ", "").trim()
++        } else if (headerValue.find("([0-3]?[0-9]-?[\\s]*[A-z]{3,4}-[\\s]*[0-9]{2,4})")) {
++            headerValue = headerValue.replaceAll(" ", "").replaceAll("-", "")
++            headerValue = headerValue.find("JUY") ? headerValue.replaceAll("JUY", "JUL") : headerValue
+         } else if (headerValue.find("^-\$")) {
+             headerValue = headerValue.replaceAll("-", "").trim()
+         }
+@@ -201,7 +204,7 @@ class BankTransactionUtil {
+                             bankTransactionResponse.transactionDate = dateFormat ? new SimpleDateFormat(dateFormat).parse(headerValue) : dateFormatFromString(headerValue).parse(headerValue)
+                         } else if (headerName.find(headerMap.value_date) && headerValue && dateRegexFromString(headerValue) && headerValue.find(dateRegexFromString(headerValue))) {
+                             bankTransactionResponse.valueDate = dateFormat ? new SimpleDateFormat(dateFormat).parse(headerValue) : dateFormatFromString(headerValue).parse(headerValue)
+-                        } else if (headerName.find(headerMap.description) && !headerValue.find(dateRegex) && !headerValue.find("^-?[0-9,]*\\.[0-9]{0,2}\$")) {
++                        } else if (headerName.find(headerMap.description) && !headerValue.find(dateRegex) && !headerValue.find("^-?[0-9,]*\\.[\\s]*[0-9]{0,2}\$")) {
+                             bankTransactionResponse.description = bankTransactionResponse.description ? bankTransactionResponse.description + " " + headerValue : headerValue
+                         } else if (!headerValue.equals("") && headerName.find(headerMap.cheque_no)) {
+                             bankTransactionResponse.remark = jsonPageObject.data.get(i).get(j).value
+@@ -237,6 +240,9 @@ class BankTransactionUtil {
+                     bankTransactionResponse.amount = 0
+                     bankTransactionResponse.type = Enums.BankTransactionType.CREDIT
+                 }
++                if (!bankTransactionResponse.description && bankTransactionResponse.transactionDate) {
++                    bankTransactionResponse.description = "  "
++                }
+                 if (!amount.equals("") && (!amountType.equals("") || amount.find("(Cr)|(Dr)"))) {
+                     if (amountType.find("(^DR\$)|(^Debit\$)") || amount.find("Dr")) {
+                         bankTransactionResponse.type = Enums.BankTransactionType.DEBIT
+@@ -492,10 +498,10 @@ class BankTransactionUtil {
+             while (lineCount < elementCount) {
+                 try {
+                     Element element = elements.get(lineCount)
+-                    if (element.select("td").eq(bankTransactionHeaderIndex.transactionDateIndex).text().trim() && element.select("td").eq(bankTransactionHeaderIndex.balanceAfterTransactionIndex).text().trim()) {
++                    if (element.select("td").eq(bankTransactionHeaderIndex.transactionDateIndex).text().trim() || element.select("td").eq(bankTransactionHeaderIndex.balanceAfterTransactionIndex).text().trim()) {
+                         BankTransactionResponse bankTransactionResponse = new BankTransactionResponse()
+                         date = element.select("td").eq(bankTransactionHeaderIndex.transactionDateIndex).text().trim()
+-                        date = processValue(date)
++                        date = date ? processValue(date) : ""
+                         try {
+                             bankTransactionResponse.transactionDate = dateFormatFromString(date).parse(date)
+                         } catch (Exception e) {
+@@ -573,6 +579,7 @@ class BankTransactionUtil {
+                             !rowElements.eq(bankTransactionHeaderIndex.descriptionIndex).text().trim().find(headerMap.balance_brought_forward)) {
+                         BankTransactionResponse bankTransactionResponse = new BankTransactionResponse()
+                         date = rowElements.eq(bankTransactionHeaderIndex.transactionDateIndex).text().trim()
++                        date = date ? processValue(date) : ""
+                         bankTransactionResponse.transactionDate = dateFormatFromString(date).parse(date)
+                         date = bankTransactionHeaderIndex.valueDateIndex ? rowElements.eq(bankTransactionHeaderIndex.valueDateIndex).text().trim() : null
+                         bankTransactionResponse.valueDate = date ? dateFormatFromString(date).parse(date) : null
+diff --git a/src/groovy/com/bankScraper/bank/BankUtil.groovy b/src/groovy/com/bankScraper/bank/BankUtil.groovy
+index 4df36b35c4fdba2cc42d40a93ab397d086b7e5bb..ca23d736788cd84378a816c8b51f49917b00ff13 100644
+--- a/src/groovy/com/bankScraper/bank/BankUtil.groovy
++++ b/src/groovy/com/bankScraper/bank/BankUtil.groovy
+@@ -630,7 +630,7 @@ class BankUtil {
+ //    Janakalyan Sahakari: CCHYP/32
+     public static String extractSpecialAccountNumber(List<String> header) {
+         String accountNumber = ""
+-        List<String> regexList = ["[\\s]+[A-Z]{2}/[0-9]{3,5}[\\s]+", "[0-9]{4}/[0-9]{2}/[0-9]{3}/[0-9]{6}", "X{7}[0-9]{4}", "\\d{4}-\\d{8}-\\d{6}", "[\\s][A-Z]{5}/\\d{2}[\\s]*", "\\d{4}/\\d{4}"]
++        List<String> regexList = ["[\\s]+[A-Z]{2}/[0-9]{3,5}[\\s]+", "[0-9]{4}/[0-9]{2}/[0-9]{3}/[0-9]{6}", "X{7}[0-9]{4}", "\\d{4}-\\d{8}-\\d{6}", "[\\s][A-Z]{5}/\\d{2}[\\s]*", "[\\s]\\d{4}/\\d{4}", "\\d{3}-\\d{6}-\\d{3}"]
+         outerLoop:
+         for (line in header) {
+             for (regex in regexList) {
+@@ -653,7 +653,7 @@ class BankUtil {
+         String linesToBeExcluded = "([+]91)|(CIF\\s*ID)|(ECS\\s*A/c\\s*No)|(Ref[\\s]*:[\\s]*[0-9]+)|(Customer[\\s]*ID[\\s]*:[\\s]*[0-9]{12,})" +
+                 "|(^[\\s]*Address[\\s]*MICR[\\s]*Code[\\s]*\\d{10}\$)|(^[\\s]*Customer[\\s]*Id[\\s]*\\d{16}[\\s]*\$)" +
+                 "|(^[\\s]*Phone[\\s]*No[\\s]*\\d{10}[\\s]*\$)|(\\[IVW_.+\\]\$)|(91[0-9]{10}[\\s]+[0-9]{6})|(Contact[\\s]*Number)|(^[0-9]{10}\$)" +
+-                "|(^CUSTOMER[\\s]*ID[\\s]*:[\\s]*[0-9]{10}[\\s]*\$)"
++                "|(^CUSTOMER[\\s]*ID[\\s]*:[\\s]*[0-9]{10}[\\s]*\$)|(^Mobile[\\s]*No)|(Ph[\\s]*:)|(^[\\s]*REP_\\d{14}[\\s]*\$)"
+         Integer noOfLinesInHeader = header?.size()
+         Integer currentLineNo = 0
+         while (currentLineNo < noOfLinesInHeader && !accountNumber) {
+@@ -832,6 +832,12 @@ class BankUtil {
+             case Enums.Bank.YES:
+                 accountHolder = YesBankUtil.extractAccountHolderName(header, processedBankStatementVO)
+                 break
++            case Enums.Bank.CITY_UNION:
++                accountHolder = CityUnionBankUtil.extractAccountHolderName(header, processedBankStatementVO)
++                break
++            case Enums.Bank.HSBC:
++                accountHolder = HSBCBankUtil.extractAccountHolderName(header, processedBankStatementVO)
++                break
+         }
+         accountHolder
+     }
+diff --git a/src/groovy/com/bankScraper/bank/CityUnionBankUtil.groovy b/src/groovy/com/bankScraper/bank/CityUnionBankUtil.groovy
+index 0dcb40484222ec017dcaf336e22c72ef6ac0cdd3..d1b11575f6a919fdadd8e002d33ce5d87717ad76 100644
+--- a/src/groovy/com/bankScraper/bank/CityUnionBankUtil.groovy
++++ b/src/groovy/com/bankScraper/bank/CityUnionBankUtil.groovy
+@@ -1,15 +1,9 @@
+ package com.bankScraper.bank
+ 
+-import com.bankScraper.AppUtil
+ import com.bankScraper.BankTransactionCategory
+-import com.bankScraper.Enums
+ import org.apache.commons.lang.StringUtils
+ import org.apache.commons.logging.LogFactory
+ 
+-import java.text.SimpleDateFormat
+-import java.util.regex.Matcher
+-import java.util.regex.Pattern
+-
+ class CityUnionBankUtil {
+ 
+     private static final log = LogFactory.getLog(this)
+@@ -41,73 +35,24 @@ class CityUnionBankUtil {
+     }
+ 
+     public
+-    static void extractBasicInformationFromDownloadedCurrentAccount(ProcessedBankStatementVO processedBankStatementVO) {
+-        SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy")
+-        if (!AppUtil.isValidStatementFile(processedBankStatementVO.processBankStatementCO.textFile, ["Account\\s*No", "Statement\\s*Dt"])) {
+-            return
+-        }
+-        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(processedBankStatementVO.processBankStatementCO.textFile), "UTF-8"))
+-        BasicDetailsResponse basicDetailsResponse = processedBankStatementVO.basicDetails
+-        String line = ""
+-        while (line != null) {
+-            line = reader.readLine()
+-            if (StringUtils.isBlank(line)) {
+-                continue
+-            } else if (line.find("Account\\s*No")) {
+-                basicDetailsResponse.accountNumber = line.find("[0-9]{15}")?.trim()
+-                Pattern datePattern = Pattern.compile("(([0-9])|([0-2][0-9])|([3][0-1]))-(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)-....")
+-                Matcher dateMatcher = datePattern.matcher(line)
+-                List<String> dateList = []
+-                while (dateMatcher.find()) {
+-                    dateList << dateMatcher.group()
+-                }
+-                if (dateList.size() == 2) {
+-                    String fromDate = dateList.get(0)
+-                    String toDate = dateList.get(1)
+-                    basicDetailsResponse.fromDate = format.parse(fromDate).toCalendar()
+-                    basicDetailsResponse.toDate = format.parse(toDate).toCalendar()
+-                }
+-            } else if (line.find("Mode\\s*Of\\s*Operation")) {
+-                line = reader.readLine()
+-                basicDetailsResponse.accountHolderName = line?.trim()
+-                break
+-            }
+-        }
+-        processedBankStatementVO.statementStatus.statementParsedStatus = Enums.StatementParsedStatus.PARTIALLY_PARSED
+-        processedBankStatementVO.statementStatus.message = "Basic details extracted Successfully"
+-        reader.close()
+-    }
+-
+-    public
+-    static void extractBasicInformationFromDownloadedCurrentAccountType2(ProcessedBankStatementVO processedBankStatementVO) {
+-        File textFile = processedBankStatementVO.processBankStatementCO.textFile
+-        if (!AppUtil.isValidStatementFile(textFile, ["ACCOUNT\\s*NO", "ACCOUNT\\s*TYPE", "CUSTOMER\\s*DETAILS", "STATEMENT\\s*OF\\s*ACCOUNT"])) {
+-            return
+-        }
+-        BasicDetailsResponse basicDetailsResponse = processedBankStatementVO.basicDetails
+-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy")
+-        String line = ""
+-        textFile.withReader("UTF-8") { reader ->
+-            while ((line = reader.readLine()) != null) {
++    static String extractAccountHolderName(List<String> header, ProcessedBankStatementVO processedBankStatementVO) {
++        String accountHolder = ""
++        for (int lineNumber = 0; (lineNumber < header.size() && !accountHolder); lineNumber++) {
++            try {
++                String line = header.get(lineNumber)
+                 if (StringUtils.isBlank(line)) {
+                     continue
+-                } else if (line.find("ACCOUNT\\s*NO\\s*")) {
+-                    basicDetailsResponse.accountNumber = line.find("[0-9]{15}")?.trim()
++                } else if (line.find("Mode\\s*Of\\s*Operation")) {
++                    accountHolder = header.get(++lineNumber)?.trim()
+                 } else if (line.find("CUSTOMER\\s*DETAILS")) {
+-                    basicDetailsResponse.accountHolderName = line.split(":")[1]?.trim()
+-                } else if (line.find("STATEMENT\\s*OF\\s*ACCOUNT\\s*from")) {
+-                    List<String> dateList = line.findAll("[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}")
+-                    if (dateList.size() == 2) {
+-                        String fromDate = dateList.get(0)
+-                        String toDate = dateList.get(1)
+-                        basicDetailsResponse.fromDate = format.parse(fromDate).toCalendar()
+-                        basicDetailsResponse.toDate = format.parse(toDate).toCalendar()
+-                    }
+-                    break
++                    accountHolder = line.split(":")[1]?.trim()
+                 }
+             }
++            catch (Exception e) {
++                println("== ERROR : An exception occurred while extracting ACCOUNT_HOLDER_NAME for ${processedBankStatementVO.processBankStatementCO.bank} bank ==> " + e)
++                e.printStackTrace()
++            }
+         }
+-        processedBankStatementVO.statementStatus.statementParsedStatus = Enums.StatementParsedStatus.PARTIALLY_PARSED
+-        processedBankStatementVO.statementStatus.message = "Basic details extracted Successfully"
++        accountHolder.trim()
+     }
+ }
+\ No newline at end of file
+diff --git a/src/groovy/com/bankScraper/bank/HSBCBankUtil.groovy b/src/groovy/com/bankScraper/bank/HSBCBankUtil.groovy
+index f550dd8cfacb4c3c3bcf8f7aa99cb98a63be81a0..bae2ff56c2bd21b7808416fd297e4155b53dd21f 100644
+--- a/src/groovy/com/bankScraper/bank/HSBCBankUtil.groovy
++++ b/src/groovy/com/bankScraper/bank/HSBCBankUtil.groovy
+@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat
+ class HSBCBankUtil {
+ 
+     private static Log log = LogFactory.getLog(this)
++
+     public static BankTransactionCategory calculateTransactionCategory(BankTransactionResponse transaction) {
+         Map<BankTransactionCategory, String> patternMap = [:]
+         patternMap.put(BankTransactionCategory.ATM_WITHDRAWAL, "wdl|atm wd")
+@@ -47,31 +48,6 @@ class HSBCBankUtil {
+         return transactionCategory
+     }
+ 
+-    public
+-    static void extractBasicInformationFromDownloadedCurrentAccount(ProcessedBankStatementVO processedBankStatementVO) {
+-        if (!AppUtil.isValidStatementFile(processedBankStatementVO.processBankStatementCO.textFile, ["Account[\\s]*Statement", "Statement[\\s]*Details"])) {
+-            return
+-        }
+-        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(processedBankStatementVO.processBankStatementCO.textFile), "UTF-8"))
+-        BasicDetailsResponse basicDetailsResponse = processedBankStatementVO.basicDetails
+-        String line = ""
+-        while (line != null) {
+-            line = reader.readLine()
+-            if (StringUtils.isBlank(line)) {
+-                continue
+-            } else if (line?.find("Statement[\\s]*Date")) {
+-                basicDetailsResponse.accountHolderName = line?.split("Statement")[0]?.trim()
+-            } else if (line?.find("[0-9]{3}-[0-9]{6}-[0-9]{3}") && line.find("Account[\\s]*Number")) {
+-                String accountNumber = line.find("[0-9]{3}-[0-9]{6}-[0-9]{3}")
+-                basicDetailsResponse.accountNumber = HelperMethod.getSanitizeAccountNumber(accountNumber)
+-                break
+-            }
+-        }
+-        processedBankStatementVO.statementStatus.statementParsedStatus = Enums.StatementParsedStatus.PARTIALLY_PARSED
+-        processedBankStatementVO.statementStatus.message = "Basic details extracted Successfully"
+-        reader.close()
+-    }
+-
+     public
+     static void extractTransactionsFromDownloadedCurrentAccount(ProcessedBankStatementVO processedBankStatementVO) {
+         String password = processedBankStatementVO.processBankStatementCO.password
+@@ -185,33 +161,6 @@ class HSBCBankUtil {
+     }
+ 
+ 
+-    public
+-    static void extractBasicInformationFromDownloadedCurrentAccountTypeTwo(ProcessedBankStatementVO processedBankStatementVO) {
+-        if (!AppUtil.isValidStatementFile(processedBankStatementVO.processBankStatementCO.textFile, ["Account[\\s]*number", "Additional[\\s]*narrative"])) {
+-            return
+-        }
+-        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(processedBankStatementVO.processBankStatementCO.textFile), "UTF-8"))
+-        BasicDetailsResponse basicDetailsResponse = processedBankStatementVO.basicDetails
+-        String line = ""
+-        while (line != null) {
+-            line = reader.readLine()
+-            if (StringUtils.isBlank(line)) {
+-                continue
+-            } else if (line?.find("Acc[\\s]*name")) {
+-                basicDetailsResponse.accountHolderName = line?.find("(?<=name\\s).*(?=\\sAccount)")?.trim()
+-            } else if (line?.find("[0-9]{3}-[0-9]{6}-[0-9]{3}") && line.find("Account[\\s]*number")) {
+-                String accountNumber = line.find("[0-9]{3}-[0-9]{6}-[0-9]{3}")
+-                basicDetailsResponse.accountNumber = HelperMethod.getSanitizeAccountNumber(accountNumber)
+-                break
+-            }
+-        }
+-        processedBankStatementVO.statementStatus.statementParsedStatus = Enums.StatementParsedStatus.PARTIALLY_PARSED
+-        processedBankStatementVO.statementStatus.message = "Basic details extracted Successfully"
+-        reader.close()
+-
+-    }
+-
+-
+     public
+     static void extractTransactionsFromDownloadedCurrentAccountTypeTwo(ProcessedBankStatementVO processedBankStatementVO) {
+         String password = processedBankStatementVO.processBankStatementCO.password
+@@ -314,5 +263,27 @@ class HSBCBankUtil {
+         pdfFiles*.delete()
+     }
+ 
++    public
++    static String extractAccountHolderName(List<String> header, ProcessedBankStatementVO processedBankStatementVO) {
++        String accountHolder = ""
++        for (int lineNumber = 0; (lineNumber < header.size() && !accountHolder); lineNumber++) {
++            try {
++                String line = header.get(lineNumber)
++                if (StringUtils.isBlank(line)) {
++                    continue
++                } else if (line?.find("Statement[\\s]*Date")) {
++                    accountHolder = line?.split("Statement")[0]?.trim()
++                } else if (line?.find("Acc[\\s]*name")) {
++                    accountHolder = line?.find("(?<=name\\s).*(?=\\sAccount)")?.trim()
++                }
++            }
++            catch (Exception e) {
++                println("== ERROR : An exception occurred while extracting ACCOUNT_HOLDER_NAME for ${processedBankStatementVO.processBankStatementCO.bank} bank ==> " + e)
++                e.printStackTrace()
++            }
++        }
++        accountHolder.trim()
++    }
++
+ 
+ }
+diff --git a/src/groovy/com/bankScraper/bank/KotakBankUtil.groovy b/src/groovy/com/bankScraper/bank/KotakBankUtil.groovy
+index b2047df781cb6505ff7dd9a13762b4a252623b2a..b52016d02d2196672a3b467c070cb0fa37514795 100644
+--- a/src/groovy/com/bankScraper/bank/KotakBankUtil.groovy
++++ b/src/groovy/com/bankScraper/bank/KotakBankUtil.groovy
+@@ -1,7 +1,6 @@
+ package com.bankScraper.bank
+ 
+ import com.bankScraper.*
+-import com.constants.AppConstant
+ import com.giaybac.traprange.entity.Table
+ import org.apache.commons.lang.StringUtils
+ import org.jsoup.Jsoup
+@@ -85,49 +84,6 @@ class KotakBankUtil {
+         accountHolder.trim()
+     }
+ 
+-    public
+-    static void extractBasicInformationFromEStatementSavingAccount(ProcessedBankStatementVO processedBankStatementVO) {
+-//      Unit test for method is written in KotakBankUtilSpec with name "2: Kotak Bank : extractBasicInformationFromEStatementSavingAccount()"
+-        File file = processedBankStatementVO.processBankStatementCO.textFile
+-        if (!AppUtil.isValidStatementFile(file, ["Account[\\s]*No[\\s]*."])) {
+-            return
+-        }
+-        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))
+-        BasicDetailsResponse basicDetails = processedBankStatementVO.basicDetails
+-        String line = ""
+-        int lineNumber = 1
+-
+-        while (line != null) {
+-            line = reader.readLine()
+-            if (StringUtils.isBlank(line)) {
+-                continue
+-            }
+-            if (lineNumber == 2) {
+-                basicDetails.accountHolderName = line.trim()
+-            }
+-            if (line.find("Date[\\s]*As[\\s]*On")) {
+-                line = reader.readLine()
+-                basicDetails.accountHolderName = line.trim()
+-            } else if (line && StringUtils.isNotBlank(line) && line.contains("Period ")) {
+-                List<String> dateList = line.findAll(AppConstant.dateRegex)
+-                if (dateList.size() == 2) {
+-                    String fromDate = dateList.get(0)
+-                    String toDate = dateList.get(1)
+-                    SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yy")
+-                    basicDetails.fromDate = format.parse(fromDate).toCalendar()
+-                    basicDetails.toDate = format.parse(toDate).toCalendar()
+-                }
+-            } else if (line && StringUtils.isNotBlank(line) && line.contains("Account No.")) {
+-                String[] accountStr = line.split(" ")
+-                if (accountStr[2] && StringUtils.isNotBlank(accountStr[2]))
+-                    basicDetails.accountNumber = accountStr[2]
+-            }
+-            lineNumber++
+-        }
+-        processedBankStatementVO.statementStatus.statementParsedStatus = Enums.StatementParsedStatus.PARTIALLY_PARSED
+-        processedBankStatementVO.statementStatus.message = "Basic details extracted Successfully"
+-        reader.close()
+-    }
+ 
+     public
+     static void extractTransactionsFromMergedEStatementSavingAccount(ProcessedBankStatementVO processedBankStatementVO) {
+@@ -234,153 +190,6 @@ class KotakBankUtil {
+         reader.close()
+     }
+ 
+-    public
+-    static void extractBasicInformationFromDownloadedSavingAccount(ProcessedBankStatementVO processedBankStatementVO) {
+-//      Unit test for method is written in KotakBankUtilSpec with name "1: Kotak Bank : extractBasicInformationFromDownloadedSavingAccount()"
+-        File file = processedBankStatementVO.processBankStatementCO.textFile
+-        if (!AppUtil.isValidStatementFile(file, ["Period", "Date[\\s]*Narration", "Branch", "Nominee[\\s]*Registered", "Account[\\s]*No"])) {
+-            return
+-        }
+-        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))
+-        BasicDetailsResponse basicDetails = processedBankStatementVO.basicDetails
+-        String line = ""
+-        String prevLine = ""
+-        while ((line = reader.readLine()) != null) {
+-            if (line.contains("Period")) {
+-                basicDetails.accountHolderName = line.split("Period")[0].trim()
+-                try {
+-                    List<String> dateList = line.findAll(AppConstant.dateRegex)
+-                    if (dateList.size() == 2) {
+-                        String fromDate = dateList.get(0)
+-                        String toDate = dateList.get(1)
+-                        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy")
+-                        basicDetails.fromDate = format.parse(fromDate).toCalendar()
+-                        basicDetails.toDate = format.parse(toDate).toCalendar()
+-                    }
+-                } catch (Exception ex) {
+-                    println(ex.printStackTrace())
+-                }
+-            } else if (line.find("Account[\\s]+No")) {
+-                if (line.find("[0-9]{10}")) {
+-                    basicDetails.accountNumber = line.find("[0-9]{10}")
+-                } else if (prevLine.find("[0-9]{10}")) {
+-                    basicDetails.accountNumber = prevLine.find("[0-9]{10}")
+-                }
+-            }
+-            prevLine = line
+-        }
+-        processedBankStatementVO.statementStatus.statementParsedStatus = Enums.StatementParsedStatus.PARTIALLY_PARSED
+-        processedBankStatementVO.statementStatus.message = "Basic details extracted Successfully"
+-        reader.close()
+-    }
+-
+-    public
+-    static void extractBasicInformationFromDownloadedSavingAccountTypeTwo(ProcessedBankStatementVO processedBankStatementVO) {
+-//      Unit test for method is written in KotakBankUtilSpec with name "4: Kotak Bank : extractBasicInformationFromDownloadedSavingAccountTypeTwo()"
+-        File file = processedBankStatementVO.processBankStatementCO.textFile
+-        if (!AppUtil.isValidStatementFile(file, ["IFSC", "MICR[\\s]*CODE[\\s]*:", "Customer[\\s]*Number", "Statement[\\s]*Date", "Statement[\\s]*of[\\s]*Account[\\s]*for[\\s]*the[\\s]*Period", "Opening[\\s]*Balance"])) {
+-            return
+-        }
+-        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))
+-        BasicDetailsResponse basicDetails = processedBankStatementVO.basicDetails
+-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy")
+-        Boolean customerNumberFound = Boolean.FALSE
+-        Boolean datesHasBeenSet = Boolean.FALSE
+-        String line = ""
+-        while (line != null) {
+-            line = reader.readLine()
+-            if (StringUtils.isBlank(line)) {
+-                continue
+-            } else if (line.find("Customer[\\s]*Number") && !customerNumberFound) {
+-                basicDetails.accountHolderName = line.split("Customer[\\s]*Number")[0].trim()
+-                line = reader.readLine()
+-                while (!line.find("Account[\\s]*Type")) {
+-                    if (line.find("Account[\\s]*Number")) {
+-                        basicDetails.accountNumber = line.split("Account[\\s]*Number")[1].replaceAll("\\u00A0", " ").trim()
+-                        customerNumberFound = Boolean.TRUE
+-                        break
+-                    }
+-                    line = reader.readLine()
+-                }
+-            } else if (line.find("Statement[\\s]*of[\\s]*Account[\\s]*for[\\s]*the[\\s]*Period") && !datesHasBeenSet) {
+-                Pattern datePattern = Pattern.compile("[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}")
+-                Matcher dateMatcher = datePattern.matcher(line)
+-                List<String> dateList = []
+-                while (dateMatcher.find()) {
+-                    dateList << dateMatcher.group()
+-                }
+-                if (dateList.size() == 2) {
+-                    String fromDate = dateList.get(0)
+-                    String toDate = dateList.get(1)
+-                    processedBankStatementVO.basicDetails.fromDate = dateFormat.parse(fromDate).toCalendar()
+-                    processedBankStatementVO.basicDetails.toDate = dateFormat.parse(toDate).toCalendar()
+-                }
+-                datesHasBeenSet = Boolean.TRUE
+-            } else if (line.find("Opening[\\s]*Balance")) {
+-                String openingBalance = line.find("[0-9]*,?[0-9]*,?[0-9]*,?[0-9]+\\.{1}[0-9]{2}").trim()
+-                BankTransactionResponse transactionResponse = BankUtil.createOpeningBalanceTransaction(HelperMethod.getSanitizeDouble(openingBalance))
+-                processedBankStatementVO.bankTransactionList << transactionResponse
+-            }
+-        }
+-        processedBankStatementVO.statementStatus.statementParsedStatus = Enums.StatementParsedStatus.PARTIALLY_PARSED
+-        processedBankStatementVO.statementStatus.message = "Basic details extracted Successfully"
+-        reader.close()
+-    }
+-
+-
+-    public
+-    static void extractBasicInformationFromDownloadedCurrentAccount(ProcessedBankStatementVO processedBankStatementVO) {
+-//      Unit test for method is written in KotakBankUtilSpec with name "7: Kotak Bank : extractBasicInformationFromDownloadedCurrentAccount()"
+-        String dateRegex = "[0-3]?[0-9]/[0-1]?[0-9]/(?:[0-9]{2})?[0-9]{2}"
+-        String dateFormat = "dd/MM/yyyy"
+-        File file = processedBankStatementVO.processBankStatementCO.textFile
+-        if (!AppUtil.isValidStatementFile(file, ["Account[\\s]*Statement", "Account[\\s]*No", "Branch"])) {
+-            return
+-        }
+-        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))
+-        BasicDetailsResponse basicDetails = processedBankStatementVO.basicDetails
+-        Boolean openingBalanceNotSet = Boolean.TRUE
+-        String line = ""
+-        while (line != null) {
+-            line = reader.readLine()
+-            if (StringUtils.isBlank(line) || line.find("Closing[\\s]+balance")) {
+-                continue
+-            } else if (line.find("Account[\\s]+Statement")) {
+-                line = reader.readLine().trim()
+-                if (!line) {
+-                    line = reader.readLine()
+-                    basicDetails.accountHolderName = line.split("Account")[0].trim()
+-                    basicDetails.accountNumber = line.find("[0-9]{10}")
+-                } else {
+-                    basicDetails.accountHolderName = line
+-                }
+-            } else if (line.find("Account[\\s]+No")) {
+-                basicDetails.accountNumber = line.split("Account[\\s]+No")[1].replace(".", "").trim()
+-            } else if (openingBalanceNotSet && line.find("Opening[\\s]+balance")) {
+-                Double openingBalance = HelperMethod.getSanitizeDouble(line.find("[+-]?[0-9]{1,3}(?:,?[0-9]{3})*\\.[0-9]{2}").trim())
+-                processedBankStatementVO.bankTransactionList << BankUtil.createOpeningBalanceTransaction(openingBalance)
+-                openingBalanceNotSet = Boolean.FALSE
+-            } else if (line.contains("Period") && line.contains("From") && line.contains("To")) {
+-                Pattern datePattern = Pattern.compile(dateRegex)
+-                Matcher dateMatcher = datePattern.matcher(line)
+-                List<String> dateList = []
+-                while (dateMatcher.find()) {
+-                    dateList << dateMatcher.group()
+-                }
+-                if (dateList.size() == 2) {
+-                    String fromDate = dateList.get(0)
+-                    String toDate = dateList.get(1)
+-                    SimpleDateFormat format = new SimpleDateFormat(dateFormat)
+-                    basicDetails.fromDate = format.parse(fromDate).toCalendar()
+-                    basicDetails.toDate = format.parse(toDate).toCalendar()
+-                }
+-            }
+-        }
+-        processedBankStatementVO.statementStatus.statementParsedStatus = Enums.StatementParsedStatus.PARTIALLY_PARSED
+-        processedBankStatementVO.statementStatus.message = "Basic details extracted Successfully"
+-        reader.close()
+-    }
+-
+     public
+     static void extractTransactionsFromDownloadedCurrentAccount(ProcessedBankStatementVO processedBankStatementVO) {
+ //      Unit test for method is written in KotakBankUtilSpec with name "8: Kotak Bank : extractTransactionsFromDownloadedCurrentAccount()"
+diff --git a/src/groovy/com/bankScraper/bank/OrientalBankOfCommerceUtil.groovy b/src/groovy/com/bankScraper/bank/OrientalBankOfCommerceUtil.groovy
+index 7350c8b87c8a542e6ec839dbd394fa9cc390e089..ad3c127ae23a6189334b22cc6caeaa1ea9cc2201 100644
+--- a/src/groovy/com/bankScraper/bank/OrientalBankOfCommerceUtil.groovy
++++ b/src/groovy/com/bankScraper/bank/OrientalBankOfCommerceUtil.groovy
+@@ -4,6 +4,7 @@ import com.bankScraper.*
+ import com.constants.AppConstant
+ import com.giaybac.traprange.entity.Table
+ import org.apache.commons.lang.StringUtils
++import org.apache.commons.logging.LogFactory
+ import org.jsoup.Jsoup
+ import org.jsoup.select.Elements
+ 
+@@ -13,6 +14,8 @@ import java.util.regex.Pattern
+ 
+ class OrientalBankOfCommerceUtil {
+ 
++    private static final log = LogFactory.getLog(this)
++
+     public static BankTransactionCategory calculateTransactionCategory(BankTransactionResponse transaction) {
+         Map<BankTransactionCategory, String> patternMap = [:]
+         patternMap.put(BankTransactionCategory.CASH_DEPOSIT, "by\\scash|cash\\s*deposit|cam/cash")
+@@ -91,11 +94,12 @@ class OrientalBankOfCommerceUtil {
+                     accountHolder = line.split("Customer[\\s]*Name[\\s]*:")[1]
+                     line = ++lineNumber < header.size() ? header.get(lineNumber) : ""
+                     accountHolder = line.find("Bank[\\s]*Address") ? accountHolder : accountHolder + " " + line
++                } else if (line.find("^[\\s]*TO:[\\s]*DATE")) {
++                    accountHolder = header.get(++lineNumber).trim()
+                 }
+             }
+             catch (Exception e) {
+-                println("== ERROR : An exception occurred while extracting ACCOUNT_HOLDER_NAME for ${processedBankStatementVO.processBankStatementCO.bank} bank ==> " + e)
+-                e.printStackTrace()
++                log.error("== ERROR : An exception occurred while extracting ACCOUNT_HOLDER_NAME for ${processedBankStatementVO.processBankStatementCO.bank} bank ==> ${e.message}", e)
+             }
+         }
+         accountHolder.trim()
+@@ -259,7 +263,7 @@ class OrientalBankOfCommerceUtil {
+                             processedBankStatementVO.statementStatus.statementParsedStatus = Enums.StatementParsedStatus.TRANSACTION_PARTIALLY_PARSED
+                             processedBankStatementVO.statementStatus.exceptionStackTrace = AppUtil.getStackTraceAsString(e)
+                             processedBankStatementVO.statementStatus.message = "======== Exception occurred during parsing Oriental Bank Of Commerce statement====>>>>>> ${e.message}"
+-                            LogEntry.error(processedBankStatementVO.statementStatus.message, e)
++                            log.error(processedBankStatementVO.statementStatus.message, e)
+                         }
+                     }
+                     tempCount += 1
+@@ -324,4 +328,69 @@ class OrientalBankOfCommerceUtil {
+         descriptionList
+     }
+ 
++    public static void extractTransactionsUsingRegex(ProcessedBankStatementVO processedBankStatementVO) {
++        File textFile = processedBankStatementVO.processBankStatementCO.textFile
++        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy")
++        List<StringBuilder> transactions = []
++        Double prevBalance = 0
++        String line = ""
++        textFile.withReader("UTF-8") { bufferedReader ->
++            while ((line = bufferedReader.readLine()) != null) {
++                if (StringUtils.isBlank(line)) continue
++                else if (line.find("\\(INR\\)[\\s]*\\(INR\\)[\\s]*\$")) {
++                    while ((line = bufferedReader.readLine()) != null && !line.find("^[\\s]*(Page[\\s]*Total[\\s]*:)|(Unless[\\s]*the[\\s]*constituent)")) {
++                        if (StringUtils.isBlank(line) || line.find("^[\\s]*(-+[\\s]*\$)|(Page[\\s]+\\d[\\s]*\$)|(REP_\\d[\\s]*\$)|(NEXT[\\s]*PAGE)")) continue
++                        if (line.find("^[\\s]*${AppConstant.dateRegex}")) {
++                            transactions << new StringBuilder(line)
++                        } else {
++                            transactions.last().append(line)
++                        }
++                    }
++                }
++            }
++        }
++        line = transactions.first().toString()
++        if (line.find("B/F")) {
++            transactions.remove(0)
++            prevBalance = BankUtil.processBalanceAmount(line.find("${AppConstant.currencyRegex}[\\s]*[CcDd][Rr]"))
++            processedBankStatementVO.bankTransactionList << BankUtil.createOpeningBalanceTransaction(prevBalance)
++            processedBankStatementVO.bankTransactionList.first().transactionDate = dateFormat.parse(line.find("^[\\s]*${AppConstant.dateRegex}").trim())
++        }
++        transactions.eachWithIndex { StringBuilder transaction, int index ->
++            String date = null
++            String remark = null
++            Double balance = null
++            String description = null
++            List<String> amounts = []
++            try {
++                date = transaction.find("^[\\s]*${AppConstant.dateRegex}")?.replaceAll("[\\s]+", "")
++                amounts = transaction.findAll("[\\s]${AppConstant.currencyRegex}([\\s]*[CcDd][Rr])?")*.replaceAll("[\\s]+", "")
++                remark = transaction.find("[\\s]\\d{5,6}[\\s]+${AppConstant.currencyRegex}[\\s]")
++                remark = remark ? remark.find("^[\\s]\\d{5,6}[\\s]").replaceAll("[\\s]+", "") : null
++                description = transaction.replaceAll(date, "").replaceAll("[\\s]${AppConstant.currencyRegex}([\\s]*[CcDd][Rr])?", "")
++                description = remark ? description.replaceAll(remark, "") : description.trim()
++                balance = BankUtil.processBalanceAmount(amounts.last().toString())
++                BankTransactionResponse transactionResponse = new BankTransactionResponse()
++                transactionResponse.transactionDate = dateFormat.parse(date)
++                transactionResponse.description = description.replaceAll("[\\s]+", " ")
++                transactionResponse.amount = HelperMethod.getSanitizeDouble(amounts.first().toString())
++                transactionResponse.balanceAfterTransaction = balance
++                transactionResponse.remark = remark
++                transactionResponse.type = prevBalance < transactionResponse.balanceAfterTransaction ?
++                        Enums.BankTransactionType.CREDIT : Enums.BankTransactionType.DEBIT
++                processedBankStatementVO.bankTransactionList << transactionResponse
++                prevBalance = balance
++            } catch (Exception e) {
++                processedBankStatementVO.statementStatus.statementParsedStatus = Enums.StatementParsedStatus.TRANSACTION_PARTIALLY_PARSED
++                processedBankStatementVO.statementStatus.message = "Exception occurred during parsing Andhra Bank Current Account statement using regex ====>>>>>> ${e.message}"
++                processedBankStatementVO.statementStatus.exceptionStackTrace = AppUtil.getStackTraceAsString(e)
++                log.error(processedBankStatementVO.statementStatus.message, e)
++            }
++        }
++        BankUtil.checkForOpeningBalanceTransaction(processedBankStatementVO.bankTransactionList,
++                processedBankStatementVO.basicDetails.fromDate?.getTime())
++        BankUtil.findFromAndToDate(processedBankStatementVO.bankTransactionList.first(),
++                processedBankStatementVO.bankTransactionList.last(), processedBankStatementVO.basicDetails)
++    }
++
+ }
+diff --git a/src/groovy/com/bankScraper/bank/PnbBankUtil.groovy b/src/groovy/com/bankScraper/bank/PnbBankUtil.groovy
+index 684eb4d6a182286da23c01b7760ffbf12e72133f..0d83b1b2980e1eded723b4c637be11e8843cc5ec 100644
+--- a/src/groovy/com/bankScraper/bank/PnbBankUtil.groovy
++++ b/src/groovy/com/bankScraper/bank/PnbBankUtil.groovy
+@@ -4,7 +4,6 @@ import com.bankScraper.AppUtil
+ import com.bankScraper.BankTransactionCategory
+ import com.bankScraper.Enums
+ import com.bankScraper.HelperMethod
+-import com.constants.AppConstant
+ import com.giaybac.traprange.entity.Table
+ import org.apache.commons.lang.StringUtils
+ import org.apache.commons.logging.LogFactory
+@@ -12,10 +11,7 @@ import org.jsoup.Jsoup
+ import org.jsoup.nodes.Element
+ import org.jsoup.select.Elements
+ 
+-import java.text.ParseException
+ import java.text.SimpleDateFormat
+-import java.util.regex.Matcher
+-import java.util.regex.Pattern
+ 
+ class PnbBankUtil {
+ 
+@@ -72,59 +68,6 @@ class PnbBankUtil {
+         return transactionCategory
+     }
+ 
+-    public
+-    static void extractBasicInformationFromEmailedSavingAccount(ProcessedBankStatementVO processedBankStatementVO) {
+-//      Unit test for method is written in PnbBankUtilSpec with name "3: PNB Bank : extractBasicInformationFromEmailedSavingAccount()"
+-        File file = processedBankStatementVO.processBankStatementCO.textFile
+-        if (!AppUtil.isValidStatementFile(file, ["Account[\\s]*Statement[\\s]*for[\\s]*Account[\\s]*Number", "Branch[\\s]*Details", "Customer[\\s]*Details", "Customer[\\s]*Name[\\s]*:", "Nominee[\\s]*:"])) {
+-            return
+-        }
+-        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))
+-        BasicDetailsResponse basicDetails = processedBankStatementVO.basicDetails
+-        List<SimpleDateFormat> dateFormatList = [new SimpleDateFormat("dd/MM/yyyy"), new SimpleDateFormat("dd-MM-yyyy"), new SimpleDateFormat("dd-MMM-yyyy")]
+-        SimpleDateFormat dateFormat = null
+-        String line = ""
+-        while (line != null) {
+-            line = reader.readLine()
+-            if (StringUtils.isBlank(line)) continue
+-            else if (StringUtils.isBlank(processedBankStatementVO.basicDetails.accountNumber) && line.find("[0-9]{16}") && line.find("Number")) {
+-                Matcher accountMatcher = Pattern.compile("[0-9]{16}").matcher(line)
+-                if (accountMatcher.find())
+-                    basicDetails.accountNumber = accountMatcher.group()
+-            } else if (line.find("Customer[\\s]*Name[\\s]*:")) {
+-                if (line.find("Name[\\s]*:[\\s]*[A-z]+")) {
+-                    processedBankStatementVO.basicDetails.accountHolderName = line.split(":")[1].trim()
+-                } else {
+-                    while (!line.find("Nominee[\\s]*:") && !processedBankStatementVO.basicDetails.accountHolderName) {
+-                        if (Pattern.compile("^Customer\\sName:").matcher(line).find()) {
+-                            processedBankStatementVO.basicDetails.accountHolderName = line.split(":").size() > 1 ?
+-                                    line.split(":")[1].trim() : ''
+-                            break
+-                        }
+-                        line = reader.readLine()
+-                    }
+-                }
+-            } else if (line.find("Statement[\\s]*Period") && line.contains(":") && line.contains("to")) {
+-                Matcher matcher = Pattern.compile("([0-9]{2}[/|-][0-9]{2}[/|-][0-9]{4})|(([0-9])|([0-2][0-9])|([3][0-1]))-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-....").matcher(line)
+-                List<String> dates = []
+-                while (matcher.find())
+-                    dates << matcher.group()
+-                String fromDateStr = dates.get(0)
+-                dateFormatList.each { format ->
+-                    try {
+-                        processedBankStatementVO.basicDetails.fromDate = format.parse(dates.get(0)).toCalendar()
+-                        processedBankStatementVO.basicDetails.toDate = format.parse(dates.get(1)).toCalendar()
+-                    } catch (Exception e) {
+-
+-                    }
+-                }
+-            }
+-        }
+-        processedBankStatementVO.statementStatus.statementParsedStatus = Enums.StatementParsedStatus.PARTIALLY_PARSED
+-        processedBankStatementVO.statementStatus.message = "Basic details extracted Successfully"
+-        reader.close()
+-    }
+-
+     public static void extractTransactionsFromEmailedSavingAccount(ProcessedBankStatementVO processedBankStatementVO) {
+ //      Unit test for method is written in PnbBankUtilSpec with name "4: PNB Bank : extractTransactionsFromEmailedSavingAccount()"
+ //        TODO: Needs to be moved to a central place to handle all kinds of date of all statements
+@@ -272,78 +215,6 @@ class PnbBankUtil {
+         pdfFiles*.delete()
+     }
+ 
+-    public
+-    static void extractBasicInformationFromDownloadedCurrentAccount(ProcessedBankStatementVO processedBankStatementVO) {
+-//      Unit test for method is written in PnbBankUtilSpec with name "1: PNB Bank : extractBasicInformationFromDownloadedCurrentAccount()"
+-        File file = processedBankStatementVO.processBankStatementCO.textFile
+-        if (!AppUtil.isValidStatementFile(file, ["Account[\\s]*Statement[\\s]*for[\\s]*Account[\\s]*Number", "Branch[\\s]*Details", "Customer[\\s]*Details", "Customer[\\s]*Name[\\s]*:", "Nominee[\\s]*:", "Statement[\\s]*Period"])) {
+-            return
+-        }
+-        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))
+-        BasicDetailsResponse basicDetails = processedBankStatementVO.basicDetails
+-        List<SimpleDateFormat> dateFormats = [new SimpleDateFormat("dd/MM/yyyy"), new SimpleDateFormat("dd-MM-yyyy"),
+-                                              new SimpleDateFormat("dd-MM-yy"), new SimpleDateFormat("dd-MMM-yy"), new SimpleDateFormat("dd/MM/yy")]
+-        String line = ""
+-        while (line != null) {
+-            line = reader.readLine()
+-            if (StringUtils.isBlank(line)) continue
+-            else if (line.find("Account[\\s]*Statement[\\s]*for[\\s]*Account[\\s]*Number") &&
+-                    StringUtils.isBlank(basicDetails.accountNumber)) {
+-                basicDetails.accountNumber = line.split("Number")[1].trim()
+-            } else if (line.find("Customer[\\s]*Name[\\s]*:")) {
+-                basicDetails.accountHolderName = line.replaceAll("Customer[\\s]*Name:[\\s]*", "")
+-            } else if (line.find("Statement[\\s]*Period") && line.contains(":") && line.contains("to")) {
+-                List<String> dates = line.findAll(AppConstant.dateRegex)
+-                for (SimpleDateFormat dateFormat : dateFormats) {
+-                    try {
+-                        basicDetails.fromDate = dateFormat.parse(dates.get(0)).toCalendar()
+-                        basicDetails.toDate = dateFormat.parse(dates.get(1)).toCalendar()
+-                    }
+-                    catch (ParseException pe) {
+-                    }
+-                }
+-            }
+-        }
+-        processedBankStatementVO.statementStatus.statementParsedStatus = Enums.StatementParsedStatus.PARTIALLY_PARSED
+-        processedBankStatementVO.statementStatus.message = "Basic details extracted Successfully"
+-        reader.close()
+-    }
+-
+-
+-    public
+-    static void extractBasicInformationFromDownloadedCurrentAccountTypeTwo(ProcessedBankStatementVO processedBankStatementVO) {
+-//      Unit test for method is written in PnbBankUtilSpec with name "6: PNB Bank : extractBasicInformationFromDownloadedCurrentAccountTypeTwo()"
+-        File file = processedBankStatementVO.processBankStatementCO.textFile
+-        if (!AppUtil.isValidStatementFile(file, ["Your[\\s]*Statement", "Particulars", "Statement Period"])) {
+-            return
+-        }
+-        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))
+-        BasicDetailsResponse basicDetails = processedBankStatementVO.basicDetails
+-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy")
+-        String line = ""
+-        while (line != null) {
+-            line = reader.readLine()
+-            if (StringUtils.isBlank(line)) continue
+-            else if (line.find("Cust[\\s]*ID")) {
+-                line = reader.readLine()
+-                if (line.find("Name"))
+-                    basicDetails.accountHolderName = line?.split("Name")[0]?.trim()
+-            } else if (line.find("Account[\\s]*No") && line.find("[0-9]{16}")) {
+-                basicDetails.accountNumber = line.find("[0-9]{16}")
+-            } else if (line.find("Statement[\\s]*Period") && line.contains(":") && line.contains("to")) {
+-                String regex = "[0-3]?[0-9]-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-(?:[0-9]{2})?[0-9]{2}"
+-                List dateList = line.findAll(regex)
+-                if (dateList.size() >= 2) {
+-                    basicDetails.fromDate = dateFormat.parse(dateList.get(0)).toCalendar()
+-                    basicDetails.toDate = dateFormat.parse(dateList.get(1)).toCalendar()
+-                }
+-                break
+-            }
+-        }
+-        processedBankStatementVO.statementStatus.statementParsedStatus = Enums.StatementParsedStatus.PARTIALLY_PARSED
+-        processedBankStatementVO.statementStatus.message = "Basic details extracted Successfully"
+-        reader.close()
+-    }
+ 
+     public
+     static String extractAccountHolderName(List<String> header, ProcessedBankStatementVO processedBankStatementVO) {

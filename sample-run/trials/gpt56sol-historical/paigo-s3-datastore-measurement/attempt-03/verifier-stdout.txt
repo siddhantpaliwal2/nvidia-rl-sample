@@ -1,0 +1,101 @@
+FAIL src/measurement-config/datastoreMeasurement.gold.spec.ts
+  ● S3 datastore measurement configuration › provisions a scoped IAM role and returns ingestion and DLQ locations
+
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: ObjectContaining {"dlq": "s3://usage-dlq/business-1", "iamRoleArn": "arn:aws:iam::paigo:role/datastore", "ingestion": "s3://usage-bucket/business-1", "region": "us-east-1"}
+    Received: undefined
+
+      132 |             } as any),
+      133 |         );
+    > 134 |         expect(result).toEqual(
+          |                        ^
+      135 |             expect.objectContaining({
+      136 |                 iamRoleArn: 'arn:aws:iam::paigo:role/datastore',
+      137 |                 ingestion: 's3://usage-bucket/business-1',
+
+      at Object.<anonymous> (measurement-config/datastoreMeasurement.gold.spec.ts:134:24)
+
+  ● S3 datastore measurement configuration › updates account trust while preserving the existing role and external ID
+
+    TypeError: measurement_config_entity_1.DatastoreAccessInformation.updateAccess is not a function
+
+      157 |
+      158 |     it('updates account trust while preserving the existing role and external ID', async () => {
+    > 159 |         const result = await DatastoreAccessInformation.updateAccess(
+          |                                                         ^
+      160 |             new MeasurementConfigEntity({
+      161 |                 measurementId: 'measurement-1',
+      162 |                 measurementMode: measurementMode.datastoreBased,
+
+      at Object.<anonymous> (measurement-config/datastoreMeasurement.gold.spec.ts:159:57)
+
+  ● S3 datastore measurement configuration › creates, persists, and returns provisioned datastore configuration
+
+    TypeError: client_iam_1.IAMClient is not a constructor
+
+      508 |         dbAccessInformation.dlq = `s3://${dlqBucket}/${businessID}/`;
+      509 |
+    > 510 |         const iam = new IAMClient({ region });
+          |                     ^
+      511 |         const externalId = dbAccessInformation.externalId || v4();
+      512 |         const trustPolicy = JSON.stringify({
+      513 |             Version: '2012-10-17',
+
+      at Function.setupAccess (measurement-config/entities/measurement-config.entity.ts:510:21)
+      at Function.setupAccessIfRequired (measurement-config/entities/measurement-config.entity.ts:269:47)
+      at MeasurementConfigService.create (measurement-config/measurement-config.service.ts:103:39)
+      at Object.<anonymous> (measurement-config/datastoreMeasurement.gold.spec.ts:187:38)
+
+  ● S3 connector usage delivery › derives the business from the object key and ingests a valid record
+
+    TypeError: usage_controller_1.PrivateAPIUsageController is not a constructor
+
+      207 |     it('derives the business from the object key and ingests a valid record', async () => {
+      208 |         const create = jest.fn(async () => ({ message: 'created' }));
+    > 209 |         const controller = new PrivateAPIUsageController({ create } as any);
+          |                            ^
+      210 |         await expect(
+      211 |             controller.dbUsage({
+      212 |                 s3Key: 'business-1/2023/usage.ndjson',
+
+      at Object.<anonymous> (measurement-config/datastoreMeasurement.gold.spec.ts:209:28)
+
+  ● S3 connector usage delivery › writes malformed connector records to the mirrored message key in the DLQ
+
+    TypeError: usage_controller_1.PrivateAPIUsageController is not a constructor
+
+      220 |
+      221 |     it('writes malformed connector records to the mirrored message key in the DLQ', async () => {
+    > 222 |         const controller = new PrivateAPIUsageController({ create: jest.fn() } as any);
+          |                            ^
+      223 |         await controller.dbUsage({ s3Key: 'business-1/customer/usage.ndjson', message: '{not-json' });
+      224 |         expect(mockS3Send).toHaveBeenCalledTimes(1);
+      225 |         const command = mockS3Send.mock.calls[0][0];
+
+      at Object.<anonymous> (measurement-config/datastoreMeasurement.gold.spec.ts:222:28)
+
+  ● S3 connector usage delivery › keeps the generic DLQ writer usable for an already-relative source key
+
+    TypeError: Cannot read properties of undefined (reading 's3')
+
+      244 |                 orginalProcessedName: 'customer/file.json',
+      245 |             },
+    > 246 |             DlqType.s3,
+          |                     ^
+      247 |             'business-1',
+      248 |         );
+      249 |         expect(mockS3Send.mock.calls[0][0].input.Key).toBe('business-1/customer/file.json.message.text');
+
+      at Object.<anonymous> (measurement-config/datastoreMeasurement.gold.spec.ts:246:21)
+
+[32m[Nest] 3923  - [39m08/08/2026, 10:08:19 AM [32m    LOG[39m [38;5;3m[MeasurementConfigService] [39m[32mCreating Measurement Config with the following inputs[39m
+[32m[Nest] 3923  - [39m08/08/2026, 10:08:19 AM [32m    LOG[39m [38;5;3m[MeasurementConfigService] [39m[32m[object Object][39m
+PASS src/appControllerHistorical.gold.spec.ts
+
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       6 failed, 4 passed, 10 total
+Snapshots:   0 total
+Time:        1.462 s
+Test results written to: ../tmp/jest-unit.json
+Force exiting Jest: Have you considered using `--detectOpenHandles` to detect async operations that kept running after all tests finished?

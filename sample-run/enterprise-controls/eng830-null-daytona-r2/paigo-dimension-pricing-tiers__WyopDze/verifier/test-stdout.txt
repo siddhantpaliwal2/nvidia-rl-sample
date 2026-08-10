@@ -1,0 +1,1177 @@
+ts-jest[ts-jest-transformer] (WARN) Define `ts-jest` config under `globals` is deprecated. Please do
+transform: {
+    <transform_regex>: ['ts-jest', { /* ts-jest config goes here in Jest */ }],
+},
+ts-jest[backports] (WARN) "[jest-config].globals.ts-jest.tsConfig" is deprecated, use "[jest-config].globals.ts-jest.tsconfig" instead.
+ts-jest[backports] (WARN) Your Jest configuration is outdated. Use the CLI to help migrating it: ts-jest config:migrate <config-file>.
+FAIL src/offering/entities/offeringPackage.entity.spec.ts
+  ● OfferingPackageEntity › Offering › Line items should be generated correctly for dimension tiers
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 10
+    + Received  +  4
+
+      Array [
+    -   ObjectContaining {
+    +   InvoiceLineItem {
+          "description": undefined,
+    -     "name": "fakeDimensionName - foobar - tier1",
+    -     "quantity": 100,
+    -     "unitCost": 0.01,
+    -   },
+    -   ObjectContaining {
+    -     "description": undefined,
+    -     "name": "fakeDimensionName - foobar - tier2",
+    -     "quantity": 1900,
+    -     "unitCost": 0.02,
+    +     "name": "fakeDimensionName - foobar",
+    +     "quantity": 2000,
+    +     "unitCost": NaN,
+        },
+      ]
+
+      441 |                 ),
+      442 |             });
+    > 443 |             expect(lineItems.getLineItems()).toEqual([
+          |                                              ^
+      444 |                 expect.objectContaining(new InvoiceLineItem('fakeDimensionName - foobar - tier1', 100, 0.01)),
+      445 |                 expect.objectContaining(new InvoiceLineItem('fakeDimensionName - foobar - tier2', 1900, 0.02)),
+      446 |             ]);
+
+      at Object.<anonymous> (offering/entities/offeringPackage.entity.spec.ts:443:46)
+
+  ● OfferingPackageEntity › Offering › Line items should be generated correctly for dimension tiers with no upperBound
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 10
+    + Received  +  4
+
+      Array [
+    -   ObjectContaining {
+    +   InvoiceLineItem {
+          "description": undefined,
+    -     "name": "fakeDimensionName - foobar - tier1",
+    -     "quantity": 100,
+    -     "unitCost": 0.01,
+    -   },
+    -   ObjectContaining {
+    -     "description": undefined,
+    -     "name": "fakeDimensionName - foobar - infinte tier",
+    -     "quantity": 10900,
+    -     "unitCost": 0.02,
+    +     "name": "fakeDimensionName - foobar",
+    +     "quantity": 11000,
+    +     "unitCost": NaN,
+        },
+      ]
+
+      557 |             });
+      558 |
+    > 559 |             expect(lineItems.getLineItems()).toEqual([
+          |                                              ^
+      560 |                 expect.objectContaining(new InvoiceLineItem('fakeDimensionName - foobar - tier1', 100, 0.01)),
+      561 |                 expect.objectContaining(new InvoiceLineItem('fakeDimensionName - foobar - infinte tier', 10900, 0.02)),
+      562 |             ]);
+
+      at Object.<anonymous> (offering/entities/offeringPackage.entity.spec.ts:559:46)
+
+  ● OfferingPackageEntity › Offering › Line items should be generated correctly for a dimension with only one tier
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 3
+    + Received  + 3
+
+      Array [
+    -   ObjectContaining {
+    +   InvoiceLineItem {
+          "description": undefined,
+    -     "name": "fakeDimensionName - foobar - tier1",
+    +     "name": "fakeDimensionName - foobar",
+          "quantity": 11000,
+    -     "unitCost": 0.02,
+    +     "unitCost": NaN,
+        },
+      ]
+
+      660 |                 ),
+      661 |             });
+    > 662 |             expect(lineItems.getLineItems()).toEqual([
+          |                                              ^
+      663 |                 expect.objectContaining(new InvoiceLineItem('fakeDimensionName - foobar - tier1', 11000, 0.02)),
+      664 |             ]);
+      665 |         });
+
+      at Object.<anonymous> (offering/entities/offeringPackage.entity.spec.ts:662:46)
+
+  ● OfferingPackageEntity › Offering › Line items should be generated correctly for a dimension where the first tier doesnt have a unit price
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 10
+    + Received  +  4
+
+      Array [
+    -   ObjectContaining {
+    +   InvoiceLineItem {
+          "description": undefined,
+    -     "name": "fakeDimensionName - foobar - tier1",
+    -     "quantity": 100,
+    -     "unitCost": 0,
+    -   },
+    -   ObjectContaining {
+    -     "description": undefined,
+    -     "name": "fakeDimensionName - foobar - infinte tier",
+    -     "quantity": 10900,
+    -     "unitCost": 0.02,
+    +     "name": "fakeDimensionName - foobar",
+    +     "quantity": 11000,
+    +     "unitCost": NaN,
+        },
+      ]
+
+      773 |             });
+      774 |
+    > 775 |             expect(lineItems.getLineItems()).toEqual([
+          |                                              ^
+      776 |                 expect.objectContaining(new InvoiceLineItem('fakeDimensionName - foobar - tier1', 100, 0.0)),
+      777 |                 expect.objectContaining(new InvoiceLineItem('fakeDimensionName - foobar - infinte tier', 10900, 0.02)),
+      778 |             ]);
+
+      at Object.<anonymous> (offering/entities/offeringPackage.entity.spec.ts:775:46)
+
+  ● OfferingPackageEntity › Offering › Line items should be generated correctly for a dimension where any tier doesnt have a unit price
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 10
+    + Received  +  4
+
+      Array [
+    -   ObjectContaining {
+    +   InvoiceLineItem {
+          "description": undefined,
+    -     "name": "fakeDimensionName - foobar - tier1",
+    -     "quantity": 100,
+    -     "unitCost": 0,
+    -   },
+    -   ObjectContaining {
+    -     "description": undefined,
+    -     "name": "fakeDimensionName - foobar - infinte tier",
+    -     "quantity": 10900,
+    -     "unitCost": 0,
+    +     "name": "fakeDimensionName - foobar",
+    +     "quantity": 11000,
+    +     "unitCost": NaN,
+        },
+      ]
+
+      885 |             });
+      886 |
+    > 887 |             expect(lineItems.getLineItems()).toEqual([
+          |                                              ^
+      888 |                 expect.objectContaining(new InvoiceLineItem('fakeDimensionName - foobar - tier1', 100, 0.0)),
+      889 |                 expect.objectContaining(new InvoiceLineItem('fakeDimensionName - foobar - infinte tier', 10900, 0.0)),
+      890 |             ]);
+
+      at Object.<anonymous> (offering/entities/offeringPackage.entity.spec.ts:887:46)
+
+  ● OfferingPackageEntity › Offering › Line items should be generated correctly for tiers where there is not overage
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 10
+    + Received  +  4
+
+      Array [
+    -   ObjectContaining {
+    +   InvoiceLineItem {
+          "description": undefined,
+    -     "name": "fakeDimensionName - foobar - tier1",
+    -     "quantity": 100,
+    -     "unitCost": 0.01,
+    -   },
+    -   ObjectContaining {
+    -     "description": undefined,
+    -     "name": "fakeDimensionName - foobar - tier2",
+    -     "quantity": 100,
+    -     "unitCost": 0.02,
+    +     "name": "fakeDimensionName - foobar",
+    +     "quantity": 11000,
+    +     "unitCost": NaN,
+        },
+      ]
+
+      1000 |             });
+      1001 |
+    > 1002 |             expect(lineItems.getLineItems()).toEqual([
+           |                                              ^
+      1003 |                 expect.objectContaining(new InvoiceLineItem('fakeDimensionName - foobar - tier1', 100, 0.01)),
+      1004 |                 expect.objectContaining(new InvoiceLineItem('fakeDimensionName - foobar - tier2', 100, 0.02)),
+      1005 |             ]);
+
+      at Object.<anonymous> (offering/entities/offeringPackage.entity.spec.ts:1002:46)
+
+  ● OfferingPackageEntity › Offering › Line items should be genenerated correctly for a large number of tiers
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 58
+    + Received  +  4
+
+      Array [
+    -   ObjectContaining {
+    -     "description": undefined,
+    -     "name": "fakeDimensionName - foobar - tier1",
+    -     "quantity": 100,
+    -     "unitCost": 0.01,
+    -   },
+    -   ObjectContaining {
+    -     "description": undefined,
+    -     "name": "fakeDimensionName - foobar - tier2",
+    -     "quantity": 100,
+    -     "unitCost": 0.02,
+    -   },
+    -   ObjectContaining {
+    -     "description": undefined,
+    -     "name": "fakeDimensionName - foobar - tier3",
+    -     "quantity": 100,
+    -     "unitCost": 0.03,
+    -   },
+    -   ObjectContaining {
+    -     "description": undefined,
+    -     "name": "fakeDimensionName - foobar - tier4",
+    -     "quantity": 100,
+    -     "unitCost": 0.04,
+    -   },
+    -   ObjectContaining {
+    +   InvoiceLineItem {
+          "description": undefined,
+    -     "name": "fakeDimensionName - foobar - tier5",
+    -     "quantity": 100,
+    -     "unitCost": 0.05,
+    -   },
+    -   ObjectContaining {
+    -     "description": undefined,
+    -     "name": "fakeDimensionName - foobar - tier6",
+    -     "quantity": 100,
+    -     "unitCost": 0.06,
+    -   },
+    -   ObjectContaining {
+    -     "description": undefined,
+    -     "name": "fakeDimensionName - foobar - tier7",
+    -     "quantity": 100,
+    -     "unitCost": 0.07,
+    -   },
+    -   ObjectContaining {
+    -     "description": undefined,
+    -     "name": "fakeDimensionName - foobar - tier8",
+    -     "quantity": 100,
+    -     "unitCost": 0.08,
+    -   },
+    -   ObjectContaining {
+    -     "description": undefined,
+    -     "name": "fakeDimensionName - foobar - tier9",
+    -     "quantity": 100,
+    -     "unitCost": 0.09,
+    -   },
+    -   ObjectContaining {
+    -     "description": undefined,
+    -     "name": "fakeDimensionName - foobar - tier10",
+    -     "quantity": 100,
+    -     "unitCost": 0.1,
+    +     "name": "fakeDimensionName - foobar",
+    +     "quantity": 11000,
+    +     "unitCost": NaN,
+        },
+      ]
+
+      1153 |             });
+      1154 |
+    > 1155 |             expect(lineItems.getLineItems()).toEqual([
+           |                                              ^
+      1156 |                 expect.objectContaining(new InvoiceLineItem('fakeDimensionName - foobar - tier1', 100, 0.01)),
+      1157 |                 expect.objectContaining(new InvoiceLineItem('fakeDimensionName - foobar - tier2', 100, 0.02)),
+      1158 |                 expect.objectContaining(new InvoiceLineItem('fakeDimensionName - foobar - tier3', 100, 0.03)),
+
+      at Object.<anonymous> (offering/entities/offeringPackage.entity.spec.ts:1155:46)
+
+  ● OfferingPackageEntity › Offering › Line items should take into account usage increment with tiers
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 10
+    + Received  +  4
+
+      Array [
+    -   ObjectContaining {
+    +   InvoiceLineItem {
+          "description": undefined,
+    -     "name": "fakeDimensionName - foobar - tier1",
+    -     "quantity": 10,
+    -     "unitCost": 0.01,
+    -   },
+    -   ObjectContaining {
+    -     "description": undefined,
+    -     "name": "fakeDimensionName - foobar - tier2",
+    -     "quantity": 10,
+    -     "unitCost": 0.02,
+    +     "name": "fakeDimensionName - foobar",
+    +     "quantity": 1100,
+    +     "unitCost": NaN,
+        },
+      ]
+
+      1276 |             });
+      1277 |
+    > 1278 |             expect(lineItems.getLineItems()).toEqual([
+           |                                              ^
+      1279 |                 expect.objectContaining(new InvoiceLineItem('fakeDimensionName - foobar - tier1', 10, 0.01)),
+      1280 |                 expect.objectContaining(new InvoiceLineItem('fakeDimensionName - foobar - tier2', 10, 0.02)),
+      1281 |             ]);
+
+      at Object.<anonymous> (offering/entities/offeringPackage.entity.spec.ts:1278:46)
+
+  ● OfferingPackageEntity › Offering › Line items without tiers, consumption price or entitlements should still work fine
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 8
+
+    - Array []
+    + Array [
+    +   InvoiceLineItem {
+    +     "description": undefined,
+    +     "name": "fakeDimensionName - foobar",
+    +     "quantity": 1100,
+    +     "unitCost": NaN,
+    +   },
+    + ]
+
+      1364 |             });
+      1365 |
+    > 1366 |             expect(lineItems.getLineItems()).toEqual([]);
+           |                                              ^
+      1367 |         });
+      1368 |         test('Free trial scheduler must set parameters correctly', async () => {
+      1369 |             const offering = Offering.getInstance(
+
+      at Object.<anonymous> (offering/entities/offeringPackage.entity.spec.ts:1366:46)
+
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency EUR[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency EUR[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[Offering] [39m[95mEnrolling customer fakeCustomerID in foobar. FreeTrialEndDate: 2023-08-17T23:59:59.999Z[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[Offering] [39m[95mEnrolling customer fakeCustomerID in foobar. FreeTrialEndDate: undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32msubscription start: 2023-08-01T00:00:00.000Z,  subscription end: 2023-08-31T23:59:59.999Z. No free trial[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32msubscription end: 2023-08-31T23:59:59.999Z, start date: Tue Aug 15 2023 19:30:26 GMT+0000 (Coordinated Universal Time) in processing free trial end date[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating free trial end invoice for foobar for fakeCustomerID, lineItems: [{"name":"foobar","quantity":1,"unitCost":52.22,"description":"Subscription"}][39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[Offering] [39m[95mEnrolling customer fakeCustomerID in foobar. FreeTrialEndDate: undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32msubscription start: 2023-08-01T00:00:00.000Z,  subscription end: 2023-08-31T23:59:59.999Z. No free trial[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32msubscription start: 2023-08-01T00:00:00.000Z,  subscription end: 2023-08-31T23:59:59.999Z. No free trial[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[Offering] [39m[95mEnrolling customer fakeCustomerID in foobar. FreeTrialEndDate: 2023-09-15T23:59:59.999Z[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[Offering] [39m[95mEnrolling customer fakeCustomerID in foobar. FreeTrialEndDate: undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32msubscription start: 2023-08-01T00:00:00.000Z,  subscription end: 2023-08-31T23:59:59.999Z. No free trial[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[Offering] [39m[95mEnrolling customer fakeCustomerID in foobar. FreeTrialEndDate: 2023-09-15T23:59:59.999Z[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32msubscription start: 2023-08-01T00:00:00.000Z,  subscription end: 2023-08-31T23:59:59.999Z. No free trial[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mFree trial is in the current billing cycle: 2023-08-24T00:00:00.000Z, 2023-08-31T23:59:59.999Z[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mfree trial end date: 2023-11-24T23:59:59.999Z,  subscription end: 2023-08-31T23:59:59.999Z. Usage is negated for the whole subscription period[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32msubscription start: 2023-08-01T00:00:00.000Z,  subscription end: 2023-08-31T23:59:59.999Z. No free trial[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[Offering] [39m[95mEnrolling customer fakeCustomerID in foobar. FreeTrialEndDate: undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32msubscription start: 2023-08-01T00:00:00.000Z,  subscription end: 2023-08-31T23:59:59.999Z. No free trial[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-07-01T00:00:00.000Z to 2023-07-31T23:59:59.999Z, with free trial end date undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [{"name":"fake - foobar","quantity":2,"unitCost":null}][39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-07-01T00:00:00.000Z to 2023-07-31T23:59:59.999Z, with free trial end date undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [{"name":"fake - foobar","quantity":1000,"unitCost":2}][39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-07-01T00:00:00.000Z to 2023-07-31T23:59:59.999Z, with free trial end date undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [{"name":"fake - foobar","quantity":10000,"unitCost":2}][39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: undefined[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mRunning Unenrollment for Customer: fakeCustomerID, isChangeOfPlan: undefined, currentBillingCycleStartTime: 2023-08-01T00:00:00.000Z, settingsInvoiceGeneration: undefined[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mBooleanCheck: undefined[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mSetting queueInvoice to undefined[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mSetting consolidatedInvoice to undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-08-01T00:00:00.000Z to 2023-08-16T23:59:59.999Z, with free trial end date undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [{"name":"fake - foobar","quantity":1,"unitCost":2}][39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-07-01T00:00:00.000Z to 2023-07-31T23:59:59.999Z, with free trial end date undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [{"name":"fake - foobar","quantity":1,"unitCost":2}][39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-07-01T00:00:00.000Z to 2023-07-31T23:59:59.999Z, with free trial end date undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [{"name":"fake - foobar","quantity":10000,"unitCost":2},{"name":"fake - foobar","quantity":2,"unitCost":1}][39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-07-01T00:00:00.000Z to 2023-07-31T23:59:59.999Z, with free trial end date 2023-08-17T23:59:59.999Z[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [{"name":"fake - foobar - Free Trial Credit","quantity":-10,"unitCost":2},{"name":"fake - foobar","quantity":10,"unitCost":2}][39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: undefined[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mRunning Unenrollment for Customer: fakeCustomerID, isChangeOfPlan: undefined, currentBillingCycleStartTime: 2023-08-01T00:00:00.000Z, settingsInvoiceGeneration: undefined[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mBooleanCheck: undefined[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mSetting queueInvoice to undefined[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mSetting consolidatedInvoice to undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-08-01T00:00:00.000Z to 2023-08-16T23:59:59.999Z, with free trial end date undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [{"name":"fake - foobar","quantity":1,"unitCost":2}][39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-07-01T00:00:00.000Z to 2023-07-31T23:59:59.999Z, with free trial end date 2023-07-04T01:32:11.272Z[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [{"name":"fake - foobar - Free Trial Credit","quantity":-2,"unitCost":null},{"name":"fake - foobar","quantity":2,"unitCost":null}][39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: undefined[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mRunning Unenrollment for Customer: fakeCustomerID, isChangeOfPlan: undefined, currentBillingCycleStartTime: 2023-08-01T00:00:00.000Z, settingsInvoiceGeneration: undefined[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mBooleanCheck: undefined[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mSetting queueInvoice to undefined[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mSetting consolidatedInvoice to undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-08-01T00:00:00.000Z to 2023-08-16T23:59:59.999Z, with free trial end date undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [{"name":"fake - foobar","quantity":2,"unitCost":null}][39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mRunning Unenrollment for Customer: fakeCustomerID, isChangeOfPlan: undefined, currentBillingCycleStartTime: 2023-08-01T00:00:00.000Z, settingsInvoiceGeneration: undefined[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mBooleanCheck: undefined[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mSetting queueInvoice to undefined[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mSetting consolidatedInvoice to undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-08-01T00:00:00.000Z to 2023-08-16T23:59:59.999Z, with free trial end date undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [{"name":"fake - foobar","quantity":2,"unitCost":null}][39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mRunning Unenrollment for Customer: fakeCustomerID, isChangeOfPlan: true, currentBillingCycleStartTime: 2023-08-01T00:00:00.000Z, settingsInvoiceGeneration: consolidatedPerBillingCycle[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mBooleanCheck: true[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mSetting queueInvoice to true[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mSetting consolidatedInvoice to undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-08-01T00:00:00.000Z to 2023-08-16T23:59:59.999Z, with free trial end date undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [{"name":"fake - foobar","quantity":2,"unitCost":null}][39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: true, Consolidate Invoice: undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-07-01T00:00:00.000Z to 2023-07-31T23:59:59.999Z, with free trial end date undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [{"name":"fake - foobar","quantity":2,"unitCost":null}][39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: true[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-07-01T00:00:00.000Z to 2023-07-31T23:59:59.999Z, with free trial end date undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [{"name":"fake - foobar","quantity":100,"unitCost":5.5}][39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-07-01T00:00:00.000Z to 2023-07-31T23:59:59.999Z, with free trial end date undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [{"name":"fake - foobar","quantity":2,"unitCost":1}][39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[95m[Nest] 262  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: true[39m
+Test Suites: 1 failed, 1 total
+Tests:       9 failed, 71 passed, 80 total
+Snapshots:   0 total
+Time:        4.72 s
+Test results written to: ../tmp/jest-unit.json
+ts-jest[ts-jest-transformer] (WARN) Define `ts-jest` config under `globals` is deprecated. Please do
+transform: {
+    <transform_regex>: ['ts-jest', { /* ts-jest config goes here in Jest */ }],
+},
+ts-jest[backports] (WARN) "[jest-config].globals.ts-jest.tsConfig" is deprecated, use "[jest-config].globals.ts-jest.tsconfig" instead.
+ts-jest[backports] (WARN) Your Jest configuration is outdated. Use the CLI to help migrating it: ts-jest config:migrate <config-file>.
+FAIL test/api/dimensions.api-spec.ts (6.37 s)
+  ● /dimensions › POST: should return 400 if no body is sent
+
+    read ECONNRESET
+
+
+
+  ● /dimensions › POST: should call auth
+
+    read ECONNRESET
+
+
+
+  ● /dimensions › POST: should load in a simple dimension
+
+    read ECONNRESET
+
+
+
+  ● /dimensions › POST: should load a dimension with a consumption price and overage allowed 'true'
+
+    read ECONNRESET
+
+
+
+  ● /dimensions › POST: should load a dimension with just consumption price
+
+    read ECONNRESET
+
+
+
+  ● /dimensions › POST: should load in a simple dimension with a tier
+
+    read ECONNRESET
+
+
+
+  ● /dimensions › POST: should load multiple tiers
+
+    read ECONNRESET
+
+
+
+  ● /dimensions › POST: tiers with wrong data types should fail
+
+    read ECONNRESET
+
+
+
+  ● /dimensions › POST: tier bounds should be a multiple of the usage increment
+
+    read ECONNRESET
+
+
+
+  ● /dimensions › POST: upperBound can be 'inf' or numberstring
+
+    read ECONNRESET
+
+
+
+  ● /dimensions › POST: should not allow overage to be true and entitlement to be 'inf'
+
+    read ECONNRESET
+
+
+
+  ● /dimensions › POST: should not allow overage to be true and entitlement to be undefined
+
+    read ECONNRESET
+
+
+
+  ● /dimensions › POST: tiers cannot overlap
+
+    read ECONNRESET
+
+
+
+  ● /dimensions › POST: should not have multiple tiers with inf
+
+    read ECONNRESET
+
+
+
+  ● /dimensions › POST: should not allow entitlements, overage and consumption price with tiers
+
+    read ECONNRESET
+
+
+
+  ● /dimensions › /:dimensionId › GET: should return 404 if no dimension is found
+
+    read ECONNRESET
+
+
+
+  ● /dimensions › /:dimensionId › GET: should return 200 if dimension is found
+
+    read ECONNRESET
+
+
+
+  ● /dimensions › /:dimensionId › GET: should return 200 and tiers if a dimension has tiers
+
+    read ECONNRESET
+
+
+
+  ● /dimensions › /:dimensionId › GET: should return 200 and tiers if a dimension has tiers and the first tier doesnt have a unit price
+
+    read ECONNRESET
+
+
+
+  ● /dimensions › /:dimensionId › PUT: should update tiers if they're sent
+
+    read ECONNRESET
+
+
+
+  ● /dimensions › /:dimensionId › PUT: should completely replace tiers with the value set
+
+    read ECONNRESET
+
+
+
+  ● /dimensions › /:dimensionId › PUT: should remove tiers if they are set to null
+
+    read ECONNRESET
+
+
+
+
+  ● Test suite failed to run
+
+    TypeError: Cannot read properties of undefined (reading 'close')
+
+      74 |     });
+      75 |     afterAll(async () => {
+    > 76 |         await app.close();
+         |                   ^
+      77 |         await moduleRef.close();
+      78 |         await server.close();
+      79 |     });
+
+      at Object.<anonymous> (api/dimensions.api-spec.ts:76:19)
+
+FAIL test/api/invoices.api-spec.ts
+  ● /invoices › POST: should generate an offcycle invoice correctly
+
+    read ECONNRESET
+
+
+
+  ● /invoices › POST: should generate an offcycle invoice correctly with dimension tiers
+
+    read ECONNRESET
+
+
+
+  ● /invoices › /:invoiceId › GET should return 404 if an invoice is not found
+
+    read ECONNRESET
+
+
+
+
+  ● Test suite failed to run
+
+    TypeError: Cannot read properties of undefined (reading 'close')
+
+      77 |     });
+      78 |     afterAll(async () => {
+    > 79 |         await app.close();
+         |                   ^
+      80 |         await moduleRef.close();
+      81 |         await server.close();
+      82 |     });
+
+      at Object.<anonymous> (api/invoices.api-spec.ts:79:19)
+
+FAIL test/api/dimensionTiers.gold.api-spec.ts
+  ● /dimension-tier-validation › reports an increment-specific validation error
+
+    read ECONNRESET
+
+
+
+  ● /dimension-tier-validation › reports an overlap-specific validation error
+
+    read ECONNRESET
+
+
+
+  ● /dimension-tier-validation › reports the infinity-position validation error
+
+    read ECONNRESET
+
+
+
+  ● /dimension-tier-validation › reports mutual-exclusion violations
+
+    read ECONNRESET
+
+
+
+
+  ● Test suite failed to run
+
+    TypeError: Cannot read properties of undefined (reading 'close')
+
+      56 |
+      57 |     afterAll(async () => {
+    > 58 |         await app.close();
+         |                   ^
+      59 |         await moduleRef.close();
+      60 |         await server.close();
+      61 |     });
+
+      at Object.<anonymous> (api/dimensionTiers.gold.api-spec.ts:58:19)
+
+Test Suites: 3 failed, 3 total
+Tests:       29 failed, 29 total
+Snapshots:   0 total
+Time:        8.287 s
+Test results written to: ../tmp/jest-api.json
+{
+  "tests": [
+    {
+      "name": "OfferingPackageEntity Offering Line Items should respect the precision of the rate passed into it when converting to EUR",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Offering Line Items should respect the precision when using USD",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Offering Line items should be generated correctly for dimension tiers",
+      "status": "failed"
+    },
+    {
+      "name": "OfferingPackageEntity Offering Line items should be generated correctly for dimension tiers with no upperBound",
+      "status": "failed"
+    },
+    {
+      "name": "OfferingPackageEntity Offering Line items should be generated correctly for a dimension with only one tier",
+      "status": "failed"
+    },
+    {
+      "name": "OfferingPackageEntity Offering Line items should be generated correctly for a dimension where the first tier doesnt have a unit price",
+      "status": "failed"
+    },
+    {
+      "name": "OfferingPackageEntity Offering Line items should be generated correctly for a dimension where any tier doesnt have a unit price",
+      "status": "failed"
+    },
+    {
+      "name": "OfferingPackageEntity Offering Line items should be generated correctly for tiers where there is not overage",
+      "status": "failed"
+    },
+    {
+      "name": "OfferingPackageEntity Offering Line items should be genenerated correctly for a large number of tiers",
+      "status": "failed"
+    },
+    {
+      "name": "OfferingPackageEntity Offering Line items should take into account usage increment with tiers",
+      "status": "failed"
+    },
+    {
+      "name": "OfferingPackageEntity Offering Line items without tiers, consumption price or entitlements should still work fine",
+      "status": "failed"
+    },
+    {
+      "name": "OfferingPackageEntity Offering Free trial scheduler must set parameters correctly",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Subscription unenrollment should credit the remaining plan time if the boolean value is set on the unenrollment call",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Subscription offering enrollment should call scheduler",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Subscriptions that end their free trial should bill for the rest of the subscription in the billing cycle",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings FTPCOP-38: Subscription offering enrollment should create an invoice if no free trial is specified",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings FTPCOP-38: Subscription offering process billing should create an invoice",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Subscription offering enrollment should not create an invoice if a free trial is specified",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Zero consumption price dimensions should not be shown if the freeDimensionOnInvoice value is set to hide",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Zero consumption price dimensions should not be shown if the freeDimensionOnInvoice value is set to hide on unenrollment",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Zero consumption price dimensions should be shown if the freeDimensionOnInvoice value is set to show",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Zero consumption price dimensions should be shown if the freeDimensionOnInvoice value is set to show on unenrollment",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Subscription offering enrollment should call scheduler emit one and create on free trials",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Subscription process billing should create an invoice",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Subscription process billing should consider if a free trial is ending during the month",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Subscription process billing should consider if a free trial is ending much later in the future",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Subscription process billing should consider not look back at free trials which ended in the past",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Subscriptions with usage should consider free trials in the past",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings calculate expected total for remaining subscription, start: 2023 end: 2023 expected total: 75000",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings calculate expected total for remaining subscription, start: 2023 end: 2023 expected total: 100000",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings calculate expected total for remaining subscription, start: 2023 end: 2023 expected total: 53221",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings calculate expected total for remaining subscription, start: 2023 end: 2023 expected total: 53063",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings calculate expected total for remaining subscription, start: 2023 end: 2023 expected total: 53332",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings calculate expected total for remaining subscription, start: 2023 end: 2023 expected total: 95133",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings calculate expected total for remaining subscription, start: 2023 end: 2023 expected total: 99997",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings calculate expected total for remaining subscription lower subscription price, start: 2023 end: 2023 expected total: 26",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Subscription offerings which upgrade should calculate the start time of the subscription to be right now, not the start of the day",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Subscription Enrollment should understand upgrades when prior offering enrollment date is set",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering FTPCOP-37: Should Create an invoice for process billing when called",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Usage based offerings with a minimum charge should use the minimum charge value if the current usage is below the minimum charge dollar amount",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Usage based offerings with a minimum charge should use the usage value if the current usage is above the minimum charge dollar amount",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Usage based offerings with a minimum charge should be offering enrollment date aware if its set",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Usage based offerings with a minimum charge should be offering enrollment date aware on general process billing requests",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Usage based offerings with a minimum charge should have multiple line items if there are multiple dimensions",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Usage based offerings with a minimum charge during a free trial should have negated the minimum charge",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Unenrollments should be prorated by the number of days left in the current billing cycle",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Zero consumption price dimensions should not be shown if the freeDimensionOnInvoice value is set to hide on usage offerings",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Zero consumption price dimensions should  be shown if the freeDimensionOnInvoice value is set to show on usage offerings",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering FTPCOP-37: Should not create an invoice immedaitely when enrolled is called",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering FTPCOP-5: Should use free trial date exactly when calculating usage",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Usage based offerings for unenrollment should only bill for this month so far",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Usage Based offerings should not call the credit creation service when unenrollment occurs",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Usage Based offerings should not call invoice creation when changing plans and the invoice generation state is set to per billing cycle",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Usage Based offerings should consolidate invoices if the consolidate invoice flag is set on the offering and process billing is called",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering should apply the correct discount to the invoice",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Usage based offerings should consolidate invoices and pass along the generated invoice as an argument to the consolidate invoice function",
+      "status": "passed"
+    },
+    {
+      "name": "/dimensions POST: should return 400 if no body is sent",
+      "status": "failed"
+    },
+    {
+      "name": "/dimensions POST: should call auth",
+      "status": "failed"
+    },
+    {
+      "name": "/dimensions POST: should load in a simple dimension",
+      "status": "failed"
+    },
+    {
+      "name": "/dimensions POST: should load a dimension with a consumption price and overage allowed 'true'",
+      "status": "failed"
+    },
+    {
+      "name": "/dimensions POST: should load a dimension with just consumption price",
+      "status": "failed"
+    },
+    {
+      "name": "/dimensions POST: should load in a simple dimension with a tier",
+      "status": "failed"
+    },
+    {
+      "name": "/dimensions POST: should load multiple tiers",
+      "status": "failed"
+    },
+    {
+      "name": "/dimensions POST: tiers with wrong data types should fail",
+      "status": "failed"
+    },
+    {
+      "name": "/dimensions POST: tier bounds should be a multiple of the usage increment",
+      "status": "failed"
+    },
+    {
+      "name": "/dimensions POST: upperBound can be 'inf' or numberstring",
+      "status": "failed"
+    },
+    {
+      "name": "/dimensions POST: should not allow overage to be true and entitlement to be 'inf'",
+      "status": "failed"
+    },
+    {
+      "name": "/dimensions POST: should not allow overage to be true and entitlement to be undefined",
+      "status": "failed"
+    },
+    {
+      "name": "/dimensions POST: tiers cannot overlap",
+      "status": "failed"
+    },
+    {
+      "name": "/dimensions POST: should not have multiple tiers with inf",
+      "status": "failed"
+    },
+    {
+      "name": "/dimensions POST: should not allow entitlements, overage and consumption price with tiers",
+      "status": "failed"
+    },
+    {
+      "name": "/dimensions /:dimensionId GET: should return 404 if no dimension is found",
+      "status": "failed"
+    },
+    {
+      "name": "/dimensions /:dimensionId GET: should return 200 if dimension is found",
+      "status": "failed"
+    },
+    {
+      "name": "/dimensions /:dimensionId GET: should return 200 and tiers if a dimension has tiers",
+      "status": "failed"
+    },
+    {
+      "name": "/dimensions /:dimensionId GET: should return 200 and tiers if a dimension has tiers and the first tier doesnt have a unit price",
+      "status": "failed"
+    },
+    {
+      "name": "/dimensions /:dimensionId PUT: should update tiers if they're sent",
+      "status": "failed"
+    },
+    {
+      "name": "/dimensions /:dimensionId PUT: should completely replace tiers with the value set",
+      "status": "failed"
+    },
+    {
+      "name": "/dimensions /:dimensionId PUT: should remove tiers if they are set to null",
+      "status": "failed"
+    },
+    {
+      "name": "/invoices POST: should generate an offcycle invoice correctly",
+      "status": "failed"
+    },
+    {
+      "name": "/invoices POST: should generate an offcycle invoice correctly with dimension tiers",
+      "status": "failed"
+    },
+    {
+      "name": "/invoices /:invoiceId GET should return 404 if an invoice is not found",
+      "status": "failed"
+    },
+    {
+      "name": "/dimension-tier-validation reports an increment-specific validation error",
+      "status": "failed"
+    },
+    {
+      "name": "/dimension-tier-validation reports an overlap-specific validation error",
+      "status": "failed"
+    },
+    {
+      "name": "/dimension-tier-validation reports the infinity-position validation error",
+      "status": "failed"
+    },
+    {
+      "name": "/dimension-tier-validation reports mutual-exclusion violations",
+      "status": "failed"
+    }
+  ]
+}
+
+required passed: 2/15
+  NOT PASSED (failed): /dimensions POST: should load multiple tiers
+  NOT PASSED (failed): /dimensions /:dimensionId GET: should return 200 and tiers if a dimension has tiers
+  NOT PASSED (failed): /dimensions /:dimensionId PUT: should completely replace tiers with the value set
+  NOT PASSED (failed): /invoices POST: should generate an offcycle invoice correctly with dimension tiers
+  NOT PASSED (failed): OfferingPackageEntity Offering Line items should be generated correctly for dimension tiers
+  NOT PASSED (failed): OfferingPackageEntity Offering Line items should be generated correctly for a dimension where the first tier doesnt have a unit price
+  NOT PASSED (failed): OfferingPackageEntity Offering Line items should take into account usage increment with tiers
+  NOT PASSED (failed): /dimension-tier-validation reports an increment-specific validation error
+  NOT PASSED (failed): /dimension-tier-validation reports an overlap-specific validation error
+  NOT PASSED (failed): /dimension-tier-validation reports the infinity-position validation error
+  NOT PASSED (failed): /dimension-tier-validation reports mutual-exclusion violations
+  NOT PASSED (failed): /dimensions POST: should load in a simple dimension
+  NOT PASSED (failed): /invoices POST: should generate an offcycle invoice correctly
+reward: 0

@@ -1,0 +1,28 @@
+version = "1.0"
+
+[metadata]
+author_name = "Siddhant Paliwal"
+author_email = "paliwal.siddhant@gmail.com"
+title = "Add volume-based pricing tiers to usage dimensions"
+repository = "paigo-tech/paigo-backend"
+base_commit = "b86196fd83b19f092c484eabf303e04a62986611"
+difficulty = "hard"
+category = "feature-development"
+tags = ["long-horizon", "billing", "migration", "typescript", "swe-bench-pro"]
+human_solve_time = "1d"
+requires_internet = false
+repo_type = "service"
+task_type = "feature-development"
+verifier_runtime_sec = 300
+
+[verifier]
+timeout_sec = 1800
+
+[agent]
+timeout_sec = 9000
+
+[environment]
+build_timeout_sec = 3600.0
+cpus = 2
+memory_mb = 8192
+storage_mb = 20480

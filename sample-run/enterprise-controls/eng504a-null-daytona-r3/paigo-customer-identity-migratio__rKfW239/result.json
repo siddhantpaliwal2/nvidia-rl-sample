@@ -1,0 +1,111 @@
+{
+    "id": "52c1ac93-2f42-4411-84b6-2c2b36eadf0b",
+    "task_name": "paigo-customer-identity-migration",
+    "trial_name": "paigo-customer-identity-migratio__rKfW239",
+    "trial_uri": "file:///Users/siddhantpaliwal/Desktop/amazon-rl/xai-rl-sample/sample-run/enterprise-controls/eng504a-null-daytona-r3/paigo-customer-identity-migratio__rKfW239",
+    "task_id": {
+        "path": "tasks/paigo-customer-identity-migration"
+    },
+    "source": null,
+    "task_checksum": "7b0209500913328127005725f2c53053b5e69a1de920f0ace3cb4f4f60a677ae",
+    "config": {
+        "task": {
+            "path": "tasks/paigo-customer-identity-migration",
+            "git_url": null,
+            "git_commit_id": null,
+            "name": null,
+            "ref": null,
+            "overwrite": false,
+            "download_dir": null,
+            "source": null
+        },
+        "trial_name": "paigo-customer-identity-migratio__rKfW239",
+        "trials_dir": "sample-run/enterprise-controls/eng504a-null-daytona-r3",
+        "install_only": false,
+        "timeout_multiplier": 1.0,
+        "agent_timeout_multiplier": null,
+        "verifier_timeout_multiplier": null,
+        "agent_setup_timeout_multiplier": null,
+        "environment_build_timeout_multiplier": null,
+        "agent": {
+            "name": "nop",
+            "import_path": null,
+            "model_name": null,
+            "n_concurrent": null,
+            "concurrency_group": null,
+            "skills": [],
+            "override_timeout_sec": null,
+            "override_setup_timeout_sec": null,
+            "max_timeout_sec": null,
+            "extra_allowed_hosts": [],
+            "kwargs": {},
+            "mcp_servers": []
+        },
+        "environment": {
+            "type": "daytona",
+            "import_path": null,
+            "force_build": false,
+            "delete": true,
+            "cpu_enforcement_policy": "auto",
+            "memory_enforcement_policy": "auto",
+            "override_cpus": null,
+            "override_memory_mb": null,
+            "override_storage_mb": null,
+            "override_gpus": null,
+            "override_tpu": null,
+            "mounts": null,
+            "extra_docker_compose": [],
+            "kwargs": {
+                "snapshot_template_name": "harbor-probe-paigo-customer-identity-migration-8g",
+                "assume_global_snapshot": true
+            },
+            "extra_allowed_hosts": []
+        },
+        "verifier": {
+            "override_timeout_sec": null,
+            "max_timeout_sec": null,
+            "disable": false
+        },
+        "artifacts": [],
+        "extra_instruction_paths": [],
+        "job_id": "95ad9064-3906-444f-ac10-235d60a6f94d"
+    },
+    "agent_info": {
+        "name": "nop",
+        "version": "1.0.0",
+        "model_info": null
+    },
+    "agent_result": {
+        "n_input_tokens": null,
+        "n_cache_tokens": null,
+        "n_output_tokens": null,
+        "cost_usd": null,
+        "rollout_details": null,
+        "metadata": null
+    },
+    "verifier_result": {
+        "rewards": {
+            "reward": 0.0
+        }
+    },
+    "exception_info": null,
+    "started_at": "2026-08-09T21:39:55.864041Z",
+    "finished_at": "2026-08-09T21:40:12.447163Z",
+    "environment_setup": {
+        "started_at": "2026-08-09T21:39:55.894335Z",
+        "finished_at": "2026-08-09T21:39:59.350939Z"
+    },
+    "agent_setup": {
+        "started_at": "2026-08-09T21:39:59.351006Z",
+        "finished_at": "2026-08-09T21:39:59.351067Z"
+    },
+    "agent_execution": {
+        "started_at": "2026-08-09T21:39:59.351150Z",
+        "finished_at": "2026-08-09T21:39:59.351274Z"
+    },
+    "verifier": {
+        "started_at": "2026-08-09T21:40:03.380262Z",
+        "finished_at": "2026-08-09T21:40:12.266975Z"
+    },
+    "step_results": null
+}

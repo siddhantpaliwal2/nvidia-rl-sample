@@ -1,0 +1,35 @@
+{
+    "schema_version": 1,
+    "task": {
+        "name": "paigo-dimension-pricing-tiers",
+        "type": "local",
+        "digest": "sha256:447cadd5206cb001d8012108fce0065728214fc69db440dbc9ef1270aa9fe254",
+        "path": "tasks/paigo-dimension-pricing-tiers"
+    },
+    "install_only": false,
+    "timeout_multiplier": 1.0,
+    "agent": {
+        "name": "oracle",
+        "skills": [],
+        "extra_allowed_hosts": [],
+        "kwargs": {},
+        "mcp_servers": []
+    },
+    "skills": [],
+    "environment": {
+        "type": "daytona",
+        "force_build": false,
+        "delete": true,
+        "cpu_enforcement_policy": "auto",
+        "memory_enforcement_policy": "auto",
+        "extra_docker_compose": [],
+        "kwargs": {
+            "snapshot_template_name": "harbor-probe-paigo-dimension-pricing-tiers-8g",
+            "assume_global_snapshot": true
+        },
+        "extra_allowed_hosts": []
+    },
+    "verifier": {
+        "disable": false
+    }
+}

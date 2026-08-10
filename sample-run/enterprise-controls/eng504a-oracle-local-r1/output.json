@@ -1,0 +1,8 @@
+{
+  "tests": [
+    {
+      "name": "MeasurementConfigController should be defined",
+      "status": "passed"
+    }
+  ]
+}

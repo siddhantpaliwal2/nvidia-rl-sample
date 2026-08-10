@@ -1,0 +1,121 @@
+{
+  "id": "1b559a3f-14f0-43b3-b200-6179c29ac1de",
+  "task_name": "paigo-dimension-pricing-tiers",
+  "trial_name": "paigo-dimension-pricing-tiers__gQgk5Xi",
+  "trial_uri": "file:///Users/siddhantpaliwal/Desktop/amazon-rl/xai-rl-sample/sample-run/nvidia-raw/nvidia-nemotron3-ultra-final4-r1-nemotron3-ultra-paigo-dimension-pricing-tiers-a02/paigo-dimension-pricing-tiers__gQgk5Xi",
+  "task_id": {
+    "path": "tasks/paigo-dimension-pricing-tiers"
+  },
+  "source": null,
+  "task_checksum": "32397db1d2039a92abc0594de74fb5fef6a325b383208aa7f9a8327ad3dac307",
+  "config": {
+    "task": {
+      "path": "tasks/paigo-dimension-pricing-tiers",
+      "git_url": null,
+      "git_commit_id": null,
+      "name": null,
+      "ref": null,
+      "overwrite": false,
+      "download_dir": null,
+      "source": null
+    },
+    "trial_name": "paigo-dimension-pricing-tiers__gQgk5Xi",
+    "trials_dir": "/Users/siddhantpaliwal/Desktop/amazon-rl/xai-rl-sample/sample-run/nvidia-raw/nvidia-nemotron3-ultra-final4-r1-nemotron3-ultra-paigo-dimension-pricing-tiers-a02",
+    "install_only": false,
+    "timeout_multiplier": 1.0,
+    "agent_timeout_multiplier": null,
+    "verifier_timeout_multiplier": null,
+    "agent_setup_timeout_multiplier": null,
+    "environment_build_timeout_multiplier": null,
+    "agent": {
+      "name": "harness.harbor_agents:OpenCodeNode22",
+      "import_path": null,
+      "model_name": "openrouter/nvidia/nemotron-3-ultra-550b-a55b",
+      "n_concurrent": null,
+      "concurrency_group": null,
+      "skills": [],
+      "override_timeout_sec": null,
+      "override_setup_timeout_sec": null,
+      "max_timeout_sec": null,
+      "extra_allowed_hosts": [],
+      "kwargs": {
+        "version": "1.18.13",
+        "opencode_config": {
+          "permission": {
+            "task": "deny"
+          }
+        }
+      },
+      "mcp_servers": []
+    },
+    "environment": {
+      "type": "daytona",
+      "import_path": null,
+      "force_build": false,
+      "delete": true,
+      "cpu_enforcement_policy": "auto",
+      "memory_enforcement_policy": "auto",
+      "override_cpus": null,
+      "override_memory_mb": null,
+      "override_storage_mb": null,
+      "override_gpus": null,
+      "override_tpu": null,
+      "mounts": null,
+      "extra_docker_compose": [],
+      "kwargs": {
+        "snapshot_template_name": "harbor-probe-paigo-dimension-pricing-tiers-8g",
+        "assume_global_snapshot": true
+      },
+      "extra_allowed_hosts": []
+    },
+    "verifier": {
+      "override_timeout_sec": null,
+      "max_timeout_sec": null,
+      "disable": false
+    },
+    "artifacts": [],
+    "extra_instruction_paths": [],
+    "job_id": "8c88c65c-0d56-4f20-aecc-94f0d7e7e6cd"
+  },
+  "agent_info": {
+    "name": "opencode",
+    "version": "1.18.13",
+    "model_info": {
+      "name": "nvidia/nemotron-3-ultra-550b-a55b",
+      "provider": "openrouter"
+    }
+  },
+  "agent_result": {
+    "n_input_tokens": 19051455,
+    "n_cache_tokens": 16245632,
+    "n_output_tokens": 77311,
+    "cost_usd": 5.229778599999999,
+    "rollout_details": null,
+    "metadata": null
+  },
+  "verifier_result": {
+    "rewards": {
+      "reward": 1.0
+    }
+  },
+  "exception_info": null,
+  "started_at": "2026-08-10T20:09:26.871226Z",
+  "finished_at": "2026-08-10T20:23:50.809797Z",
+  "environment_setup": {
+    "started_at": "2026-08-10T20:09:26.889460Z",
+    "finished_at": "2026-08-10T20:09:29.182983Z"
+  },
+  "agent_setup": {
+    "started_at": "2026-08-10T20:09:29.183113Z",
+    "finished_at": "2026-08-10T20:09:55.222860Z"
+  },
+  "agent_execution": {
+    "started_at": "2026-08-10T20:09:55.223124Z",
+    "finished_at": "2026-08-10T20:23:36.549955Z"
+  },
+  "verifier": {
+    "started_at": "2026-08-10T20:23:42.671012Z",
+    "finished_at": "2026-08-10T20:23:50.537603Z"
+  },
+  "step_results": null
+}

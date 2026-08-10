@@ -1,0 +1,121 @@
+{
+  "id": "e97e4346-f501-474e-be5c-7e1d837a0f53",
+  "task_name": "finbit-bank-parser-consolidation",
+  "trial_name": "finbit-bank-parser-consolidation__34TztMH",
+  "trial_uri": "file:///Users/siddhantpaliwal/Desktop/amazon-rl/xai-rl-sample/sample-run/nvidia-raw/nvidia-nemotron3-ultra-final4-r1-nemotron3-ultra-finbit-bank-parser-consolidation-a02/finbit-bank-parser-consolidation__34TztMH",
+  "task_id": {
+    "path": "tasks/finbit-bank-parser-consolidation"
+  },
+  "source": null,
+  "task_checksum": "e0449bd61b166693101aa62f664f06822fc0a7b1e03e0c52aeb36466fbc14e1b",
+  "config": {
+    "task": {
+      "path": "tasks/finbit-bank-parser-consolidation",
+      "git_url": null,
+      "git_commit_id": null,
+      "name": null,
+      "ref": null,
+      "overwrite": false,
+      "download_dir": null,
+      "source": null
+    },
+    "trial_name": "finbit-bank-parser-consolidation__34TztMH",
+    "trials_dir": "/Users/siddhantpaliwal/Desktop/amazon-rl/xai-rl-sample/sample-run/nvidia-raw/nvidia-nemotron3-ultra-final4-r1-nemotron3-ultra-finbit-bank-parser-consolidation-a02",
+    "install_only": false,
+    "timeout_multiplier": 1.0,
+    "agent_timeout_multiplier": null,
+    "verifier_timeout_multiplier": null,
+    "agent_setup_timeout_multiplier": null,
+    "environment_build_timeout_multiplier": null,
+    "agent": {
+      "name": "harness.harbor_agents:OpenCodeNode22",
+      "import_path": null,
+      "model_name": "openrouter/nvidia/nemotron-3-ultra-550b-a55b",
+      "n_concurrent": null,
+      "concurrency_group": null,
+      "skills": [],
+      "override_timeout_sec": null,
+      "override_setup_timeout_sec": null,
+      "max_timeout_sec": null,
+      "extra_allowed_hosts": [],
+      "kwargs": {
+        "version": "1.18.13",
+        "opencode_config": {
+          "permission": {
+            "task": "deny"
+          }
+        }
+      },
+      "mcp_servers": []
+    },
+    "environment": {
+      "type": "daytona",
+      "import_path": null,
+      "force_build": false,
+      "delete": true,
+      "cpu_enforcement_policy": "auto",
+      "memory_enforcement_policy": "auto",
+      "override_cpus": null,
+      "override_memory_mb": null,
+      "override_storage_mb": null,
+      "override_gpus": null,
+      "override_tpu": null,
+      "mounts": null,
+      "extra_docker_compose": [],
+      "kwargs": {
+        "snapshot_template_name": "harbor-probe-finbit-bank-parser-consolidation-8g",
+        "assume_global_snapshot": true
+      },
+      "extra_allowed_hosts": []
+    },
+    "verifier": {
+      "override_timeout_sec": null,
+      "max_timeout_sec": null,
+      "disable": false
+    },
+    "artifacts": [],
+    "extra_instruction_paths": [],
+    "job_id": "eb126616-b90a-4ccc-87ac-538502176ebb"
+  },
+  "agent_info": {
+    "name": "opencode",
+    "version": "1.18.13",
+    "model_info": {
+      "name": "nvidia/nemotron-3-ultra-550b-a55b",
+      "provider": "openrouter"
+    }
+  },
+  "agent_result": {
+    "n_input_tokens": 9575490,
+    "n_cache_tokens": 7712512,
+    "n_output_tokens": 10653,
+    "cost_usd": 2.7202039999999994,
+    "rollout_details": null,
+    "metadata": null
+  },
+  "verifier_result": {
+    "rewards": {
+      "reward": 0.0
+    }
+  },
+  "exception_info": null,
+  "started_at": "2026-08-10T20:15:18.632347Z",
+  "finished_at": "2026-08-10T20:21:41.526835Z",
+  "environment_setup": {
+    "started_at": "2026-08-10T20:15:18.648129Z",
+    "finished_at": "2026-08-10T20:15:20.530680Z"
+  },
+  "agent_setup": {
+    "started_at": "2026-08-10T20:15:20.530800Z",
+    "finished_at": "2026-08-10T20:15:41.239799Z"
+  },
+  "agent_execution": {
+    "started_at": "2026-08-10T20:15:41.240039Z",
+    "finished_at": "2026-08-10T20:21:26.118373Z"
+  },
+  "verifier": {
+    "started_at": "2026-08-10T20:21:30.548311Z",
+    "finished_at": "2026-08-10T20:21:41.198753Z"
+  },
+  "step_results": null
+}

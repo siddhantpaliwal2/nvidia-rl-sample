@@ -1,0 +1,121 @@
+{
+  "id": "f6793cbf-2982-423f-a339-8fce88ab4ec8",
+  "task_name": "finbit-google-cloud-storage-migration",
+  "trial_name": "finbit-google-cloud-storage-migr__WHUzXyi",
+  "trial_uri": "file:///Users/siddhantpaliwal/Desktop/amazon-rl/xai-rl-sample/sample-run/enterprise-raw/enterprise-calibrated-v2-opus5-bedrock-finbit-google-cloud-storage-migration-a03/finbit-google-cloud-storage-migr__WHUzXyi",
+  "task_id": {
+    "path": "tasks/finbit-google-cloud-storage-migration"
+  },
+  "source": null,
+  "task_checksum": "a255f8f775154a32c4cb63f9b55fe4f1dd228da3c3a6b23b31978a82b7c173d8",
+  "config": {
+    "task": {
+      "path": "tasks/finbit-google-cloud-storage-migration",
+      "git_url": null,
+      "git_commit_id": null,
+      "name": null,
+      "ref": null,
+      "overwrite": false,
+      "download_dir": null,
+      "source": null
+    },
+    "trial_name": "finbit-google-cloud-storage-migr__WHUzXyi",
+    "trials_dir": "/Users/siddhantpaliwal/Desktop/amazon-rl/xai-rl-sample/sample-run/enterprise-raw/enterprise-calibrated-v2-opus5-bedrock-finbit-google-cloud-storage-migration-a03",
+    "install_only": false,
+    "timeout_multiplier": 1.0,
+    "agent_timeout_multiplier": null,
+    "verifier_timeout_multiplier": null,
+    "agent_setup_timeout_multiplier": null,
+    "environment_build_timeout_multiplier": null,
+    "agent": {
+      "name": "harness.harbor_agents:OpenCodeNode22",
+      "import_path": null,
+      "model_name": "amazon-bedrock/global.anthropic.claude-opus-5",
+      "n_concurrent": null,
+      "concurrency_group": null,
+      "skills": [],
+      "override_timeout_sec": null,
+      "override_setup_timeout_sec": null,
+      "max_timeout_sec": null,
+      "extra_allowed_hosts": [],
+      "kwargs": {
+        "version": "1.18.13",
+        "opencode_config": {
+          "permission": {
+            "task": "deny"
+          }
+        }
+      },
+      "mcp_servers": []
+    },
+    "environment": {
+      "type": "daytona",
+      "import_path": null,
+      "force_build": false,
+      "delete": true,
+      "cpu_enforcement_policy": "auto",
+      "memory_enforcement_policy": "auto",
+      "override_cpus": null,
+      "override_memory_mb": null,
+      "override_storage_mb": null,
+      "override_gpus": null,
+      "override_tpu": null,
+      "mounts": null,
+      "extra_docker_compose": [],
+      "kwargs": {
+        "snapshot_template_name": "harbor-probe-finbit-google-cloud-storage-migration-8g",
+        "assume_global_snapshot": true
+      },
+      "extra_allowed_hosts": []
+    },
+    "verifier": {
+      "override_timeout_sec": null,
+      "max_timeout_sec": null,
+      "disable": false
+    },
+    "artifacts": [],
+    "extra_instruction_paths": [],
+    "job_id": "7263f7c8-1b99-44a0-a0d8-5dcfda70a83f"
+  },
+  "agent_info": {
+    "name": "opencode",
+    "version": "1.18.13",
+    "model_info": {
+      "name": "global.anthropic.claude-opus-5",
+      "provider": "amazon-bedrock"
+    }
+  },
+  "agent_result": {
+    "n_input_tokens": 2589781,
+    "n_cache_tokens": 2589691,
+    "n_output_tokens": 44171,
+    "cost_usd": 3.003820500000001,
+    "rollout_details": null,
+    "metadata": null
+  },
+  "verifier_result": {
+    "rewards": {
+      "reward": 1.0
+    }
+  },
+  "exception_info": null,
+  "started_at": "2026-08-08T23:49:50.754532Z",
+  "finished_at": "2026-08-09T00:03:21.802072Z",
+  "environment_setup": {
+    "started_at": "2026-08-08T23:49:50.768790Z",
+    "finished_at": "2026-08-08T23:49:53.017635Z"
+  },
+  "agent_setup": {
+    "started_at": "2026-08-08T23:49:53.017711Z",
+    "finished_at": "2026-08-08T23:50:17.998772Z"
+  },
+  "agent_execution": {
+    "started_at": "2026-08-08T23:50:17.998957Z",
+    "finished_at": "2026-08-09T00:02:59.889642Z"
+  },
+  "verifier": {
+    "started_at": "2026-08-09T00:03:07.306980Z",
+    "finished_at": "2026-08-09T00:03:21.589936Z"
+  },
+  "step_results": null
+}

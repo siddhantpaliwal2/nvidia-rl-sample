@@ -1,0 +1,45 @@
+ts-jest[backports] (WARN) "[jest-config].globals.ts-jest.tsConfig" is deprecated, use "[jest-config].globals.ts-jest.tsconfig" instead.
+ts-jest[backports] (WARN) Your Jest configuration is outdated. Use the CLI to help migrating it: ts-jest config:migrate <config-file>.
+FAIL src/customer/customerIdentityMigration.gold.spec.ts
+  ● Test suite failed to run
+
+    Cannot find module './customer.controller.js' from 'customer/customerIdentityMigration.gold.spec.ts'
+
+      1 | import { ConflictException } from '@nestjs/common';
+      2 |
+    > 3 | import { PublicAPICustomerController } from './customer.controller.js';
+        | ^
+      4 | import { CustomerService } from './customer.service.js';
+      5 | import { CustomerEntity } from './entities/customer.entity.js';
+      6 | import { MeasurementFormat } from '../measurement-config/entities/measurement.interface.js';
+
+      at Resolver._throwModNotFoundError (../node_modules/jest-resolve/build/resolver.js:491:11)
+      at Object.<anonymous> (customer/customerIdentityMigration.gold.spec.ts:3:1)
+
+PASS src/measurement-config/measurement-config.controller.spec.ts
+
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        2.33 s
+Test results written to: ../tmp/jest-unit.json
+Force exiting Jest: Have you considered using `--detectOpenHandles` to detect async operations that kept running after all tests finished?
+{
+  "tests": [
+    {
+      "name": "MeasurementConfigController should be defined",
+      "status": "passed"
+    }
+  ]
+}
+
+required passed: 1/9
+  NOT PASSED (not-run): Customer identity migration persists and restores the offering attached to a customer
+  NOT PASSED (not-run): Customer identity migration writes and reads standard measurements with customerId as the ownership tag
+  NOT PASSED (not-run): Customer identity migration maps infrastructure labels to customer-owned measurements
+  NOT PASSED (not-run): Customer identity migration queries usage through the customer offering and preserves time and interval overrides
+  NOT PASSED (not-run): Customer identity migration returns customer reads with invoices and the hydrated offering
+  NOT PASSED (not-run): Customer identity migration exposes customer usage and forwards business, customer, and query parameters
+  NOT PASSED (not-run): Customer identity migration prevents deleting an offering while customers still reference it
+  NOT PASSED (not-run): Customer identity migration wraps customer usage results without changing their records
+reward: 0

@@ -1,0 +1,17 @@
+.DS_Store
+
+__pycache__/
+*.py[cod]
+
+.env
+.env.*
+!.env.example
+
+sample-run/enterprise-raw/
+sample-run/enterprise-runner-logs/
+sample-run/enterprise-budget-ledger.jsonl
+sample-run/enterprise-run-summary-*.json
+sample-run/nvidia-raw/
+sample-run/nvidia-runner-logs/
+sample-run/nvidia-budget-ledger.jsonl
+sample-run/nvidia-replacement-budget-ledger.jsonl

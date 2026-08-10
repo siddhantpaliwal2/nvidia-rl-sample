@@ -1,0 +1,23 @@
+{
+    "job_name": "eng504a-null-daytona-r2",
+    "jobs_dir": "sample-run/enterprise-controls",
+    "n_concurrent_trials": 1,
+    "quiet": true,
+    "environment": {
+        "type": "daytona",
+        "kwargs": {
+            "snapshot_template_name": "harbor-probe-paigo-customer-identity-migration-8g",
+            "assume_global_snapshot": true
+        }
+    },
+    "agents": [
+        {
+            "name": "nop"
+        }
+    ],
+    "tasks": [
+        {
+            "path": "tasks/paigo-customer-identity-migration"
+        }
+    ]
+}

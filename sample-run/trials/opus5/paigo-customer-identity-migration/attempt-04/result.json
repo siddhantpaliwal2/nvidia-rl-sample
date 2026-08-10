@@ -1,0 +1,121 @@
+{
+  "id": "2bcead18-4f38-42c2-8837-7061156959a7",
+  "task_name": "paigo-customer-identity-migration",
+  "trial_name": "paigo-customer-identity-migratio__e6YxjYZ",
+  "trial_uri": "file:///Users/siddhantpaliwal/Desktop/amazon-rl/xai-rl-sample/sample-run/enterprise-raw/enterprise-fairness-v3-r1-opus5-bedrock-paigo-customer-identity-migration-a04/paigo-customer-identity-migratio__e6YxjYZ",
+  "task_id": {
+    "path": "tasks/paigo-customer-identity-migration"
+  },
+  "source": null,
+  "task_checksum": "7b0209500913328127005725f2c53053b5e69a1de920f0ace3cb4f4f60a677ae",
+  "config": {
+    "task": {
+      "path": "tasks/paigo-customer-identity-migration",
+      "git_url": null,
+      "git_commit_id": null,
+      "name": null,
+      "ref": null,
+      "overwrite": false,
+      "download_dir": null,
+      "source": null
+    },
+    "trial_name": "paigo-customer-identity-migratio__e6YxjYZ",
+    "trials_dir": "/Users/siddhantpaliwal/Desktop/amazon-rl/xai-rl-sample/sample-run/enterprise-raw/enterprise-fairness-v3-r1-opus5-bedrock-paigo-customer-identity-migration-a04",
+    "install_only": false,
+    "timeout_multiplier": 1.0,
+    "agent_timeout_multiplier": null,
+    "verifier_timeout_multiplier": null,
+    "agent_setup_timeout_multiplier": null,
+    "environment_build_timeout_multiplier": null,
+    "agent": {
+      "name": "harness.harbor_agents:OpenCodeNode22",
+      "import_path": null,
+      "model_name": "amazon-bedrock/global.anthropic.claude-opus-5",
+      "n_concurrent": null,
+      "concurrency_group": null,
+      "skills": [],
+      "override_timeout_sec": null,
+      "override_setup_timeout_sec": null,
+      "max_timeout_sec": null,
+      "extra_allowed_hosts": [],
+      "kwargs": {
+        "version": "1.18.13",
+        "opencode_config": {
+          "permission": {
+            "task": "deny"
+          }
+        }
+      },
+      "mcp_servers": []
+    },
+    "environment": {
+      "type": "daytona",
+      "import_path": null,
+      "force_build": false,
+      "delete": true,
+      "cpu_enforcement_policy": "auto",
+      "memory_enforcement_policy": "auto",
+      "override_cpus": null,
+      "override_memory_mb": null,
+      "override_storage_mb": null,
+      "override_gpus": null,
+      "override_tpu": null,
+      "mounts": null,
+      "extra_docker_compose": [],
+      "kwargs": {
+        "snapshot_template_name": "harbor-probe-paigo-customer-identity-migration-8g",
+        "assume_global_snapshot": true
+      },
+      "extra_allowed_hosts": []
+    },
+    "verifier": {
+      "override_timeout_sec": null,
+      "max_timeout_sec": null,
+      "disable": false
+    },
+    "artifacts": [],
+    "extra_instruction_paths": [],
+    "job_id": "d67363f7-b253-4295-a0a7-b88b4898267e"
+  },
+  "agent_info": {
+    "name": "opencode",
+    "version": "1.18.13",
+    "model_info": {
+      "name": "global.anthropic.claude-opus-5",
+      "provider": "amazon-bedrock"
+    }
+  },
+  "agent_result": {
+    "n_input_tokens": 27967504,
+    "n_cache_tokens": 27967150,
+    "n_output_tokens": 95696,
+    "cost_usd": 19.275707500000003,
+    "rollout_details": null,
+    "metadata": null
+  },
+  "verifier_result": {
+    "rewards": {
+      "reward": 1.0
+    }
+  },
+  "exception_info": null,
+  "started_at": "2026-08-09T23:06:19.627817Z",
+  "finished_at": "2026-08-10T00:05:45.314939Z",
+  "environment_setup": {
+    "started_at": "2026-08-09T23:06:19.648409Z",
+    "finished_at": "2026-08-09T23:06:21.177717Z"
+  },
+  "agent_setup": {
+    "started_at": "2026-08-09T23:06:21.177798Z",
+    "finished_at": "2026-08-09T23:06:43.149196Z"
+  },
+  "agent_execution": {
+    "started_at": "2026-08-09T23:06:43.149538Z",
+    "finished_at": "2026-08-09T23:51:07.893529Z"
+  },
+  "verifier": {
+    "started_at": "2026-08-10T00:05:37.160458Z",
+    "finished_at": "2026-08-10T00:05:45.034809Z"
+  },
+  "step_results": null
+}

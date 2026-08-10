@@ -1,0 +1,11 @@
+{
+    "task": {
+        "path": "tasks/champ-email-inbox-infrastructure"
+    },
+    "trial_name": "champ-email-inbox-infrastructure__45EyAtC",
+    "trials_dir": "sample-run/enterprise-controls/champ2197-null-local-r8",
+    "agent": {
+        "name": "nop"
+    },
+    "job_id": "0c3d3fef-f161-4f7c-a41b-ff66b59371f8"
+}

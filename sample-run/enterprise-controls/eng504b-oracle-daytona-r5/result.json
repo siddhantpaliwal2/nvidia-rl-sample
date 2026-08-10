@@ -1,0 +1,37 @@
+{
+    "id": "2ac02606-7fe4-40f4-b246-e857d5137d41",
+    "started_at": "2026-08-10T10:48:50.468947",
+    "updated_at": "2026-08-10T10:48:57.165416",
+    "finished_at": "2026-08-10T10:48:57.165416",
+    "n_total_trials": 1,
+    "stats": {
+        "n_completed_trials": 1,
+        "n_errored_trials": 1,
+        "n_running_trials": 0,
+        "n_pending_trials": 0,
+        "n_cancelled_trials": 0,
+        "n_retries": 0,
+        "evals": {
+            "oracle__adhoc": {
+                "n_trials": 0,
+                "n_errors": 1,
+                "metrics": [
+                    {
+                        "mean": 0.0
+                    }
+                ],
+                "pass_at_k": {},
+                "reward_stats": {},
+                "exception_stats": {
+                    "DaytonaAuthorizationError": [
+                        "paigo-customer-billing-schedule__iaASfnv"
+                    ]
+                }
+            }
+        },
+        "n_input_tokens": null,
+        "n_cache_tokens": null,
+        "n_output_tokens": null,
+        "cost_usd": null
+    }
+}

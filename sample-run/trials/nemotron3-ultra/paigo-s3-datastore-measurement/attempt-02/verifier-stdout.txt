@@ -1,0 +1,179 @@
+FAIL src/measurement-config/datastoreMeasurement.gold.spec.ts
+  ● S3 datastore measurement configuration › accepts datastoreBased S3 configuration and materializes nested validation
+
+    expect(received).resolves.toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 33
+
+    - Array []
+    + Array [
+    +   ValidationError {
+    +     "children": Array [
+    +       ValidationError {
+    +         "children": Array [],
+    +         "constraints": Object {
+    +           "isNotEmpty": "cloudId should not be empty",
+    +           "isString": "cloudId must be a string",
+    +         },
+    +         "property": "cloudId",
+    +         "target": DatastoreAccessInformation {
+    +           "accountId": "123456789012",
+    +           "platform": "s3",
+    +         },
+    +         "value": undefined,
+    +       },
+    +     ],
+    +     "property": "measurementConfiguration",
+    +     "target": CreateMeasurementConfigDto {
+    +       "businessID": "business-1",
+    +       "measurementConfiguration": DatastoreAccessInformation {
+    +         "accountId": "123456789012",
+    +         "platform": "s3",
+    +       },
+    +       "measurementMode": "datastoreBased",
+    +       "measurementName": "S3 usage",
+    +     },
+    +     "value": DatastoreAccessInformation {
+    +       "accountId": "123456789012",
+    +       "platform": "s3",
+    +     },
+    +   },
+    + ]
+
+      134 |     it('accepts datastoreBased S3 configuration and materializes nested validation', async () => {
+      135 |         const value = input();
+    > 136 |         await expect(validate(value)).resolves.toEqual([]);
+          |                                                ^
+      137 |         expect(value.measurementConfiguration).toBeInstanceOf(DatastoreAccessInformation);
+      138 |     });
+      139 |
+
+      at Object.toEqual (../node_modules/expect/build/index.js:194:22)
+      at Object.<anonymous> (measurement-config/datastoreMeasurement.gold.spec.ts:136:48)
+
+  ● S3 datastore measurement configuration › defaults an omitted platform to S3 and region to us-east-1
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "s3"
+    Received: undefined
+
+      140 |     it('defaults an omitted platform to S3 and region to us-east-1', () => {
+      141 |         const access = new DatastoreAccessInformation({ accountId: '123456789012' } as any);
+    > 142 |         expect(access.platform).toBe(SupportedDatastores.s3);
+          |                                 ^
+      143 |         expect(access.region).toBe('us-east-1');
+      144 |     });
+      145 |
+
+      at Object.<anonymous> (measurement-config/datastoreMeasurement.gold.spec.ts:142:33)
+
+  ● S3 datastore measurement configuration › persists and restores every datastore access field
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: "platform", "s3"
+    Received
+           1: "measurementId", "measurement-1"
+           2: "businessID", "business-1"
+           3: "subject", "subject-1"
+
+    Number of calls: 12
+
+      172 |             ['region', 'us-west-2'],
+      173 |         ]) {
+    > 174 |             expect(point.tag).toHaveBeenCalledWith(key, value);
+          |                               ^
+      175 |         }
+      176 |         const restored = MeasurementConfigEntity.dbModelToEntity({
+      177 |             _value: measurementMode.datastoreBased,
+
+      at Object.<anonymous> (measurement-config/datastoreMeasurement.gold.spec.ts:174:31)
+
+  ● S3 datastore measurement configuration › provisions a scoped IAM role and returns ingestion and DLQ locations
+
+    TypeError: client_iam_1.GetRoleCommand is not a constructor
+
+      627 |
+      628 |             if (!dbAccessInformation.iamRoleArn) {
+    > 629 |                 const roleResponse = await iamClient.send(new GetRoleCommand({ RoleName: roleName }));
+          |                                                           ^
+      630 |                 dbAccessInformation.iamRoleArn = roleResponse.Role.Arn;
+      631 |             }
+      632 |
+
+      at Function.setupAccess (measurement-config/entities/measurement-config.entity.ts:629:59)
+      at Object.<anonymous> (measurement-config/datastoreMeasurement.gold.spec.ts:196:24)
+
+  ● S3 datastore measurement configuration › updates account trust while preserving the existing role and external ID
+
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: ObjectContaining {"externalId": "external-1", "iamRoleArn": "arn:role"}
+    Received: undefined
+
+      233 |             accessEntity('999999999999', { iamRoleArn: 'arn:role', externalId: 'external-1' }),
+      234 |         );
+    > 235 |         expect(result).toEqual(expect.objectContaining({ iamRoleArn: 'arn:role', externalId: 'external-1' }));
+          |                        ^
+      236 |         const policy = JSON.parse(mockUpdateAssumeRolePolicy.mock.calls[0][0].PolicyDocument);
+      237 |         expect(policy.Statement[0].Principal.AWS).toBe('arn:aws:iam::999999999999:root');
+      238 |         expect(policy.Statement[0].Condition.StringEquals['sts:ExternalId']).toBe('external-1');
+
+      at Object.<anonymous> (measurement-config/datastoreMeasurement.gold.spec.ts:235:24)
+
+  ● S3 datastore measurement configuration › creates, persists, and returns provisioned datastore configuration
+
+    TypeError: client_iam_1.GetRoleCommand is not a constructor
+
+      627 |
+      628 |             if (!dbAccessInformation.iamRoleArn) {
+    > 629 |                 const roleResponse = await iamClient.send(new GetRoleCommand({ RoleName: roleName }));
+          |                                                           ^
+      630 |                 dbAccessInformation.iamRoleArn = roleResponse.Role.Arn;
+      631 |             }
+      632 |
+
+      at Function.setupAccess (measurement-config/entities/measurement-config.entity.ts:629:59)
+      at MeasurementConfigService.create (measurement-config/measurement-config.service.ts:97:9)
+      at Object.<anonymous> (measurement-config/datastoreMeasurement.gold.spec.ts:248:24)
+
+  ● S3 connector usage delivery › derives the business from the object key and ingests a valid record
+
+    TypeError: usage_controller_1.PrivateAPIUsageController is not a constructor
+
+      273 |     it('derives the business from the object key and ingests a valid record', async () => {
+      274 |         const create = jest.fn(async () => ({ message: 'created' }));
+    > 275 |         const controller = new PrivateAPIUsageController({ create } as any);
+          |                            ^
+      276 |         await expect(
+      277 |             controller.dbUsage({
+      278 |                 s3Key: 'business-1/2023/usage.ndjson',
+
+      at Object.<anonymous> (measurement-config/datastoreMeasurement.gold.spec.ts:275:28)
+
+  ● S3 connector usage delivery › writes malformed connector records to the mirrored message key in the DLQ
+
+    TypeError: usage_controller_1.PrivateAPIUsageController is not a constructor
+
+      286 |
+      287 |     it('writes malformed connector records to the mirrored message key in the DLQ', async () => {
+    > 288 |         const controller = new PrivateAPIUsageController({ create: jest.fn() } as any);
+          |                            ^
+      289 |         await controller.dbUsage({ s3Key: 'business-1/customer/usage.ndjson', message: '{not-json' });
+      290 |         expect(mockS3Send).toHaveBeenCalledTimes(1);
+      291 |         const command = mockS3Send.mock.calls[0][0];
+
+      at Object.<anonymous> (measurement-config/datastoreMeasurement.gold.spec.ts:288:28)
+
+[32m[Nest] 3773  - [39m08/10/2026, 8:15:15 PM [32m    LOG[39m [38;5;3m[MeasurementConfigService] [39m[32mCreating Measurement Config with the following inputs[39m
+[32m[Nest] 3773  - [39m08/10/2026, 8:15:15 PM [32m    LOG[39m [38;5;3m[MeasurementConfigService] [39m[32m[object Object][39m
+PASS src/appControllerHistorical.gold.spec.ts
+
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       8 failed, 2 passed, 10 total
+Snapshots:   0 total
+Time:        1.458 s
+Test results written to: ../tmp/jest-unit.json
+Force exiting Jest: Have you considered using `--detectOpenHandles` to detect async operations that kept running after all tests finished?

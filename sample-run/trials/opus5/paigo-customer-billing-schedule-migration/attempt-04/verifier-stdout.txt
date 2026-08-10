@@ -1,0 +1,61 @@
+ts-jest[backports] (WARN) "[jest-config].globals.ts-jest.tsConfig" is deprecated, use "[jest-config].globals.ts-jest.tsconfig" instead.
+ts-jest[backports] (WARN) Your Jest configuration is outdated. Use the CLI to help migrating it: ts-jest config:migrate <config-file>.
+PASS src/billing/customerBillingScheduleMigration.gold.spec.ts
+[32m[Nest] 4183  - [39m08/10/2026, 6:17:23 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mCustomer DTO[39m
+[32m[Nest] 4183  - [39m08/10/2026, 6:17:23 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mObject:[39m
+{
+  "businessID": "business-1",
+  "customerName": "Acme",
+  "paymentChannel": "manual",
+  "offeringId": "offering-1"
+}
+
+[32m[Nest] 4183  - [39m08/10/2026, 6:17:23 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mPoints[39m
+[32m[Nest] 4183  - [39m08/10/2026, 6:17:23 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mObject:[39m
+[
+  {}
+]
+
+[32m[Nest] 4183  - [39m08/10/2026, 6:17:23 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mCreating billing schedule for customer: d8fc928d-0528-4abb-9bb2-a338d40d06db[39m
+[32m[Nest] 4183  - [39m08/10/2026, 6:17:23 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mCustomer DTO[39m
+[32m[Nest] 4183  - [39m08/10/2026, 6:17:23 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mObject:[39m
+{
+  "businessID": "business-1",
+  "customerName": "No plan",
+  "paymentChannel": "manual"
+}
+
+[32m[Nest] 4183  - [39m08/10/2026, 6:17:23 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mPoints[39m
+[32m[Nest] 4183  - [39m08/10/2026, 6:17:23 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mObject:[39m
+[
+  {}
+]
+
+[32m[Nest] 4183  - [39m08/10/2026, 6:17:23 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mNo offering associated with customer: 2f6dda0c-7401-4b5a-bcb0-73ee148656d1, skipping billing schedule creation[39m
+[32m[Nest] 4183  - [39m08/10/2026, 6:17:23 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mAttempting to update saasClientID: customer-1 for business-1[39m
+[32m[Nest] 4183  - [39m08/10/2026, 6:17:23 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mPoints[39m
+[32m[Nest] 4183  - [39m08/10/2026, 6:17:23 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mObject:[39m
+[
+  {}
+]
+
+[32m[Nest] 4183  - [39m08/10/2026, 6:17:23 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mCreating billing schedule for customer: customer-1[39m
+[32m[Nest] 4183  - [39m08/10/2026, 6:17:23 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mAttempting to update saasClientID: customer-1 for business-1[39m
+[32m[Nest] 4183  - [39m08/10/2026, 6:17:23 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mPoints[39m
+[32m[Nest] 4183  - [39m08/10/2026, 6:17:23 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mObject:[39m
+[
+  {}
+]
+
+[32m[Nest] 4183  - [39m08/10/2026, 6:17:23 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mScheduler for customer customer-1 not found[39m
+[32m[Nest] 4183  - [39m08/10/2026, 6:17:23 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mCreating billing schedule for customer: customer-1[39m
+[32m[Nest] 4183  - [39m08/10/2026, 6:17:23 PM [32m    LOG[39m [38;5;3m[BillingService] [39m[32mGenerating billing report for customer: customer-1 between 2023-02-01T00:00:00.000Z and 2023-02-28T00:00:00.000Z[39m
+[32m[Nest] 4183  - [39m08/10/2026, 6:17:23 PM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mEmitting a single billing job[39m
+[32m[Nest] 4183  - [39m08/10/2026, 6:17:23 PM [32m    LOG[39m [38;5;3m[UsageService] [39m[32mNo offering found for customer: customer-1 in business: business-1, no usage to report[39m
+
+Test Suites: 1 passed, 1 total
+Tests:       8 passed, 8 total
+Snapshots:   0 total
+Time:        1.716 s
+Test results written to: ../tmp/jest-unit.json
+Force exiting Jest: Have you considered using `--detectOpenHandles` to detect async operations that kept running after all tests finished?

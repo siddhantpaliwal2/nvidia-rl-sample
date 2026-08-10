@@ -1,0 +1,143 @@
+ts-jest[backports] (WARN) "[jest-config].globals.ts-jest.tsConfig" is deprecated, use "[jest-config].globals.ts-jest.tsconfig" instead.
+ts-jest[backports] (WARN) Your Jest configuration is outdated. Use the CLI to help migrating it: ts-jest config:migrate <config-file>.
+FAIL src/customer/customerIdentityMigration.gold.spec.ts
+  ● Customer identity migration › queries usage through the customer offering and preserves time and interval overrides
+
+    expect(received).resolves.toEqual()
+
+    Received promise rejected instead of resolved
+    Rejected to value: [TypeError: Cannot read properties of undefined (reading 'findOne')]
+
+       98 |             {} as any,
+       99 |         );
+    > 100 |         await expect(
+          |               ^
+      101 |             service.findUsageForCustomer(
+      102 |                 { customerId: 'customer-1', businessID: 'business-1' },
+      103 |                 {
+
+      at expect (../node_modules/@jest/expect/node_modules/expect/build/index.js:128:15)
+      at Object.<anonymous> (customer/customerIdentityMigration.gold.spec.ts:100:15)
+
+  ● Customer identity migration › returns customer reads with invoices and the hydrated offering
+
+    TypeError: this.offeringService.findOne is not a function
+
+      153 |         const {
+      154 |             data: [offering],
+    > 155 |         } = await this.offeringService.findOne({ businessID: customer.businessID, offeringId: customer.offeringId });
+          |                                        ^
+      156 |         return offering;
+      157 |     }
+      158 | }
+
+      at CustomerService.findOffering (customer/customer.service.ts:155:40)
+      at CustomerService.findOne (customer/customer.service.ts:97:41)
+      at Object.<anonymous> (customer/customerIdentityMigration.gold.spec.ts:138:24)
+
+  ● Customer identity migration › exposes customer usage and forwards business, customer, and query parameters
+
+    TypeError: controller.findUsage is not a function
+
+      151 |         const controller = new PublicAPICustomerController({ findUsageForCustomer } as any);
+      152 |         const query = { aggregationInterval: 'none' } as any;
+    > 153 |         await controller.findUsage('customer-1', { user: { businessID: 'business-1' } } as any, query);
+          |                          ^
+      154 |         expect(findUsageForCustomer).toHaveBeenCalledWith(
+      155 |             { businessID: 'business-1', customerId: 'customer-1' },
+      156 |             query,
+
+      at Object.<anonymous> (customer/customerIdentityMigration.gold.spec.ts:153:26)
+
+  ● Customer identity migration › prevents deleting an offering while customers still reference it
+
+    expect(received).rejects.toBeInstanceOf(expected)
+
+    Expected constructor: ConflictException
+    Received constructor: TypeError
+
+      164 |             { findAllCustomersWithOfferingId: jest.fn(async () => ({ data: [{ customerId: 'customer-1' }] })) } as any,
+      165 |         );
+    > 166 |         await expect(service.delete({ businessID: 'business-1', offeringId: 'offering-1' })).rejects.toBeInstanceOf(
+          |                                                                                                      ^
+      167 |             ConflictException,
+      168 |         );
+      169 |     });
+
+      at Object.toBeInstanceOf (../node_modules/@jest/expect/node_modules/expect/build/index.js:241:22)
+      at Object.<anonymous> (customer/customerIdentityMigration.gold.spec.ts:166:102)
+
+  ● Customer identity migration › wraps customer usage results without changing their records
+
+    TypeError: service.findUsageForCustomer is not a function
+
+      179 |         );
+      180 |         await expect(
+    > 181 |             service.findUsageForCustomer(
+          |                     ^
+      182 |                 { customerId: 'customer-1', businessID: 'business-1' },
+      183 |                 { aggregationInterval: 'day' } as any,
+      184 |             ),
+
+      at Object.<anonymous> (customer/customerIdentityMigration.gold.spec.ts:181:21)
+
+[32m[Nest] 3611  - [39m08/08/2026, 9:24:55 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mFinding saasClientID: customer-1 for business-1[39m
+[32m[Nest] 3611  - [39m08/08/2026, 9:24:55 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mFinding invoices for customer customer-1 of business business-1[39m
+[95m[Nest] 3611  - [39m08/08/2026, 9:24:55 AM [95m  DEBUG[39m [38;5;3m[CustomerService] [39m[95m[][39m
+[32m[Nest] 3611  - [39m08/08/2026, 9:24:55 AM [32m    LOG[39m [38;5;3m[OfferingService] [39m[32mAttempting to delete offering: offering-1 for business-1[39m
+PASS src/measurement-config/measurementConfigControllerHistorical.gold.spec.ts
+
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       5 failed, 4 passed, 9 total
+Snapshots:   0 total
+Time:        2.177 s
+Test results written to: ../tmp/jest-unit.json
+Force exiting Jest: Have you considered using `--detectOpenHandles` to detect async operations that kept running after all tests finished?
+{
+  "tests": [
+    {
+      "name": "Customer identity migration persists and restores the offering attached to a customer",
+      "status": "passed"
+    },
+    {
+      "name": "Customer identity migration writes and reads standard measurements with customerId as the ownership tag",
+      "status": "passed"
+    },
+    {
+      "name": "Customer identity migration maps infrastructure labels to customer-owned measurements",
+      "status": "passed"
+    },
+    {
+      "name": "Customer identity migration queries usage through the customer offering and preserves time and interval overrides",
+      "status": "failed"
+    },
+    {
+      "name": "Customer identity migration returns customer reads with invoices and the hydrated offering",
+      "status": "failed"
+    },
+    {
+      "name": "Customer identity migration exposes customer usage and forwards business, customer, and query parameters",
+      "status": "failed"
+    },
+    {
+      "name": "Customer identity migration prevents deleting an offering while customers still reference it",
+      "status": "failed"
+    },
+    {
+      "name": "Customer identity migration wraps customer usage results without changing their records",
+      "status": "failed"
+    },
+    {
+      "name": "MeasurementConfigController should be defined",
+      "status": "passed"
+    }
+  ]
+}
+
+required passed: 4/9
+  NOT PASSED (failed): Customer identity migration queries usage through the customer offering and preserves time and interval overrides
+  NOT PASSED (failed): Customer identity migration returns customer reads with invoices and the hydrated offering
+  NOT PASSED (failed): Customer identity migration exposes customer usage and forwards business, customer, and query parameters
+  NOT PASSED (failed): Customer identity migration prevents deleting an offering while customers still reference it
+  NOT PASSED (failed): Customer identity migration wraps customer usage results without changing their records
+reward: 0

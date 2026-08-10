@@ -1,0 +1,36 @@
+{
+  "tests": [
+    {
+      "name": "Customer billing schedule migration keeps BillingService constructible across the dependency migration",
+      "status": "passed"
+    },
+    {
+      "name": "Customer billing schedule migration creates a monthly billing schedule only when a new customer has an offering",
+      "status": "passed"
+    },
+    {
+      "name": "Customer billing schedule migration replaces the billing schedule when an enrolled customer changes offering",
+      "status": "failed"
+    },
+    {
+      "name": "Customer billing schedule migration continues an offering update when the previous billing schedule is already absent",
+      "status": "passed"
+    },
+    {
+      "name": "Customer billing schedule migration builds an invoice from customer usage and records its billed time range",
+      "status": "failed"
+    },
+    {
+      "name": "Customer billing schedule migration routes billing scheduler emissions exclusively to the billing queue",
+      "status": "passed"
+    },
+    {
+      "name": "Customer billing schedule migration keeps non-billing scheduler emissions on the data queue",
+      "status": "passed"
+    },
+    {
+      "name": "Customer billing schedule migration returns no usage rather than failing when a customer has no offering",
+      "status": "passed"
+    }
+  ]
+}

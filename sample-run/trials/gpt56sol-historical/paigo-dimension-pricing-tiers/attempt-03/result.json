@@ -1,0 +1,121 @@
+{
+  "id": "9f1cc450-dd00-41ef-973e-41be53f7fbe5",
+  "task_name": "paigo-dimension-pricing-tiers",
+  "trial_name": "paigo-dimension-pricing-tiers__dTMtfxp",
+  "trial_uri": "file:///Users/siddhantpaliwal/Desktop/amazon-rl/xai-rl-sample/sample-run/enterprise-raw/enterprise-exact-frontier-r1-gpt56sol-paigo-dimension-pricing-tiers-a03/paigo-dimension-pricing-tiers__dTMtfxp",
+  "task_id": {
+    "path": "tasks/paigo-dimension-pricing-tiers"
+  },
+  "source": null,
+  "task_checksum": "ab6464f2bfa7628ed22424a5f2ca6583eb09ae81092316f1c2be9c7f024d1fe7",
+  "config": {
+    "task": {
+      "path": "tasks/paigo-dimension-pricing-tiers",
+      "git_url": null,
+      "git_commit_id": null,
+      "name": null,
+      "ref": null,
+      "overwrite": false,
+      "download_dir": null,
+      "source": null
+    },
+    "trial_name": "paigo-dimension-pricing-tiers__dTMtfxp",
+    "trials_dir": "/Users/siddhantpaliwal/Desktop/amazon-rl/xai-rl-sample/sample-run/enterprise-raw/enterprise-exact-frontier-r1-gpt56sol-paigo-dimension-pricing-tiers-a03",
+    "install_only": false,
+    "timeout_multiplier": 1.0,
+    "agent_timeout_multiplier": null,
+    "verifier_timeout_multiplier": null,
+    "agent_setup_timeout_multiplier": null,
+    "environment_build_timeout_multiplier": null,
+    "agent": {
+      "name": "harness.harbor_agents:OpenCodeNode22",
+      "import_path": null,
+      "model_name": "openrouter/openai/gpt-5.6-sol",
+      "n_concurrent": null,
+      "concurrency_group": null,
+      "skills": [],
+      "override_timeout_sec": null,
+      "override_setup_timeout_sec": null,
+      "max_timeout_sec": null,
+      "extra_allowed_hosts": [],
+      "kwargs": {
+        "version": "1.18.13",
+        "opencode_config": {
+          "permission": {
+            "task": "deny"
+          }
+        }
+      },
+      "mcp_servers": []
+    },
+    "environment": {
+      "type": "daytona",
+      "import_path": null,
+      "force_build": false,
+      "delete": true,
+      "cpu_enforcement_policy": "auto",
+      "memory_enforcement_policy": "auto",
+      "override_cpus": null,
+      "override_memory_mb": null,
+      "override_storage_mb": null,
+      "override_gpus": null,
+      "override_tpu": null,
+      "mounts": null,
+      "extra_docker_compose": [],
+      "kwargs": {
+        "snapshot_template_name": "harbor-probe-paigo-dimension-pricing-tiers-8g",
+        "assume_global_snapshot": true
+      },
+      "extra_allowed_hosts": []
+    },
+    "verifier": {
+      "override_timeout_sec": null,
+      "max_timeout_sec": null,
+      "disable": false
+    },
+    "artifacts": [],
+    "extra_instruction_paths": [],
+    "job_id": "ec594615-7ead-4655-a638-ea1500e80a9f"
+  },
+  "agent_info": {
+    "name": "opencode",
+    "version": "1.18.13",
+    "model_info": {
+      "name": "openai/gpt-5.6-sol",
+      "provider": "openrouter"
+    }
+  },
+  "agent_result": {
+    "n_input_tokens": 2058627,
+    "n_cache_tokens": 2058513,
+    "n_output_tokens": 9526,
+    "cost_usd": 2.1224752499999995,
+    "rollout_details": null,
+    "metadata": null
+  },
+  "verifier_result": {
+    "rewards": {
+      "reward": 0.0
+    }
+  },
+  "exception_info": null,
+  "started_at": "2026-08-08T09:20:08.746804Z",
+  "finished_at": "2026-08-08T09:28:38.718206Z",
+  "environment_setup": {
+    "started_at": "2026-08-08T09:20:08.765399Z",
+    "finished_at": "2026-08-08T09:20:12.759539Z"
+  },
+  "agent_setup": {
+    "started_at": "2026-08-08T09:20:12.759574Z",
+    "finished_at": "2026-08-08T09:20:33.560709Z"
+  },
+  "agent_execution": {
+    "started_at": "2026-08-08T09:20:33.560862Z",
+    "finished_at": "2026-08-08T09:28:29.065627Z"
+  },
+  "verifier": {
+    "started_at": "2026-08-08T09:28:32.507582Z",
+    "finished_at": "2026-08-08T09:28:38.521194Z"
+  },
+  "step_results": null
+}

@@ -1,0 +1,2251 @@
+diff --git a/src/app.module.ts b/src/app.module.ts
+index 7d79a1161eb130eef090be93c92fe05374326f97..e29c66896aa412bae64215b1990444c3e336e5f7 100644
+--- a/src/app.module.ts
++++ b/src/app.module.ts
+@@ -50,6 +50,7 @@ import { InvoiceStatusCheckerModule } from './microservices/invoiceStatusChecker
+ import { TokenConsumerModule } from './token-consumer/token-consumer.module';
+ import { LedgerModule } from './ledger/ledger.module';
+ import { CustomerGroupModule } from './customergroup/customergroup.module';
++import { OfferingTopUpModule } from './microservices/offeringTopUpHandler/offeringTopUp.module.js';
+ const OpenTelemetryModuleConfig = OpenTelemetryModule.forRoot({
+     metrics: {
+         hostMetrics: true, // Includes Host Metrics
+@@ -99,6 +100,7 @@ const OpenTelemetryModuleConfig = OpenTelemetryModule.forRoot({
+         EbsSnapshotDataGathererModule,
+         EntitlementCheckerModule,
+         InvoiceStatusCheckerModule,
++        OfferingTopUpModule,
+         InstanceUptimeModule,
+         MeasurementConfigModule,
+         ReservedInstanceModule,
+diff --git a/src/billing/entities/billing.entity.ts b/src/billing/entities/billing.entity.ts
+index 975bc93fec0544fec1ce3d40957843df7574df52..8486beabd03771fe9a05d3664a10eb7572a2c362 100644
+--- a/src/billing/entities/billing.entity.ts
++++ b/src/billing/entities/billing.entity.ts
+@@ -62,6 +62,16 @@ export class Billing {
+                 currentBillingCycleEndTime: DatetimeUtils.beginningOfDay(DatetimeUtils.nextYear()).toISOString(),
+             };
+         }
++        if (billingCycle === ValidBillingCycles.topUp) {
++            return {
++                startTime: DatetimeUtils.startOfLastHour(new Date()).toISOString(),
++                endTime: DatetimeUtils.endOfLastHour(new Date()).toISOString(),
++                subscriptionStart: DatetimeUtils.startOfLastHour(new Date()).toISOString(),
++                subscriptionEnd: DatetimeUtils.endOfLastHour(new Date()).toISOString(),
++                currentBillingCycleStartTime: DatetimeUtils.startOfLastHour(new Date()).toISOString(),
++                currentBillingCycleEndTime: DatetimeUtils.endOfLastHour(new Date()).toISOString(),
++            };
++        }
+     }
+ 
+     public static transformer(billingEntity: Billing, influxService: InfluxService) {
+diff --git a/src/contract/contract.service.ts b/src/contract/contract.service.ts
+index a2d11e41da14c54b59ca13eda8bb487f824d6170..c2020d0c08db0d60e83c4de1eb03bb9f831f4288 100644
+--- a/src/contract/contract.service.ts
++++ b/src/contract/contract.service.ts
+@@ -4,7 +4,7 @@ import { Offering } from '../offering/entities/offeringPackage.entity';
+ import { ContractEntity } from './entities/contract.entity';
+ import { InfluxService } from '../influx/influx.service';
+ import { BasicResponseDTO } from '../basicResponseDTO';
+-import { ReadContractDto, ReadContractResponseDto } from './dto/readContract.dto';
++import { CustomerEnrollmentResponseData, ReadContractDto, ReadContractResponseDto } from './dto/readContract.dto';
+ import { OfferingService } from '../offering/offering.service';
+ import { ReadOfferingResponseData } from '../offering/dto/readOffering.dto';
+ import { InvoicesService } from '../invoice/invoices.service';
+@@ -28,6 +28,7 @@ import { CreateDimensionDto } from '../dimensions/dto/create-dimension.dto';
+ import { ReadDimensionResponseData } from 'dimensions/dto/create-dimension.dto';
+ import { ValidationError } from 'class-validator';
+ import { ReadSettingsResponseData } from '../setting/dto/read-setting.dto';
++import { InvoiceLineItem, InvoiceLineItems } from '../invoice/entities/invoice.entity';
+ 
+ @Injectable()
+ export class ContractService {
+@@ -614,4 +615,71 @@ export class ContractService {
+         const { loadPoints } = this.influxService;
+         await loadPoints(`${process.env.STAGE}-config`, process.env.INFLUX_ORG, points);
+     }
++    buildReadResponseInstanceFromEnrollment({
++        enrollmentRes,
++        businessID,
++        readSettingsResponseData,
++        customerId,
++    }: {
++        enrollmentRes: CustomerEnrollmentResponseData;
++        businessID: string;
++        readSettingsResponseData: ReadSettingsResponseData;
++        customerId: string;
++    }): ReadContractResponseDto {
++        const { offering: offeringResponseData, offeringEnrollmentDate, overrides } = enrollmentRes;
++        const offering = Offering.getInstance(
++            offeringResponseData,
++            customerId,
++            businessID,
++            this.invoicesService,
++            readSettingsResponseData,
++            this.schedulerService,
++            this.customerService,
++        );
++        const readRes = new ReadContractResponseDto(
++            {
++                offering,
++                offeringEnrollmentDate,
++                customerId,
++                businessID,
++                freeTrialEndDate: overrides?.freeTrialEndDate,
++                dimensionOverrides: overrides?.dimensionOverrides,
++                offeringId: offeringResponseData?.offeringId,
++            },
++            offeringResponseData,
++        );
++        return readRes;
++    }
++
++    async generateLineItemsForEnrollment({
++        enrollmentRes,
++        businessID,
++        readSettingsResponseData,
++        startDate,
++        endDate,
++        customer,
++        lineItems,
++    }: {
++        enrollmentRes: CustomerEnrollmentResponseData;
++        businessID: string;
++        readSettingsResponseData: ReadSettingsResponseData;
++        startDate: Date;
++        endDate: Date;
++        customer: ReadCustomerResponseData;
++        lineItems: InvoiceLineItems;
++    }) {
++        const readRes = this.buildReadResponseInstanceFromEnrollment({
++            enrollmentRes,
++            businessID,
++            readSettingsResponseData,
++            customerId: customer.customerId,
++        });
++        const finalLineItems = await readRes.offering.generateBillingLineItems({
++            startDate,
++            endDate,
++            customer,
++            lineItems,
++        });
++        return finalLineItems;
++    }
+ }
+diff --git a/src/customer/customer.controller.ts b/src/customer/customer.controller.ts
+index b67399ba97d65a88df555063880589a6675cc879..3dc94b554b247e4d1694451db5a6f76d2f51574d 100644
+--- a/src/customer/customer.controller.ts
++++ b/src/customer/customer.controller.ts
+@@ -13,7 +13,6 @@ import {
+     forwardRef,
+     Inject,
+     Logger,
+-    BadRequestException,
+     UseInterceptors,
+ } from '@nestjs/common';
+ import { CustomerService } from './customer.service.js';
+diff --git a/src/dimensions/dto/validateDecimalPlaces.ts b/src/dimensions/dto/validateDecimalPlaces.ts
+index da016f6038963158975fafb8c43985c358226198..1c4ed99bb1420fcc5a128e17ca9a6d6e67690c6e 100644
+--- a/src/dimensions/dto/validateDecimalPlaces.ts
++++ b/src/dimensions/dto/validateDecimalPlaces.ts
+@@ -10,11 +10,15 @@ import {
+ export class ValidateDecimalPlaceRule implements ValidatorConstraintInterface {
+     async validate(consumptionPrice: string) {
+         if (consumptionPrice) {
+-            const decimalPlaces = consumptionPrice.split('.')[1]?.length;
+-            if (decimalPlaces) {
+-                return decimalPlaces <= 8;
+-            } else {
+-                return true;
++            try {
++                const decimalPlaces = consumptionPrice.split('.')[1]?.length;
++                if (decimalPlaces) {
++                    return decimalPlaces <= 8;
++                } else {
++                    return true;
++                }
++            } catch (e) {
++                return false;
+             }
+         } else {
+             return true;
+diff --git a/src/influx/entities/InvoiceInfluxTable.entity.ts b/src/influx/entities/InvoiceInfluxTable.entity.ts
+index 4be60739cbd7870c37627aea5bb8c65ae0e4bf72..d13f544af2a60779bd60be3e09eb9bb5fe94313d 100644
+--- a/src/influx/entities/InvoiceInfluxTable.entity.ts
++++ b/src/influx/entities/InvoiceInfluxTable.entity.ts
+@@ -40,6 +40,8 @@ export class InvoiceInfluxRow extends BaseInfluxTable {
+ 
+     public isManual?: string;
+ 
++    public storePaymentAsCredit?: string;
++
+     public declare _value: string;
+ 
+     public declare _field: string;
+diff --git a/src/invoice/dto/create-Invoices.dto.ts b/src/invoice/dto/create-Invoices.dto.ts
+index b297305c94e419f7a4155eb8ddb90e65c6c38f25..b0d9cd7671166ff23e802673144df4aa09d7f146 100644
+--- a/src/invoice/dto/create-Invoices.dto.ts
++++ b/src/invoice/dto/create-Invoices.dto.ts
+@@ -1,4 +1,4 @@
+-import { IsDateString, IsEnum, IsNotEmpty, IsOptional, IsRFC3339, IsString } from 'class-validator';
++import { IsBoolean, IsDateString, IsEnum, IsNotEmpty, IsOptional, IsRFC3339, IsString } from 'class-validator';
+ import { ApiHideProperty, ApiProperty, OmitType } from '@nestjs/swagger';
+ import { InvoicePaymentTerm } from '../entities/InvoicePaymentTerm.js';
+ import { StartTimeRangeValidation } from './timeRangeValidator.js';
+@@ -107,6 +107,17 @@ export class CreateInvoicesDto {
+     @IsOptional()
+     @ApiHideProperty()
+     public offeringId?: string;
++
++    /**
++     * If storePaymentAsCredit is `true` then the payment on the invoice will ADD to the customers credit balance. By default it is false, meaning that the payment of an invoice inside of paigo will first, deduct from the credit balance and then charge the payment method on file.
++     * <br><br>
++     * Example: `true`
++     * @example true
++     */
++    @IsOptional()
++    @IsBoolean()
++    @ApiProperty()
++    public storePaymentAsCredit?: boolean;
+ }
+ 
+ /*
+diff --git a/src/invoice/dto/createOffcycleInvoice.ts b/src/invoice/dto/createOffcycleInvoice.ts
+index 68a71377e279f2c4f98f42afb9d6c7f84b1e4d07..0fbe35ffc5c2450605c042598755608427ae907a 100644
+--- a/src/invoice/dto/createOffcycleInvoice.ts
++++ b/src/invoice/dto/createOffcycleInvoice.ts
+@@ -1,5 +1,5 @@
+ import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
+-import { IsDateString, IsEnum, IsNotEmpty, IsOptional, IsRFC3339, IsString } from 'class-validator';
++import { IsBoolean, IsDateString, IsEnum, IsNotEmpty, IsOptional, IsRFC3339, IsString } from 'class-validator';
+ import { SupportedCurrencies } from '../../offering/dto/SupportedCurrencies.js';
+ import { InvoicePaymentTerm } from '../entities/InvoicePaymentTerm.js';
+ import { StartTimeRangeValidation } from './timeRangeValidator.js';
+@@ -70,4 +70,15 @@ export class GenerateOffCycleDto {
+     @IsOptional()
+     @ApiHideProperty()
+     public offeringId?: string;
++
++    /**
++     * If storePaymentAsCredit is `true` then the payment on the invoice will ADD to the customers credit balance. By default it is false, meaning that the payment of an invoice inside of paigo will first, deduct from the credit balance and then charge the payment method on file.
++     * <br><br>
++     * Example: `true`
++     * @example true
++     */
++    @IsOptional()
++    @IsBoolean()
++    @ApiProperty()
++    public storePaymentAsCredit?: boolean;
+ }
+diff --git a/src/invoice/entities/invoice.entity.ts b/src/invoice/entities/invoice.entity.ts
+index 3433b90955760be68db45d08b172928ade943c8a..9a9e64f173b24dd0647955519ee44dd85face47f 100644
+--- a/src/invoice/entities/invoice.entity.ts
++++ b/src/invoice/entities/invoice.entity.ts
+@@ -342,6 +342,7 @@ export class Invoice {
+     public toEntity: string;
+     public salesTaxRate: number;
+     public isManual: boolean;
++    public storePaymentAsCredit: boolean;
+ 
+     constructor({
+         customerId = '',
+@@ -364,6 +365,7 @@ export class Invoice {
+         refunds,
+         influxService,
+         isManual,
++        storePaymentAsCredit,
+     }: {
+         customerId?: string;
+         invoiceLineItems?: InvoiceLineItems;
+@@ -385,6 +387,7 @@ export class Invoice {
+         refunds?: InvoiceRefunds[];
+         influxService?: InfluxService;
+         isManual?: string;
++        storePaymentAsCredit?: boolean;
+     }) {
+         this.customerId = customerId;
+         this.invoiceLineItems = invoiceLineItems;
+@@ -414,6 +417,9 @@ export class Invoice {
+         if (isManual === 'true') {
+             this.isManual = true;
+         }
++        if (storePaymentAsCredit === true) {
++            this.storePaymentAsCredit = true;
++        }
+     }
+ 
+     private calculateTotalAmountWithoutTax(): number {
+@@ -564,7 +570,6 @@ export class Invoice {
+         if (!this.invoiceDate) {
+             this.invoiceDate = new Date();
+         }
+-
+         const { rate: salesTaxRate, error } = await this.getSalesTaxRate(taxService);
+         this.salesTaxRate = salesTaxRate;
+         this.taxAmount = salesTaxRate * this.totalAmountWithoutTax;
+@@ -823,7 +828,6 @@ export class Invoice {
+ 
+     private async getSalesTaxRate(taxService: TaxService): Promise<{ rate: number; error?: { message: string } }> {
+         Invoice.logger.log('Calculating sales tax');
+-
+         if (this.taxExempt === TaxExempt.exempt) {
+             return { rate: 0 };
+         }
+@@ -836,6 +840,7 @@ export class Invoice {
+             this.invoiceLineItems.getLineItems().forEach((lineItem) => {
+                 taxableLineItems.addLineItem(TaxableLineItem.fromInvoiceLineItem(this.taxCategory, lineItem));
+             });
++
+             const { rate, error } = await taxService.calculateSalesTax(
+                 this.fromCountry,
+                 this.fromPostalCode,
+@@ -1050,6 +1055,9 @@ export class Invoice {
+         if (this.isManual) {
+             invoicePoint.tag('isManual', 'true');
+         }
++        if (this.storePaymentAsCredit) {
++            invoicePoint.tag('storePaymentAsCredit', 'true');
++        }
+         invoicePoint.tag('invoiceDate', this.invoiceDate.toISOString());
+         invoicePoint.tag('totalAmountWithoutTax', this.totalAmountWithoutTax.toString());
+         invoicePoint.tag('taxAmount', this.taxAmount.toString());
+@@ -1076,6 +1084,12 @@ export class Invoice {
+         if (this.invoiceLineItems?.getTerms()) {
+             invoicePoint.tag('invoiceLineItemTerms', this.invoiceLineItems.getTerms());
+         }
++        if (this.storePaymentAsCredit) {
++            invoicePoint.tag('storePaymentAsCredit', 'true');
++        }
++        if (this.isManual) {
++            invoicePoint.tag('isManual', 'true');
++        }
+         invoicePoint.tag('invoiceDate', this.invoiceDate.toISOString());
+         invoicePoint.tag('totalAmountWithoutTax', this.totalAmountWithoutTax.toString());
+         invoicePoint.tag('taxAmount', this.taxAmount.toString());
+@@ -1096,6 +1110,10 @@ export class Invoice {
+         if (dbModel.invoiceLineItemTerms) {
+             invoiceLineItems.addTerms(dbModel.invoiceLineItemTerms);
+         }
++        let storePaymentAsCredit;
++        if (dbModel?.storePaymentAsCredit === 'true') {
++            storePaymentAsCredit = true;
++        }
+         return new Invoice({
+             businessID: dbModel.businessID,
+             invoiceId: dbModel.invoiceId,
+@@ -1113,6 +1131,7 @@ export class Invoice {
+             toEntity: dbModel.toEntity,
+             salesTaxRate: Number(dbModel.salesTaxRate) ? Number(dbModel.salesTaxRate) : 0,
+             isManual: dbModel?.isManual,
++            storePaymentAsCredit,
+         });
+     }
+ 
+diff --git a/src/invoice/invoices.service.ts b/src/invoice/invoices.service.ts
+index 539ca77e90ecc3ec51052b70f697987bbeba61a6..d33098e3109ce758b53a8f39f67230a50f1f7c6d 100644
+--- a/src/invoice/invoices.service.ts
++++ b/src/invoice/invoices.service.ts
+@@ -64,6 +64,7 @@ export class InvoicesService {
+             invoicePaymentTerm,
+             currency,
+             customer,
++            storePaymentAsCredit,
+         }: CreateInvoicesDto & CustomerInvoiceDto,
+         isManual = false,
+     ): Promise<CreateInvoiceResponseDto> {
+@@ -76,6 +77,7 @@ export class InvoicesService {
+             invoicePaymentTerm,
+             currency,
+             customer,
++            storePaymentAsCredit,
+         });
+         const res = await newInvoice.generate(this.taxService, isManual);
+         await this.tokenConsumerService.create({
+@@ -100,6 +102,7 @@ export class InvoicesService {
+         invoicePaymentTerm,
+         currency,
+         customer,
++        storePaymentAsCredit,
+     }: CreateInvoicesDto & CustomerInvoiceDto): Promise<Invoice> {
+         let invoiceLineItems: InvoiceLineItems;
+         if (items instanceof InvoiceLineItems) {
+@@ -135,6 +138,7 @@ export class InvoicesService {
+                 ? currency
+                 : Offering.getCurrency({ customer: customerEntity, offering: customerEntity?.offering }),
+             influxService: this.influxService,
++            storePaymentAsCredit,
+         });
+         newInvoice.loadPropertiesFromSettingsEntity(settingsEntity);
+         newInvoice.loadPropertiesFromCustomerEntity(customerEntity);
+@@ -244,7 +248,16 @@ export class InvoicesService {
+     }
+ 
+     async generateInvoiceForUsageTotal(
+-        { businessID, customerId, start, end, invoicePaymentTerm, invoiceDate, offeringId }: GenerateOffCycleDto,
++        {
++            businessID,
++            customerId,
++            start,
++            end,
++            invoicePaymentTerm,
++            invoiceDate,
++            offeringId,
++            storePaymentAsCredit,
++        }: GenerateOffCycleDto,
+         isManual = false,
+     ): Promise<{ invoiceId: string; invoiceIds: string[] }> {
+         InvoicesService.logger.log(
+@@ -283,6 +296,7 @@ export class InvoicesService {
+                 invoiceDate,
+                 invoicePaymentTerm,
+                 isManual,
++                storePaymentAsCredit,
+             });
+             return { invoiceId, invoiceIds: [invoiceId] };
+         } else {
+@@ -296,6 +310,7 @@ export class InvoicesService {
+                         invoiceDate,
+                         invoicePaymentTerm,
+                         isManual,
++                        storePaymentAsCredit,
+                     });
+                     return invoiceId;
+                 }),
+diff --git a/src/microservices/invoiceStatusChecker/invoiceStatusChecker.service.ts b/src/microservices/invoiceStatusChecker/invoiceStatusChecker.service.ts
+index 31b9fb44bc08d1687439d2195709973a7710b428..20a9ef888cccb34b2a836e93865855f93e2a8c20 100644
+--- a/src/microservices/invoiceStatusChecker/invoiceStatusChecker.service.ts
++++ b/src/microservices/invoiceStatusChecker/invoiceStatusChecker.service.ts
+@@ -25,7 +25,7 @@ export class InvoiceStatusChecker {
+     ) {}
+ 
+     @Process('invoiceStatusChecker')
+-    async evaluateEntitlements({ data: { scheduleParameters, subject } }: Job<SchedulerEntity>) {
++    async checkInvoiceStatus({ data: { scheduleParameters, subject } }: Job<SchedulerEntity>) {
+         InvoiceStatusChecker.logger.log(`Starting invoice status checker for ${subject}`);
+         const { businessID, invoiceId, customerId, timesChecked } = scheduleParameters as InvoiceStatusCheckerDto;
+         const intTimesChecked = parseInt(timesChecked, 10);
+diff --git a/src/microservices/offeringTopUpHandler/dto/offeringTopUp.dto.ts b/src/microservices/offeringTopUpHandler/dto/offeringTopUp.dto.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..f06deb0974f14831184f8b1bb11b866c8e52b7ca
+--- /dev/null
++++ b/src/microservices/offeringTopUpHandler/dto/offeringTopUp.dto.ts
+@@ -0,0 +1,13 @@
++import { IsNotEmpty, IsString } from 'class-validator';
++
++export class OfferingTopUpDto {
++    @IsString()
++    @IsNotEmpty()
++    public offeringId: string;
++
++    @IsString()
++    @IsNotEmpty()
++    public businessID: string;
++
++    public serviceQueueName: 'offeringTopUpChecker';
++}
+diff --git a/src/microservices/offeringTopUpHandler/offeringTopUp.module.ts b/src/microservices/offeringTopUpHandler/offeringTopUp.module.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..546d73f0aa064c4785fb7682fc43a636d5e4a576
+--- /dev/null
++++ b/src/microservices/offeringTopUpHandler/offeringTopUp.module.ts
+@@ -0,0 +1,28 @@
++import { Module } from '@nestjs/common';
++import { OfferingTopUpChecker } from './offeringTopUp.service.js';
++import { BullModule } from '@nestjs/bull';
++import { PrivateAPICustomerModule } from '../../customer/customer.module.js';
++import { PrivateAPISettingsModule } from '../../setting/settings.module.js';
++import { PaymentModule } from '../../payment/payment.module.js';
++import { PrivateAPIOfferingModule } from '../../offering/offering.module.js';
++import { PrivateAPIInvoicesModule } from '../../invoice/invoices.module.js';
++import { ContractModule } from '../../contract/contract.module.js';
++import { CreditModule } from '../../credit/credit.module.js';
++
++@Module({
++    controllers: [],
++    providers: [OfferingTopUpChecker],
++    imports: [
++        PrivateAPISettingsModule,
++        PrivateAPIOfferingModule,
++        PaymentModule,
++        PrivateAPICustomerModule,
++        PrivateAPIInvoicesModule,
++        ContractModule,
++        CreditModule,
++        BullModule.registerQueue({
++            name: 'scheduler_billing_queue',
++        }),
++    ],
++})
++export class OfferingTopUpModule {}
+diff --git a/src/microservices/offeringTopUpHandler/offeringTopUp.service.ts b/src/microservices/offeringTopUpHandler/offeringTopUp.service.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..e7563a15f8c523a3868bff4857eca548f8188cb8
+--- /dev/null
++++ b/src/microservices/offeringTopUpHandler/offeringTopUp.service.ts
+@@ -0,0 +1,149 @@
++import { Job } from 'bull';
++import { SchedulerEntity } from '../../scheduler/entities/scheduler.entity.js';
++import { OnQueueFailed, Process, Processor } from '@nestjs/bull';
++import { Inject, Logger, forwardRef } from '@nestjs/common';
++import { CustomerService, ReadAllCustomerResponse } from '../../customer/customer.service.js';
++import { AuditService } from '../../audit/audit.service.js';
++import { AuditScope } from '../../audit/entities/audit.interface.js';
++import { PaymentService } from '../../payment/payment.service.js';
++import { SettingsService } from '../../setting/settings.service.js';
++import { ContractService } from '../../contract/contract.service.js';
++import { DatetimeUtils } from '../../utils/datetime.js';
++import { CreditService } from '../../credit/credit.service.js';
++import { OfferingTopUpDto } from './dto/offeringTopUp.dto.js';
++import { Invoice, InvoiceLineItems } from '../../invoice/entities/invoice.entity.js';
++import { InvoicesService } from '../../invoice/invoices.service.js';
++import { ReadContractResponseDto } from '../../contract/dto/readContract.dto.js';
++import { ReadAllCustomersResponseData } from '../../customer/entities/customer.entity.js';
++
++@Processor('scheduler_billing_queue')
++export class OfferingTopUpChecker {
++    private static readonly logger = new Logger(OfferingTopUpChecker.name);
++    constructor(
++        @Inject(forwardRef(() => CustomerService)) readonly customerService: CustomerService,
++        @Inject(forwardRef(() => PaymentService)) readonly paymentService: PaymentService,
++        @Inject(forwardRef(() => SettingsService)) readonly settingsService: SettingsService,
++        @Inject(forwardRef(() => ContractService)) readonly contractService: ContractService,
++        @Inject(forwardRef(() => CreditService)) readonly creditService: CreditService,
++        @Inject(forwardRef(() => InvoicesService)) readonly invoiceService: InvoicesService,
++    ) {}
++
++    @Process('offeringTopUpChecker')
++    async offeringTopUpChecker({ data: { scheduleParameters, subject } }: Job<SchedulerEntity>) {
++        try {
++            OfferingTopUpChecker.logger.log(
++                //eslint-disable-next-line
++                //@ts-ignore
++                `Processing offering top up. subject: ${subject}, scheduleParameters: ${scheduleParameters?.businessID} ${scheduleParameters?.offeringId}`,
++            );
++            const now = new Date();
++            const { offeringId, businessID } = scheduleParameters as OfferingTopUpDto;
++            const start = DatetimeUtils.startOfLastHour(now);
++            const end = DatetimeUtils.endOfLastHour(now);
++
++            const [res, readSettingsRes] = await Promise.all([
++                this.customerService.findAll({ businessID }),
++                this.settingsService.findAll({ businessID }),
++            ]);
++            const readSettingsResponseData = readSettingsRes[0];
++            const customers = res.data;
++            OfferingTopUpChecker.logger.log(`Found ${customers.length} customers`);
++            if (customers && customers.length > 0) {
++                const customersWithContract = customers.filter((customer) =>
++                    customer.enrollments.find((contract) => contract?.offering?.offeringId === offeringId),
++                );
++                OfferingTopUpChecker.logger.log(
++                    `Found ${customersWithContract.length} customers with contract: ${offeringId}`,
++                );
++                if (customersWithContract && customersWithContract?.length > 0) {
++                    const invoices = await Promise.all(
++                        customersWithContract.map(
++                            async (
++                                customer,
++                            ): Promise<{
++                                invoice: Invoice;
++                                contract: ReadContractResponseDto;
++                                customer: ReadAllCustomersResponseData;
++                            }> => {
++                                const contract = customer.enrollments.find(
++                                    (contract) => contract?.offering?.offeringId === offeringId,
++                                );
++                                const lineItems = new InvoiceLineItems();
++                                const invoiceLineItems = await this.contractService.generateLineItemsForEnrollment({
++                                    startDate: start,
++                                    endDate: end,
++                                    enrollmentRes: contract,
++                                    customer,
++                                    readSettingsResponseData,
++                                    businessID,
++                                    lineItems,
++                                });
++                                const invoice = await this.invoiceService.buildInvoice({
++                                    businessID,
++                                    customerId: customer?.customerId,
++                                    items: invoiceLineItems,
++                                    customer,
++                                });
++                                return {
++                                    invoice,
++                                    contract: this.contractService.buildReadResponseInstanceFromEnrollment({
++                                        enrollmentRes: contract,
++                                        customerId: customer?.customerId,
++                                        businessID,
++                                        readSettingsResponseData,
++                                    }),
++                                    customer,
++                                };
++                            },
++                        ),
++                    );
++                    OfferingTopUpChecker.logger.log(`Found ${invoices.length} invoices`);
++                    if (invoices && invoices.length > 0) {
++                        await Promise.all(
++                            invoices.map(async ({ invoice, contract, customer }) => {
++                                const total = invoice.totalAmountWithoutTax;
++                                if (total !== 0) {
++                                    const credits = customer?.creditBalance ? parseFloat(customer.creditBalance) : 0;
++                                    await this.creditService.create({
++                                        transactionAmount: (total * -1).toFixed(2),
++                                        customerId: invoice.customerId,
++                                        businessID,
++                                        timestamp: now.toISOString(),
++                                        metadata: {
++                                            offeringId,
++                                            reason: `Deducting credits for usage on offering: ${contract?.offering?.offeringName}`,
++                                            start: start.toISOString(),
++                                            end: end.toISOString(),
++                                        },
++                                    });
++                                    customer.creditBalance = (credits - total).toFixed(2);
++                                }
++                                await contract.offering.topUp({ customer });
++                            }),
++                        );
++                    }
++                } else {
++                    OfferingTopUpChecker.logger.log('No customers found with contract');
++                    return;
++                }
++            } else {
++                OfferingTopUpChecker.logger.log('No customers found');
++                return;
++            }
++        } catch (error) {
++            OfferingTopUpChecker.logger.error('Failed to process offering top up', error);
++            throw error;
++        }
++    }
++    @OnQueueFailed({ name: 'offeringTopUp' })
++    jobFailure(job: Job) {
++        AuditService.publishEvent({
++            message: 'Failed to process offering top up',
++            data: [job],
++            topic: AuditScope.ERROR,
++        });
++    }
++    static getScheduleId(businessID: string, offeringId: string) {
++        return `offeringTopUpChecker-${businessID}-${offeringId}`;
++    }
++}
+diff --git a/src/offering/dto/TopUpValidator.ts b/src/offering/dto/TopUpValidator.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..0b70d57c2ddb8ea4a13cc5b4f20b5526bf607d40
+--- /dev/null
++++ b/src/offering/dto/TopUpValidator.ts
+@@ -0,0 +1,77 @@
++import { Injectable } from '@nestjs/common';
++import {
++    registerDecorator,
++    ValidationArguments,
++    ValidationOptions,
++    ValidatorConstraint,
++    ValidatorConstraintInterface,
++} from 'class-validator';
++import { OfferingType } from '../entities/OfferingType.js';
++import { CreateOfferingDTO, ValidBillingCycles } from './createOffering.dto.js';
++
++@ValidatorConstraint({ name: 'TopUpBillingCycleRule', async: false })
++@Injectable()
++export class TopUpBillingCycleRule implements ValidatorConstraintInterface {
++    validate(billingCycle: string, args: ValidationArguments) {
++        const offeringType = (args.object as CreateOfferingDTO).offeringType;
++        if (billingCycle === undefined) {
++            return true;
++        }
++        if (offeringType && offeringType === OfferingType.subscription) {
++            return billingCycle !== ValidBillingCycles.topUp;
++        }
++        if (offeringType && offeringType === OfferingType.usageBased) {
++            return true;
++        }
++    }
++
++    defaultMessage() {
++        return 'Billing Cycle topUp only works with usage-based offerings';
++    }
++}
++
++export function TopUpBillingCycleValidator(property: string, validationOptions?: ValidationOptions) {
++    return function (object: unknown, propertyName: string) {
++        registerDecorator({
++            name: 'BillingCycleValidator',
++            target: object.constructor,
++            propertyName: propertyName,
++            constraints: [property],
++            options: validationOptions,
++            validator: TopUpBillingCycleRule,
++        });
++    };
++}
++
++@ValidatorConstraint({ name: 'TopUpAmountRule', async: false })
++@Injectable()
++export class TopUpRule implements ValidatorConstraintInterface {
++    validate(topUpAmount: string, args: ValidationArguments) {
++        const billingCycle = (args.object as CreateOfferingDTO).billingCycle;
++        if (billingCycle === undefined) {
++            return false;
++        }
++        if (billingCycle !== ValidBillingCycles.topUp && topUpAmount) {
++            return false;
++        } else {
++            return true;
++        }
++    }
++
++    defaultMessage() {
++        return 'If billingCycle is not topUp, topUpAmount and topUpThreshold should not be present';
++    }
++}
++
++export function TopUpValidator(property: string, validationOptions?: ValidationOptions) {
++    return function (object: unknown, propertyName: string) {
++        registerDecorator({
++            name: 'TopUpAmountValidator',
++            target: object.constructor,
++            propertyName: propertyName,
++            constraints: [property],
++            options: validationOptions,
++            validator: TopUpRule,
++        });
++    };
++}
+diff --git a/src/offering/dto/createOffering.dto.ts b/src/offering/dto/createOffering.dto.ts
+index 52929a68981fdc9015260e4a19781a391b395c63..6dcaf09666d4bcad2fbc76ba8bf71a353284ae0e 100644
+--- a/src/offering/dto/createOffering.dto.ts
++++ b/src/offering/dto/createOffering.dto.ts
+@@ -22,8 +22,8 @@ import {
+ import { SupportedOfferingCurrency, SupportedOfferingCurrencyEnum } from './SupportedCurrencies.js';
+ import { FreeTrialAndCredit } from './freeCreditFreeTrialLength.js';
+ import { ValidateDecimalPlace } from '../../dimensions/dto/validateDecimalPlaces.js';
+-import { CustomOverrides } from '../../contract/dto/prepareContractResponse.dto.js';
+ import { DimensionOverridesDto } from '../../contract/dto/dimensionOverrides.dto.js';
++import { TopUpValidator, TopUpBillingCycleValidator } from './TopUpValidator.js';
+ 
+ export enum OfferingVisibility {
+     private = 'private',
+@@ -33,6 +33,7 @@ export enum OfferingVisibility {
+ export enum ValidBillingCycles {
+     monthly = 'monthly',
+     'annualToDate' = 'annualToDate',
++    'topUp' = 'topUp',
+ }
+ /**
+  * The Create offering object enables a Paigo Client to create an new offering in the Paigo System.
+@@ -98,6 +99,31 @@ export class CreateOfferingDTO {
+     })
+     public offeringType?: string;
+ 
++    /**
++     * The amount to top up the account by. Only positive number string is allowed. Required if `billingCycle` is `topUp`.
++     * <br><br>
++     * Example: `"20.00"` for $20.00.
++     * @example "20.00"
++     */
++    @IsOptional()
++    @IsNumberString()
++    @Validate(IsNumericStringGreaterThanOrEqualToZeroValidator)
++    @TopUpValidator('topUpAmount')
++    public topUpAmount?: string;
++
++    /**
++     * The threshold at which the account should be topped up. Only positive number string is allowed. Between 0 and 1.
++     * If not provided the default value will be 0.2 or 20%. Meaning that when the account balance reaches 20% of the the top up amount, the account will be
++     * topped up, and the end customer charged.
++     * <br><br>
++     * Example: `"0.2"` for 20%.
++     * @example "0.2"
++     */
++    @IsOptional()
++    @IsNumberString()
++    @TopUpValidator('topUpThreshold')
++    public topUpThreshold?: string;
++
+     /**
+      * The price of the subscription.
+      * Only positive number string is allowed.
+@@ -136,6 +162,7 @@ export class CreateOfferingDTO {
+      */
+     @IsEnum(ValidBillingCycles)
+     @IsOptional()
++    @TopUpBillingCycleValidator('billingCycle')
+     @ApiProperty({ enum: ValidBillingCycles, default: ValidBillingCycles.monthly })
+     public billingCycle?: ValidBillingCycles;
+ 
+@@ -227,6 +254,8 @@ export class CreateOfferingDTO {
+                 minimumCharge,
+                 metadata,
+                 dimensionOverrides,
++                topUpAmount,
++                topUpThreshold,
+             } = entity;
+             this.offeringName = offeringName;
+             this.currency = currency as unknown as SupportedOfferingCurrency;
+@@ -244,6 +273,12 @@ export class CreateOfferingDTO {
+             if (dimensionOverrides) {
+                 this.dimensionOverrides = dimensionOverrides;
+             }
++            if (topUpAmount) {
++                this.topUpAmount = topUpAmount;
++            }
++            if (topUpThreshold) {
++                this.topUpThreshold = topUpThreshold;
++            }
+             this.metadata = metadata;
+         }
+     }
+diff --git a/src/offering/entities/offeringPackage.entity.ts b/src/offering/entities/offeringPackage.entity.ts
+index 5b03c6f6c2822859dbb6156774604713ccc98eeb..6d5606575ddf9e99a63206d661536f403c9429cb 100644
+--- a/src/offering/entities/offeringPackage.entity.ts
++++ b/src/offering/entities/offeringPackage.entity.ts
+@@ -1,8 +1,8 @@
+ import { Point } from '@influxdata/influxdb-client';
+-import { Logger, NotFoundException } from '@nestjs/common';
++import { Inject, Injectable, Logger, NotFoundException, forwardRef } from '@nestjs/common';
+ import { ApiHideProperty } from '@nestjs/swagger';
+ import { InfluxService } from '../../influx/influx.service.js';
+-import { OfferingVisibility, ValidBillingCycles } from '../dto/createOffering.dto.js';
++import { CreateOfferingDTO, OfferingVisibility, ValidBillingCycles } from '../dto/createOffering.dto.js';
+ import { SupportedCurrencies } from '../dto/SupportedCurrencies.js';
+ import { SchedulerStatus, schedulerType, SupportedMeasurementFrequencies } from '../../scheduler/dto/scheduler.dto.js';
+ import { SchedulerService } from '../../scheduler/scheduler.service.js';
+@@ -32,6 +32,8 @@ import { CustomerContractDiscount } from '../../contract/dto/customerContractDis
+ import { DimensionTierDto } from '../../dimensions/dto/dimensionTier.dto.js';
+ import { PaymentSchedule, aggregationMethod } from '../../dimensions/dto/create-dimension.dto.js';
+ import { DimensionOverridesDto } from '../../contract/dto/dimensionOverrides.dto.js';
++import { OfferingTopUpChecker } from '../../microservices/offeringTopUpHandler/offeringTopUp.service.js';
++import { OfferingTopUpDto } from '../../microservices/offeringTopUpHandler/dto/offeringTopUp.dto.js';
+ 
+ export abstract class Offering {
+     static readonly logger = new Logger(Offering.name);
+@@ -56,8 +58,21 @@ export abstract class Offering {
+     public currency?: SupportedCurrencies;
+     public usageOverrides?: (AggregatedUsageResponse | MetadataGroupedAggregatedUsageResponse)[];
+     public dimensionOverrides?: DimensionOverridesDto[];
++    public topUpAmount?: number;
++    public topUpThreshold?: number;
+ 
+     abstract enroll(subject: string, customer?: ReadCustomerResponseData): void;
++    abstract generateBillingLineItems({
++        startDate,
++        endDate,
++        customer,
++        lineItems,
++    }: {
++        startDate: Date;
++        endDate: Date;
++        customer: ReadCustomerResponseData;
++        lineItems: InvoiceLineItems;
++    }): Promise<InvoiceLineItems>;
+     abstract unenroll({
+         customer,
+         shouldCreditRemainingPlan,
+@@ -68,6 +83,8 @@ export abstract class Offering {
+         isChangeOfPlan?: boolean;
+         creditService?: CreditService;
+     }): void;
++
++    abstract topUp({ customer }: { customer: ReadCustomerResponseData }): void;
+     static getCurrency({
+         customer,
+         offering,
+@@ -298,7 +315,7 @@ export abstract class Offering {
+                 businessID: this.businessID,
+                 startDate: freeTrialEndDate,
+             });
+-        } else {
++        } else if (this.billingCycle !== ValidBillingCycles.topUp) {
+             await this.schedulerService.create({
+                 schedulerID: this.customerId,
+                 schedulerType: schedulerType.billing,
+@@ -770,6 +787,7 @@ export abstract class Offering {
+         invoiceDate: string;
+         invoicePaymentTerm?: InvoicePaymentTerm;
+         isManual?: boolean;
++        storePaymentAsCredit?: boolean;
+     }): Promise<string>;
+     abstract processBilling(
+         startDate?: Date,
+@@ -799,6 +817,8 @@ export abstract class Offering {
+             minimumCharge,
+             dimensionOverrides,
+             offeringId,
++            topUpAmount,
++            topUpThreshold,
+         } = offeringConfig; // TODO check input and defend from invalid input
+         switch (offeringType) {
+             case OfferingType.usageBased:
+@@ -819,6 +839,8 @@ export abstract class Offering {
+                     usageOverrides,
+                     dimensionOverrides,
+                     offeringId,
++                    topUpAmount,
++                    topUpThreshold,
+                 });
+             case OfferingType.subscription:
+                 return new Subscription({
+@@ -867,6 +889,8 @@ export abstract class Offering {
+         usageOverrides,
+         dimensionOverrides,
+         offeringId,
++        topUpAmount,
++        topUpThreshold,
+     }: {
+         offeringType: OfferingType;
+         offeringName: string;
+@@ -886,6 +910,8 @@ export abstract class Offering {
+         usageOverrides?: AggregatedUsageResponse[];
+         dimensionOverrides?: DimensionOverridesDto[];
+         offeringId: string;
++        topUpAmount?: string;
++        topUpThreshold?: string;
+     }) {
+         this.offeringType = offeringType ? offeringType : OfferingType.usageBased;
+         this.offeringName = offeringName;
+@@ -913,6 +939,13 @@ export abstract class Offering {
+             this.dimensionOverrides = dimensionOverrides;
+         }
+         this.offeringId = offeringId;
++
++        if (topUpAmount) {
++            this.topUpAmount = parseFloat(topUpAmount);
++        }
++        if (topUpThreshold) {
++            this.topUpThreshold = parseFloat(topUpThreshold);
++        }
+     }
+ }
+ 
+@@ -955,160 +988,29 @@ export class Subscription extends Offering {
+             await this.registerBillingSchedule(subject);
+         }
+     }
+-
+-    public calculateRemainingAmountForSubscription({
+-        startDate,
+-        endDate,
+-        exchangeRate,
+-        negative,
+-        billingCycle,
+-    }: {
+-        startDate: Date;
+-        endDate: Date;
+-        exchangeRate?: number;
+-        negative?: boolean;
+-        billingCycle: ValidBillingCycles;
+-    }): number {
+-        const billingMSSeconds: number = Math.round(Math.abs(endDate.getTime() - startDate.getTime()));
+-
+-        const billingMSSecondsInBillingCycle = Offering.determineBillingSecondsInBillingCycle({
+-            date: startDate,
+-            billingCycle,
+-        });
+-        if (typeof billingMSSecondsInBillingCycle === 'number') {
+-            const amountDue: number =
+-                Math.round(
+-                    100 *
+-                        this.subscriptionPrice *
+-                        exchangeRate *
+-                        (billingMSSeconds / billingMSSecondsInBillingCycle) *
+-                        (negative ? -1 : 1),
+-                ) / 100;
+-
+-            return amountDue;
+-        } else {
+-            AuditService.publishEvent({
+-                data: [
+-                    {
+-                        message: 'Failed to determine billing seconds in billing cycle',
+-                        startDate,
+-                        endDate,
+-                        exchangeRate,
+-                        negative,
+-                        billingCycle,
+-                    },
+-                ],
+-                message: 'Failed to determine billing seconds in billing cycle',
+-                topic: AuditScope.ERROR,
+-            });
+-            throw new Error('Failed to determine billing seconds in billing cycle');
+-        }
+-    }
+-    calculateSubscriptionLineItem({
++    async generateBillingLineItems({
+         startDate,
+         endDate,
+-        negative,
++        customer,
+         lineItems,
+-        exchangeRate,
++        calculateSubscription,
++        subscriptionStart,
++        subscriptionEnd,
++        startDateOverride,
++        calculateUsage,
++        offeringUpgrade,
+     }: {
+         startDate: Date;
+         endDate: Date;
+-        negative: boolean;
++        customer: ReadCustomerResponseData;
+         lineItems: InvoiceLineItems;
+-        exchangeRate: number;
+-    }): InvoiceLineItems {
+-        lineItems.addLineItem(
+-            new InvoiceLineItem(
+-                this.offeringName,
+-                1,
+-                this.calculateRemainingAmountForSubscription({
+-                    startDate,
+-                    endDate,
+-                    exchangeRate,
+-                    negative,
+-                    billingCycle: this.billingCycle,
+-                }),
+-                'Subscription',
+-            ),
+-        );
+-
+-        return lineItems;
+-    }
+-    async offcycleBilling({
+-        startDate,
+-        endDate,
+-        customer,
+-        invoiceDate,
+-        invoicePaymentTerm,
+-        calculateSubscription = true,
+-        isManual = false,
+-    }: {
+-        startDate: Date;
+-        endDate: Date;
+-        customer?: ReadCustomerResponseData;
+-        invoiceDate: string;
+-        invoicePaymentTerm?: InvoicePaymentTerm;
+-        calculateSubscription: boolean;
+-        isManual: boolean;
+-    }): Promise<string> {
+-        const lineItems = new InvoiceLineItems();
+-        let exchangeRate = 1;
+-        if (Offering.getCurrency({ customer, offering: this }) !== SupportedCurrencies.USD) {
+-            exchangeRate = await AnalyticsService.getExchangeRate({
+-                currency: Offering.getCurrency({ customer, offering: this }),
+-            });
+-            lineItems.addTerms(
+-                `Invoice dynamically calculated with realtime currency exchange rate €${exchangeRate.toFixed(
+-                    2,
+-                )} = $1.00`,
+-            );
+-        }
+-        if (calculateSubscription) {
+-            this.calculateSubscriptionLineItem({ lineItems, startDate, endDate, negative: false, exchangeRate });
+-        }
+-        await Offering.getLineItemsForUsage({
+-            startDate,
+-            endDate,
+-            customer,
+-            lineItems,
+-            businessID: this.businessID,
+-            customerId: this.customerId,
+-            customerService: this.customerService,
+-            negative: false,
+-            offeringInstance: this,
+-            dimensions: this.dimensions,
+-        });
+-
+-        const invoiceResponse = await this.invoicesService.create(
+-            {
+-                businessID: this.businessID,
+-                customer: customer,
+-                customerId: this.customerId,
+-                items: lineItems,
+-                invoiceDate: invoiceDate ? invoiceDate : startDate.toISOString(),
+-                currency: Offering.getCurrency({ customer, offering: this }),
+-                invoicePaymentTerm,
+-            },
+-            isManual,
+-        );
+-        return invoiceResponse.invoiceId;
+-    }
+-    async processBilling(
+-        startDateOverride: Date,
+-        endDateOverride: Date,
+-        customer?: ReadCustomerResponseData,
+-        calculateUsage = false,
+-        calculateSubscription = true,
+-        invoiceDateOverride?: string,
+-        offeringUpgrade?: boolean,
+-    ): Promise<string> {
+-        const { endTime, startTime, subscriptionEnd, subscriptionStart } = Billing.billingCycleToTimeRange(
+-            this.billingCycle,
+-        );
+-        const startDate = startDateOverride ? startDateOverride : DatetimeUtils.beginningOfDay(new Date(startTime));
+-        const endDate = endDateOverride ? endDateOverride : DatetimeUtils.endOfDay(new Date(endTime));
+-
+-        const lineItems = new InvoiceLineItems();
++        calculateSubscription?: boolean;
++        subscriptionStart: string;
++        subscriptionEnd: string;
++        startDateOverride?: boolean;
++        calculateUsage?: boolean;
++        offeringUpgrade?: boolean;
++    }): Promise<InvoiceLineItems> {
+         let exchangeRate = 1;
+         if (Offering.getCurrency({ customer, offering: this }) !== SupportedCurrencies.USD) {
+             exchangeRate = await AnalyticsService.getExchangeRate({
+@@ -1271,56 +1173,232 @@ export class Subscription extends Offering {
+                 Offering.addDiscountLineItem(this.discount, lineItems);
+             }
+         }
+-        const invoiceResponse = await this.invoicesService.create({
+-            businessID: this.businessID,
+-            customer: customer,
+-            customerId: this.customerId,
+-            items: lineItems,
+-            invoiceDate: invoiceDateOverride
+-                ? invoiceDateOverride
+-                : startDateOverride
+-                ? startDate.toISOString()
+-                : subscriptionStart,
+-            currency: Offering.getCurrency({ customer, offering: this }),
+-        });
+-        const invoiceID = invoiceResponse.invoiceId;
+-        return invoiceID;
++        return lineItems;
++    }
++    async topUp() {
++        Offering.logger.warn('Top up not implemented for subscription');
++        return;
+     }
+ 
+-    async unenroll({
+-        customer,
+-        shouldCreditRemainingPlan,
+-        creditService,
++    public calculateRemainingAmountForSubscription({
++        startDate,
++        endDate,
++        exchangeRate,
++        negative,
++        billingCycle,
+     }: {
+-        customer: ReadCustomerResponseData;
+-        shouldCreditRemainingPlan: boolean;
+-        creditService: CreditService;
+-    }): Promise<void> {
+-        const { subscriptionStart, subscriptionEnd } = Billing.billingCycleToTimeRange(this.billingCycle);
+-        const now = DatetimeUtils.getCurrentUTCTime();
+-        const calculateSubscription = false;
+-        const calculateUsage = true;
+-        const invoiceDateOverride = DatetimeUtils.getCurrentUTCTime().toISOString();
+-        if (shouldCreditRemainingPlan) {
+-            const amountCredit = this.calculateRemainingAmountForSubscription({
+-                startDate: now,
+-                endDate: DatetimeUtils.endOfDay(new Date(subscriptionEnd)),
+-                exchangeRate: await AnalyticsService.getExchangeRate({
+-                    currency: Offering.getCurrency({ customer, offering: this }),
+-                }),
+-                negative: false,
+-                billingCycle: this.billingCycle,
+-            });
++        startDate: Date;
++        endDate: Date;
++        exchangeRate?: number;
++        negative?: boolean;
++        billingCycle: ValidBillingCycles;
++    }): number {
++        const billingMSSeconds: number = Math.round(Math.abs(endDate.getTime() - startDate.getTime()));
+ 
+-            await creditService.create({
+-                transactionAmount: amountCredit.toFixed(2),
+-                customerId: customer?.customerId,
+-                businessID: this.businessID,
+-                timestamp: now.toISOString(),
+-                metadata: {
+-                    reason: `Credit for unenrollment from ${this.offeringName}`,
+-                    offeringId: customer?.offeringId,
+-                },
++        const billingMSSecondsInBillingCycle = Offering.determineBillingSecondsInBillingCycle({
++            date: startDate,
++            billingCycle,
++        });
++        if (typeof billingMSSecondsInBillingCycle === 'number') {
++            const amountDue: number =
++                Math.round(
++                    100 *
++                        this.subscriptionPrice *
++                        exchangeRate *
++                        (billingMSSeconds / billingMSSecondsInBillingCycle) *
++                        (negative ? -1 : 1),
++                ) / 100;
++
++            return amountDue;
++        } else {
++            AuditService.publishEvent({
++                data: [
++                    {
++                        message: 'Failed to determine billing seconds in billing cycle',
++                        startDate,
++                        endDate,
++                        exchangeRate,
++                        negative,
++                        billingCycle,
++                    },
++                ],
++                message: 'Failed to determine billing seconds in billing cycle',
++                topic: AuditScope.ERROR,
++            });
++            throw new Error('Failed to determine billing seconds in billing cycle');
++        }
++    }
++    calculateSubscriptionLineItem({
++        startDate,
++        endDate,
++        negative,
++        lineItems,
++        exchangeRate,
++    }: {
++        startDate: Date;
++        endDate: Date;
++        negative: boolean;
++        lineItems: InvoiceLineItems;
++        exchangeRate: number;
++    }): InvoiceLineItems {
++        lineItems.addLineItem(
++            new InvoiceLineItem(
++                this.offeringName,
++                1,
++                this.calculateRemainingAmountForSubscription({
++                    startDate,
++                    endDate,
++                    exchangeRate,
++                    negative,
++                    billingCycle: this.billingCycle,
++                }),
++                'Subscription',
++            ),
++        );
++
++        return lineItems;
++    }
++    async offcycleBilling({
++        startDate,
++        endDate,
++        customer,
++        invoiceDate,
++        invoicePaymentTerm,
++        calculateSubscription = true,
++        isManual = false,
++        storePaymentAsCredit,
++    }: {
++        startDate: Date;
++        endDate: Date;
++        customer?: ReadCustomerResponseData;
++        invoiceDate: string;
++        invoicePaymentTerm?: InvoicePaymentTerm;
++        calculateSubscription: boolean;
++        isManual: boolean;
++        storePaymentAsCredit?: boolean;
++    }): Promise<string> {
++        const lineItems = new InvoiceLineItems();
++        let exchangeRate = 1;
++        if (Offering.getCurrency({ customer, offering: this }) !== SupportedCurrencies.USD) {
++            exchangeRate = await AnalyticsService.getExchangeRate({
++                currency: Offering.getCurrency({ customer, offering: this }),
++            });
++            lineItems.addTerms(
++                `Invoice dynamically calculated with realtime currency exchange rate €${exchangeRate.toFixed(
++                    2,
++                )} = $1.00`,
++            );
++        }
++        if (calculateSubscription) {
++            this.calculateSubscriptionLineItem({ lineItems, startDate, endDate, negative: false, exchangeRate });
++        }
++        await Offering.getLineItemsForUsage({
++            startDate,
++            endDate,
++            customer,
++            lineItems,
++            businessID: this.businessID,
++            customerId: this.customerId,
++            customerService: this.customerService,
++            negative: false,
++            offeringInstance: this,
++            dimensions: this.dimensions,
++        });
++
++        const invoiceResponse = await this.invoicesService.create(
++            {
++                businessID: this.businessID,
++                customer: customer,
++                customerId: this.customerId,
++                items: lineItems,
++                invoiceDate: invoiceDate ? invoiceDate : startDate.toISOString(),
++                currency: Offering.getCurrency({ customer, offering: this }),
++                invoicePaymentTerm,
++                storePaymentAsCredit,
++            },
++            isManual,
++        );
++        return invoiceResponse.invoiceId;
++    }
++    async processBilling(
++        startDateOverride: Date,
++        endDateOverride: Date,
++        customer?: ReadCustomerResponseData,
++        calculateUsage = false,
++        calculateSubscription = true,
++        invoiceDateOverride?: string,
++        offeringUpgrade?: boolean,
++    ): Promise<string> {
++        const { endTime, startTime, subscriptionEnd, subscriptionStart } = Billing.billingCycleToTimeRange(
++            this.billingCycle,
++        );
++        const startDate = startDateOverride ? startDateOverride : DatetimeUtils.beginningOfDay(new Date(startTime));
++        const endDate = endDateOverride ? endDateOverride : DatetimeUtils.endOfDay(new Date(endTime));
++
++        const lineItems = new InvoiceLineItems();
++        const endLineItems = await this.generateBillingLineItems({
++            startDate,
++            endDate,
++            customer,
++            lineItems,
++            calculateSubscription,
++            subscriptionStart,
++            subscriptionEnd,
++            startDateOverride: startDateOverride ? true : false,
++            calculateUsage,
++            offeringUpgrade,
++        });
++
++        const invoiceResponse = await this.invoicesService.create({
++            businessID: this.businessID,
++            customer: customer,
++            customerId: this.customerId,
++            items: endLineItems,
++            invoiceDate: invoiceDateOverride
++                ? invoiceDateOverride
++                : startDateOverride
++                ? startDate.toISOString()
++                : subscriptionStart,
++            currency: Offering.getCurrency({ customer, offering: this }),
++        });
++        const invoiceID = invoiceResponse.invoiceId;
++        return invoiceID;
++    }
++
++    async unenroll({
++        customer,
++        shouldCreditRemainingPlan,
++        creditService,
++    }: {
++        customer: ReadCustomerResponseData;
++        shouldCreditRemainingPlan: boolean;
++        creditService: CreditService;
++    }): Promise<void> {
++        const { subscriptionStart, subscriptionEnd } = Billing.billingCycleToTimeRange(this.billingCycle);
++        const now = DatetimeUtils.getCurrentUTCTime();
++        const calculateSubscription = false;
++        const calculateUsage = true;
++        const invoiceDateOverride = DatetimeUtils.getCurrentUTCTime().toISOString();
++        if (shouldCreditRemainingPlan) {
++            const amountCredit = this.calculateRemainingAmountForSubscription({
++                startDate: now,
++                endDate: DatetimeUtils.endOfDay(new Date(subscriptionEnd)),
++                exchangeRate: await AnalyticsService.getExchangeRate({
++                    currency: Offering.getCurrency({ customer, offering: this }),
++                }),
++                negative: false,
++                billingCycle: this.billingCycle,
++            });
++
++            await creditService.create({
++                transactionAmount: amountCredit.toFixed(2),
++                customerId: customer?.customerId,
++                businessID: this.businessID,
++                timestamp: now.toISOString(),
++                metadata: {
++                    reason: `Credit for unenrollment from ${this.offeringName}`,
++                    offeringId: customer?.offeringId,
++                },
+             });
+         }
+         await this.processBilling(
+@@ -1437,6 +1515,7 @@ export class UsageBased extends Offering {
+     static readonly logger = new Logger(UsageBased.name);
+     isUnenrollment?: boolean;
+     isEnrollment?: boolean;
++    @Inject(forwardRef(() => CreditService)) creditService: CreditService;
+     async enroll(subject: string, customer?: ReadCustomerResponseData): Promise<void> {
+         await this.registerBillingSchedule(subject);
+         const upfrontPaidDimensions = this.dimensions.filter(
+@@ -1449,8 +1528,140 @@ export class UsageBased extends Offering {
+             await this.processBilling(undefined, undefined, customer);
+             this.dimensions = currentDimensions;
+         }
++        if (this.billingCycle === ValidBillingCycles.topUp) {
++            await this.topUp({ customer });
++        }
+     }
++    async generateBillingLineItems({
++        startDate,
++        endDate,
++        customer,
++        lineItems,
++    }: {
++        startDate: Date;
++        endDate: Date;
++        customer: ReadCustomerResponseData;
++        lineItems: InvoiceLineItems;
++    }): Promise<InvoiceLineItems> {
++        if (
++            this.freeTrialEndDate &&
++            DatetimeUtils.dateIsBetweenTwoDates(new Date(this.freeTrialEndDate), startDate, endDate)
++        ) {
++            await Offering.getLineItemsForUsage({
++                startDate,
++                endDate: new Date(this.freeTrialEndDate),
++                customer,
++                lineItems,
++                negative: true,
++                businessID: this.businessID,
++                customerId: this.customerId,
++                customerService: this.customerService,
++                offeringInstance: this,
++                dimensions: this.dimensions,
++            });
++        } else if (
++            this.freeTrialEndDate &&
++            DatetimeUtils.dateIsBetweenTwoDates(endDate, startDate, new Date(this.freeTrialEndDate))
++        ) {
++            // The customer is currently in a free trial
++            await Offering.getLineItemsForUsage({
++                startDate,
++                endDate,
++                customer,
++                lineItems,
++                negative: true,
++                businessID: this.businessID,
++                customerId: this.customerId,
++                customerService: this.customerService,
++                offeringInstance: this,
++                dimensions: this.dimensions,
++            });
++        }
+ 
++        await Offering.getLineItemsForUsage({
++            startDate,
++            endDate,
++            customer,
++            lineItems,
++            negative: false,
++            businessID: this.businessID,
++            customerId: this.customerId,
++            customerService: this.customerService,
++            offeringInstance: this,
++            dimensions: this.dimensions,
++        });
++        UsageBased.logger.log(
++            `Creating invoice for ${this.offeringName} for ${this.customerId}, lineItems: ${JSON.stringify(
++                lineItems.getLineItems(),
++            )}`,
++        );
++        let exchangeRate = 1;
++        if (Offering.getCurrency({ customer, offering: this }) !== SupportedCurrencies.USD) {
++            exchangeRate = await AnalyticsService.getExchangeRate({
++                currency: Offering.getCurrency({ customer, offering: this }),
++            });
++        }
++        const endLineItems = Offering.minimumChargeOverride({
++            billingCycle: this.billingCycle,
++            minimumCharge: this.minimumCharge,
++            lineItems,
++            freeTrialEndDate: this.freeTrialEndDate,
++            offeringName: this.offeringName,
++            isUnenrollment: this.isUnenrollment,
++            startDate,
++            endDate,
++            exchangeRate,
++            offeringEnrollmentDate: customer?.offeringEnrollmentDate
++                ? new Date(customer?.offeringEnrollmentDate)
++                : undefined,
++        });
++        if (this?.discount?.name) {
++            Offering.addDiscountLineItem(this.discount, endLineItems);
++        }
++        return endLineItems;
++    }
++    async topUp({ customer }) {
++        try {
++            Offering.logger.log(`Checking if top up is needed for ${this.offeringName} for ${this.customerId}`);
++            let creditBalance: string = customer?.creditBalance;
++            Offering.logger.log(`Credit balance for ${this.customerId} is ${creditBalance}`);
++            if (!creditBalance) {
++                creditBalance = '0';
++            }
++            const threshold = this.topUpThreshold ? this.topUpThreshold : 0.2;
++            const trueThreshold = threshold * this.topUpAmount;
++            if (parseFloat(creditBalance) >= trueThreshold) {
++                return;
++            }
++            const amountToTopUp = this.topUpAmount - parseFloat(creditBalance);
++            const invoiceLineItems = new InvoiceLineItems();
++            invoiceLineItems.addLineItem(new InvoiceLineItem(`${this.offeringName} - Top Up`, 1, amountToTopUp));
++            Offering.logger.log(
++                `Creating top up invoice for ${this.offeringName} for ${this.customerId}. Total is: ${amountToTopUp}`,
++            );
++            await this.invoicesService.create({
++                businessID: this.businessID,
++                customerId: this.customerId,
++                items: invoiceLineItems,
++                currency: Offering.getCurrency({ offering: this, customer }),
++                storePaymentAsCredit: true,
++                customer,
++            });
++        } catch (e) {
++            Offering.logger.error(`Failed to top up for ${this.offeringName} for ${this.customerId}`, e);
++            AuditService.publishEvent({
++                data: [
++                    {
++                        message: 'Failed to top up',
++                        error: e,
++                    },
++                ],
++                message: 'Failed to top up',
++                topic: AuditScope.ERROR,
++            });
++        }
++        return;
++    }
+     async offcycleBilling({
+         startDate,
+         endDate,
+@@ -1458,6 +1669,7 @@ export class UsageBased extends Offering {
+         invoiceDate,
+         invoicePaymentTerm,
+         isManual = false,
++        storePaymentAsCredit,
+     }: {
+         startDate: Date;
+         endDate: Date;
+@@ -1465,6 +1677,7 @@ export class UsageBased extends Offering {
+         invoiceDate?: string;
+         invoicePaymentTerm?: InvoicePaymentTerm;
+         isManual?: boolean;
++        storePaymentAsCredit?: boolean;
+     }): Promise<string> {
+         const lineItems = new InvoiceLineItems();
+         await Offering.getLineItemsForUsage({
+@@ -1488,6 +1701,7 @@ export class UsageBased extends Offering {
+                 invoiceDate: invoiceDate ? invoiceDate : endDate.toISOString(),
+                 currency: Offering.getCurrency({ customer, offering: this }),
+                 invoicePaymentTerm,
++                storePaymentAsCredit,
+             },
+             isManual,
+         );
+@@ -1551,81 +1765,12 @@ export class UsageBased extends Offering {
+                 this.freeTrialEndDate
+             }`,
+         );
+-        if (
+-            this.freeTrialEndDate &&
+-            DatetimeUtils.dateIsBetweenTwoDates(new Date(this.freeTrialEndDate), startDate, endDate)
+-        ) {
+-            await Offering.getLineItemsForUsage({
+-                startDate,
+-                endDate: new Date(this.freeTrialEndDate),
+-                customer,
+-                lineItems,
+-                negative: true,
+-                businessID: this.businessID,
+-                customerId: this.customerId,
+-                customerService: this.customerService,
+-                offeringInstance: this,
+-                dimensions: this.dimensions,
+-            });
+-        } else if (
+-            this.freeTrialEndDate &&
+-            DatetimeUtils.dateIsBetweenTwoDates(endDate, startDate, new Date(this.freeTrialEndDate))
+-        ) {
+-            // The customer is currently in a free trial
+-            await Offering.getLineItemsForUsage({
+-                startDate,
+-                endDate,
+-                customer,
+-                lineItems,
+-                negative: true,
+-                businessID: this.businessID,
+-                customerId: this.customerId,
+-                customerService: this.customerService,
+-                offeringInstance: this,
+-                dimensions: this.dimensions,
+-            });
+-        }
+-
+-        await Offering.getLineItemsForUsage({
++        const endLineItems = await this.generateBillingLineItems({
+             startDate,
+             endDate,
+             customer,
+             lineItems,
+-            negative: false,
+-            businessID: this.businessID,
+-            customerId: this.customerId,
+-            customerService: this.customerService,
+-            offeringInstance: this,
+-            dimensions: this.dimensions,
+         });
+-        UsageBased.logger.log(
+-            `Creating invoice for ${this.offeringName} for ${this.customerId}, lineItems: ${JSON.stringify(
+-                lineItems.getLineItems(),
+-            )}`,
+-        );
+-        let exchangeRate = 1;
+-        if (Offering.getCurrency({ customer, offering: this }) !== SupportedCurrencies.USD) {
+-            exchangeRate = await AnalyticsService.getExchangeRate({
+-                currency: Offering.getCurrency({ customer, offering: this }),
+-            });
+-        }
+-        const endLineItems = Offering.minimumChargeOverride({
+-            billingCycle: this.billingCycle,
+-            minimumCharge: this.minimumCharge,
+-            lineItems,
+-            freeTrialEndDate: this.freeTrialEndDate,
+-            offeringName: this.offeringName,
+-            isUnenrollment: this.isUnenrollment,
+-            startDate,
+-            endDate,
+-            exchangeRate,
+-            offeringEnrollmentDate: customer?.offeringEnrollmentDate
+-                ? new Date(customer?.offeringEnrollmentDate)
+-                : undefined,
+-        });
+-        if (this?.discount?.name) {
+-            Offering.addDiscountLineItem(this.discount, endLineItems);
+-        }
+         const invoiceInput = {
+             businessID: this.businessID,
+             customer: customer,
+@@ -1735,6 +1880,8 @@ export class UsageBased extends Offering {
+         usageOverrides,
+         dimensionOverrides,
+         offeringId,
++        topUpAmount,
++        topUpThreshold,
+     }: {
+         offeringName: string;
+         businessID: string;
+@@ -1752,6 +1899,8 @@ export class UsageBased extends Offering {
+         usageOverrides?: AggregatedUsageResponse[];
+         dimensionOverrides?: DimensionOverridesDto[];
+         offeringId: string;
++        topUpAmount;
++        topUpThreshold;
+     }) {
+         super({
+             offeringType: OfferingType.usageBased,
+@@ -1771,10 +1920,13 @@ export class UsageBased extends Offering {
+             usageOverrides,
+             dimensionOverrides,
+             offeringId,
++            topUpAmount,
++            topUpThreshold,
+         });
+     }
+ }
+ 
++@Injectable()
+ export class OfferingPackageEntity {
+     private static readonly logger = new Logger(OfferingPackageEntity.name);
+     public static _measurement = 'OfferingDocument';
+@@ -1887,11 +2039,28 @@ export class OfferingPackageEntity {
+      * @example [{"dimensionId": "2c1caa83-c345-4390-8f43-5d040dee95f4", "consumptionPrice": "10"}]
+      */
+     public dimensionOverrides?: Array<DimensionOverridesDto>;
++    /**
++     * The threshold at which the account should be topped up. Only positive number string is allowed. Between 0 and 1.
++     * If not provided the default value will be 0.2 or 20%. Meaning that when the account balance reaches 20% of the the top up amount, the account will be
++     * topped up, and the end customer charged.
++     * <br><br>
++     * Example: `"0.2"` for 20%.
++     * @example "0.2"
++     */
++    public topUpThreshold?: string;
++
++    /**
++     * The amount to top up the account by. Only positive number string is allowed. Required if `billingCycle` is `topUp`.
++     * <br><br>
++     * Example: `"20.00"` for $20.00.
++     * @example "20.00"
++     */
++    public topUpAmount?: string;
+ 
+-    constructor(offeringPackageEntity: OfferingPackageEntity) {
+-        if (offeringPackageEntity) {
++    constructor(createOfferingDto: (CreateOfferingDTO & { offeringId: string; softDelete?: boolean }) | undefined) {
++        if (createOfferingDto) {
+             OfferingPackageEntity.logger.log(
+-                `Currency: ${offeringPackageEntity.currency}, OfferingName: ${offeringPackageEntity.offeringName}}`,
++                `Currency: ${createOfferingDto.currency}, OfferingName: ${createOfferingDto.offeringName}}`,
+             );
+             const {
+                 offeringName,
+@@ -1909,7 +2078,9 @@ export class OfferingPackageEntity {
+                 minimumCharge,
+                 metadata,
+                 dimensionOverrides,
+-            } = offeringPackageEntity;
++                topUpAmount,
++                topUpThreshold,
++            } = createOfferingDto;
+             this.offeringName = offeringName;
+             this.currency = currency ? currency : SupportedCurrencies.USD;
+             this.offeringType = offeringType ? offeringType : OfferingType.usageBased;
+@@ -1925,6 +2096,14 @@ export class OfferingPackageEntity {
+             this.minimumCharge = minimumCharge;
+             this.metadata = metadata;
+             this.dimensionOverrides = dimensionOverrides;
++            if (topUpAmount) {
++                this.topUpAmount = topUpAmount;
++            }
++            if (topUpThreshold) {
++                this.topUpThreshold = topUpThreshold;
++            } else if (billingCycle === ValidBillingCycles.topUp) {
++                this.topUpThreshold = '0.2';
++            }
+         }
+     }
+     // Should not use `this` context is a pure transformation of the data and doesn't alter the state
+@@ -1965,6 +2144,14 @@ export class OfferingPackageEntity {
+             aggregatePriceDocumentPoint.tag('metadata', JSON.stringify(offeringPackageEntity?.metadata));
+         }
+ 
++        if (offeringPackageEntity?.topUpAmount) {
++            aggregatePriceDocumentPoint.tag('topUpAmount', offeringPackageEntity?.topUpAmount);
++        }
++
++        if (offeringPackageEntity?.topUpThreshold) {
++            aggregatePriceDocumentPoint.tag('topUpThreshold', offeringPackageEntity?.topUpThreshold);
++        }
++
+         if (offeringPackageEntity?.dimensionOverrides) {
+             aggregatePriceDocumentPoint.tag(
+                 'dimensionOverrides',
+@@ -1990,6 +2177,8 @@ export class OfferingPackageEntity {
+             minimumCharge,
+             metadata: influxMetadata,
+             dimensionOverrides,
++            topUpAmount,
++            topUpThreshold,
+             ...rest
+         } = dbModel;
+         const dimensionIds = Object.keys(rest)
+@@ -2015,7 +2204,93 @@ export class OfferingPackageEntity {
+             minimumCharge,
+             metadata: influxMetadata ? JSON.parse(influxMetadata) : undefined,
+             dimensionOverrides: dimensionOverrides ? JSON.parse(dimensionOverrides) : undefined,
++            topUpAmount,
++            topUpThreshold,
+         };
+         return new OfferingPackageEntity(input);
+     }
++    async createSchedules({
++        subject,
++        schedulerService,
++    }: {
++        subject: string;
++        schedulerService: SchedulerService;
++    }): Promise<void> {
++        if (this.billingCycle === ValidBillingCycles.topUp) {
++            try {
++                OfferingPackageEntity.logger.log(
++                    `Creating top up offering schedule for ${this.offeringName}, offeringId: ${this.offeringId}`,
++                );
++                await schedulerService.create({
++                    schedulerID: OfferingTopUpChecker.getScheduleId(this.businessID, this.offeringId),
++                    scheduleParameters: {
++                        businessID: this.businessID,
++                        offeringId: this.offeringId,
++                        serviceQueueName: 'offeringTopUpChecker',
++                    } as OfferingTopUpDto,
++                    schedulerType: schedulerType.billing,
++                    subject,
++                    schedulerStatus: SchedulerStatus.live,
++                    businessID: this.businessID,
++                    rate: SupportedMeasurementFrequencies.everyHour,
++                });
++            } catch (e) {
++                OfferingPackageEntity.logger.error('Failed to set top up offering schedule', e);
++                AuditService.publishEvent({
++                    topic: AuditScope.ERROR,
++                    data: [serializeError(e)],
++                    message: 'Failed to set top up offering schedule',
++                });
++                throw e;
++            }
++        }
++    }
++    async deleteSchedules({
++        schedulerService,
++        priorBillingSchedule,
++    }: {
++        schedulerService: SchedulerService;
++        priorBillingSchedule?: string;
++    }): Promise<void> {
++        if (priorBillingSchedule && priorBillingSchedule === ValidBillingCycles.topUp) {
++            try {
++                OfferingPackageEntity.logger.log(
++                    `Deleting top up offering schedule for ${this.offeringName}, offeringId: ${this.offeringId}`,
++                );
++                await schedulerService.remove({
++                    schedulerID: OfferingTopUpChecker.getScheduleId(this.businessID, this.offeringId),
++                    businessID: this.businessID,
++                    isBillingQueue: true,
++                });
++            } catch (e) {
++                OfferingPackageEntity.logger.error('Failed to delete top up offering schedule', e);
++                AuditService.publishEvent({
++                    topic: AuditScope.ERROR,
++                    data: [serializeError(e)],
++                    message: 'Failed to delete top up offering schedule',
++                });
++            }
++            return;
++        }
++        if (this.billingCycle === ValidBillingCycles.topUp) {
++            try {
++                OfferingPackageEntity.logger.log(
++                    `Deleting top up offering schedule for ${this.offeringName}, offeringId: ${this.offeringId}`,
++                );
++                await schedulerService.remove({
++                    schedulerID: OfferingTopUpChecker.getScheduleId(this.businessID, this.offeringId),
++                    businessID: this.businessID,
++                    isBillingQueue: true,
++                });
++            } catch (e) {
++                OfferingPackageEntity.logger.error('Failed to delete top up offering schedule', e);
++                AuditService.publishEvent({
++                    topic: AuditScope.ERROR,
++                    data: [serializeError(e)],
++                    message: 'Failed to delete top up offering schedule',
++                });
++            }
++            return;
++        }
++    }
+ }
+diff --git a/src/offering/offering.controller.ts b/src/offering/offering.controller.ts
+index c2d3787458f92de0cd19bab59737622f0e5a3e78..260be35bbd09157507a2cd48fba5d54ed11c4fe6 100644
+--- a/src/offering/offering.controller.ts
++++ b/src/offering/offering.controller.ts
+@@ -199,8 +199,8 @@ export class PublicAPIOfferingController {
+         @Req() request: AuthorizedRequest,
+         @Param('offeringId') offeringId: string,
+     ) {
+-        const { businessID } = request.user;
+-        return this.OfferingService.update({ ...updateOfferingDto, offeringId, businessID });
++        const { businessID, sub } = request.user;
++        return this.OfferingService.update({ ...updateOfferingDto, offeringId, businessID }, sub);
+     }
+ 
+     /**
+diff --git a/src/offering/offering.module.ts b/src/offering/offering.module.ts
+index 51d847d7e085d11fd5eba02d4ae6cdd2f57be5ab..01549af124846bf578bb546247bf317f4d77604e 100644
+--- a/src/offering/offering.module.ts
++++ b/src/offering/offering.module.ts
+@@ -7,6 +7,7 @@ import { OfferingIdExistsRule } from './dto/offeringIdExists.js';
+ import { PrivateAPICustomerModule } from '../customer/customer.module.js';
+ import { UsersModule } from '../users/users.module.js';
+ import { TokenConsumerModule } from '../token-consumer/token-consumer.module.js';
++import { SchedulerModule } from '../scheduler/scheduler.module.js';
+ 
+ @Module({
+     controllers: [PublicAPIOfferingController],
+@@ -17,6 +18,7 @@ import { TokenConsumerModule } from '../token-consumer/token-consumer.module.js'
+         forwardRef(() => PrivateAPICustomerModule),
+         forwardRef(() => UsersModule),
+         forwardRef(() => TokenConsumerModule),
++        forwardRef(() => SchedulerModule),
+     ],
+     exports: [OfferingService],
+ })
+diff --git a/src/offering/offering.service.ts b/src/offering/offering.service.ts
+index 02a19a0341e0691fd17142ce77b10602c27831aa..82ea5230f7701e36ae5547bc47463025ff7df591 100644
+--- a/src/offering/offering.service.ts
++++ b/src/offering/offering.service.ts
+@@ -8,7 +8,7 @@ import {
+     ConflictException,
+     BadRequestException,
+ } from '@nestjs/common';
+-import { CreateOfferingDTO, CreateOfferingResponse } from './dto/createOffering.dto.js';
++import { CreateOfferingDTO, CreateOfferingResponse, ValidBillingCycles } from './dto/createOffering.dto.js';
+ import { SupportedCurrencies } from './dto/SupportedCurrencies.js';
+ import { UpdateOfferingResponse } from './dto/createOffering.dto.js';
+ import { ReadOfferingResponseData, ReadOfferingResponseDTO, ReadPricingDTO } from './dto/readOffering.dto.js';
+@@ -29,6 +29,7 @@ import { serializeError } from 'serialize-error';
+ import { AuditService } from '../audit/audit.service.js';
+ import { AuditScope } from '../audit/entities/audit.interface.js';
+ import { ReadDimensionResponseData } from '../dimensions/dto/create-dimension.dto.js';
++import { SchedulerService } from '../scheduler/scheduler.service.js';
+ 
+ @Injectable()
+ export class OfferingService {
+@@ -39,6 +40,7 @@ export class OfferingService {
+         @Inject(forwardRef(() => CustomerService)) readonly customerService: CustomerService,
+         @Inject(forwardRef(() => UserEntitlements)) readonly userEntitlements: UserEntitlements,
+         @Inject(forwardRef(() => TokenConsumerService)) readonly tokenConsumerService: TokenConsumerService,
++        @Inject(forwardRef(() => SchedulerService)) readonly schedulerService: SchedulerService,
+     ) {}
+ 
+     async findAll({ businessID }): Promise<ReadOfferingResponseDTO> {
+@@ -138,6 +140,9 @@ export class OfferingService {
+         if (createOfferingDTO.offeringType === OfferingType.subscription && createOfferingDTO?.minimumCharge) {
+             throw new BadRequestException('Minimum charge is not allowed for subscription offerings');
+         }
++        if (createOfferingDTO.billingCycle === ValidBillingCycles.topUp && !createOfferingDTO.topUpAmount) {
++            throw new BadRequestException('Top up amount is required for top up offerings');
++        }
+ 
+         if (createOfferingDTO.prepaidCredit) {
+             if (/^[ \t]*[0-9]+\.?[0-9]+[ \t]*(\$|usd|USD)?$/.test(createOfferingDTO.prepaidCredit)) {
+@@ -166,6 +171,7 @@ export class OfferingService {
+         });
+         const packageDbModel = OfferingPackageEntity.transformer(entity, this.InfluxService);
+         OfferingService.logger.log(`Creating a new Offering:`, entity.offeringId);
++        await entity.createSchedules({ subject, schedulerService: this.schedulerService });
+         await loadPoints(`${process.env.STAGE}-config`, process.env.INFLUX_ORG, packageDbModel);
+         try {
+             await this.tokenConsumerService.create({
+@@ -187,12 +193,10 @@ export class OfferingService {
+         return { message: 'Offering created', offeringId: entity.offeringId };
+     }
+ 
+-    async update({
+-        offeringId,
+-        businessID,
+-        dimensionIds: updatedIdList,
+-        ...updatedFields
+-    }: UpdateOfferingDto): Promise<UpdateOfferingResponse> {
++    async update(
++        { offeringId, businessID, dimensionIds: updatedIdList, ...updatedFields }: UpdateOfferingDto,
++        subject: string,
++    ): Promise<UpdateOfferingResponse> {
+         OfferingService.logger.log('Updating an Offering');
+ 
+         const {
+@@ -215,7 +219,35 @@ export class OfferingService {
+         ) {
+             throw new BadRequestException('Minimum charge is not allowed for subscription offerings');
+         }
+-
++        if (updatedFields?.billingCycle === ValidBillingCycles.topUp && !updatedFields?.topUpAmount) {
++            throw new BadRequestException('Top up amount is required for top up offerings');
++        }
++        if (
++            updatedFields?.billingCycle === ValidBillingCycles.topUp &&
++            rest?.subscriptionPrice &&
++            updatedFields?.subscriptionPrice !== null
++        ) {
++            throw new BadRequestException(
++                'Subscription price is not allowed for top up offerings. Pass in null to remove',
++            );
++        }
++        if (
++            updatedFields?.offeringType === OfferingType.subscription &&
++            updatedFields?.billingCycle === ValidBillingCycles.topUp
++        ) {
++            throw new BadRequestException(
++                'Top up billing cycle cannot be subscription offerings, change offeringType to usageBased',
++            );
++        }
++        if (
++            rest?.offeringType === OfferingType.subscription &&
++            updatedFields?.billingCycle === ValidBillingCycles.topUp &&
++            updatedFields?.offeringType !== OfferingType.usageBased
++        ) {
++            throw new BadRequestException(
++                'Top up billing cycle cannot be subscription offerings, change offeringType to usageBased',
++            );
++        }
+         OfferingService.logger.log(`Old offering: ${JSON.stringify(rest)}`);
+         OfferingService.logger.log(`New offering fields: ${JSON.stringify(updatedFields)}`);
+         let dimensionIds = dimensions.map(({ dimensionId }) => dimensionId);
+@@ -239,9 +271,23 @@ export class OfferingService {
+             businessID,
+             offeringId,
+         });
++        OfferingService.logger.log(`Updated offering: ${JSON.stringify(entity)}`);
+         const packageDbModel = OfferingPackageEntity.transformer(entity, this.InfluxService);
+         OfferingService.logger.log(packageDbModel);
++
+         await loadPoints(`${process.env.STAGE}-config`, process.env.INFLUX_ORG, packageDbModel);
++        if (updatedFields?.billingCycle === ValidBillingCycles.topUp) {
++            await entity.createSchedules({ schedulerService: this.schedulerService, subject });
++        } else if (
++            (updatedFields?.billingCycle === ValidBillingCycles.monthly ||
++                updatedFields?.billingCycle === ValidBillingCycles.annualToDate) &&
++            rest?.billingCycle === ValidBillingCycles.topUp
++        ) {
++            await entity.deleteSchedules({
++                schedulerService: this.schedulerService,
++                priorBillingSchedule: ValidBillingCycles.topUp,
++            });
++        }
+         return { message: 'Loaded Offering Document and Dimensions', offeringId: entity.offeringId };
+     }
+     async delete({ businessID, offeringId }: DeleteOfferingDTO): Promise<DeleteOfferingResponse> {
+@@ -279,7 +325,7 @@ export class OfferingService {
+             OfferingService.logger.log('Points to delete', points);
+ 
+             await loadPoints(`${process.env.STAGE}-config`, process.env.INFLUX_ORG, points);
+-
++            await entity.deleteSchedules({ schedulerService: this.schedulerService });
+             return { message: 'Deleted Offering', offeringId: entity.offeringId };
+         } else {
+             throw new NotFoundException(`No offering documents matching ID offeringId:${offeringId}`);
+diff --git a/src/payment/entities/payment.entity.ts b/src/payment/entities/payment.entity.ts
+index 6088a6d870623e667e1048575d85a721f0b087fd..9c11e17aed93c5c571815f322c6863359e790e1c 100644
+--- a/src/payment/entities/payment.entity.ts
++++ b/src/payment/entities/payment.entity.ts
+@@ -98,7 +98,7 @@ export class StripePaymentProcessor extends EventEmitter implements PaymentProce
+         const creditBalance = parseFloat(balance);
+         let payableTotal = invoice.total;
+         invoice.payments = invoice?.payments || [];
+-        if (creditBalance > 0) {
++        if (creditBalance > 0 && !invoice.storePaymentAsCredit) {
+             const timestamp = new Date().toISOString();
+             if (creditBalance >= invoice.total) {
+                 StripePaymentProcessor.logger.log(
+@@ -224,6 +224,8 @@ export class StripePaymentProcessor extends EventEmitter implements PaymentProce
+                     { data, topic: paymentChannel.Stripe },
+                     paymentIntentResponse?.id,
+                     this.taxService,
++                    this.tokenConsumerService,
++                    this.creditService,
+                 );
+                 return { paidAmount: invoice.total, chargeResponse: paymentIntentResponse };
+             } catch (error) {
+@@ -385,6 +387,7 @@ export class StripePaymentProcessor extends EventEmitter implements PaymentProce
+         paymentIntentId?: string,
+         taxService?: TaxService,
+         tokenConsumerService?: TokenConsumerService,
++        creditSerivice?: CreditService,
+     ) {
+         StripePaymentProcessor.logger.log('Payment was successful');
+         // Update Invoice Status to Paid
+@@ -422,6 +425,20 @@ export class StripePaymentProcessor extends EventEmitter implements PaymentProce
+                 data: [serializeError(e)],
+             });
+         }
++        if (invoice.storePaymentAsCredit) {
++            StripePaymentProcessor.logger.log(
++                `Storing payment as credit for invoice: ${paymentRequest?.data[0]?.invoice?.invoiceId}`,
++            );
++            await creditSerivice.create({
++                customerId: paymentRequest.data[0].customerId,
++                businessID: paymentRequest.data[0].businessID,
++                transactionAmount: invoice.totalAmountWithoutTax.toFixed(2),
++                metadata: {
++                    invoiceId: invoice.invoiceId,
++                    reason: `Payment for ${invoice.invoiceId}`,
++                },
++            });
++        }
+         if (taxService) {
+             await invoice.registerInvoiceTaxTransaction({ taxService: taxService, taxTransactionId: paymentIntentId });
+         }
+@@ -524,6 +541,7 @@ export class ManualPaymentProcessor extends EventEmitter implements PaymentProce
+     public paymentService: PaymentService;
+     public localJWTAuthService: LocalJWTAuthService;
+     public settingsService: SettingsService;
++    public creditService: CreditService;
+     async process(paymentRequest: PaymentProcessRequest) {
+         try {
+             const [{ invoice, businessID, customerId }] = paymentRequest.data;
+@@ -538,6 +556,17 @@ export class ManualPaymentProcessor extends EventEmitter implements PaymentProce
+                     timestamp: new Date().toISOString(),
+                     customerId,
+                 });
++                if (invoice?.storePaymentAsCredit) {
++                    await this.creditService.create({
++                        customerId,
++                        businessID,
++                        transactionAmount: invoice.totalAmountWithoutTax.toFixed(2),
++                        metadata: {
++                            invoiceId: invoice.invoiceId,
++                            reason: `Payment for ${invoice.invoiceId}`,
++                        },
++                    });
++                }
+                 await invoice.saveToDB();
+                 WebhookPublishingService.publishEvent({
+                     topic: WebhookProcessorEventType.Standard,
+diff --git a/src/payment/payment.service.ts b/src/payment/payment.service.ts
+index 2ae7a2f4389e02504520e63bf1d4ccc489d1717a..18cc7cedfb95d3d616f3c70c0ffd8052a1ee0891 100644
+--- a/src/payment/payment.service.ts
++++ b/src/payment/payment.service.ts
+@@ -56,6 +56,7 @@ export class PaymentService {
+         PaymentService.stripePaymentProcessor.on(paymentChannel.Stripe, this.stripePaymentProcessor.process);
+         PaymentService.manualPaymentProcessor.on(paymentChannel.manual, this.manualPaymentProcessor.process);
+         PaymentService.manualPaymentProcessor.settingsService = settingsService;
++        PaymentService.manualPaymentProcessor.creditService = creditService;
+         PaymentService.stripePaymentProcessor.settingsService = settingsService;
+     }
+     public static publishEvent({ topic, data }: PaymentProcessRequest) {
+diff --git a/src/portal/dto/customer.dto.ts b/src/portal/dto/customer.dto.ts
+index d299d3f0f5a4b3628e5ae81d43dc5ef97aa23b37..e7bff0b09c090b870fda986e662345cbe2590fbc 100644
+--- a/src/portal/dto/customer.dto.ts
++++ b/src/portal/dto/customer.dto.ts
+@@ -61,7 +61,6 @@ export class CustomerBillingResponse extends BasicResponseDTO {
+                                     usageIncrement: dimension.usageIncrement,
+                                     usageEntitlement: dimension.usageEntitlement,
+                                     overageAllowed: dimension.overageAllowed,
+-                                    paymentSchedule: dimension?.paymentSchedule,
+                                 })),
+                             })),
+                         },
+@@ -90,7 +89,6 @@ export class CustomerBillingResponse extends BasicResponseDTO {
+                                     usageIncrement: dimension.usageIncrement,
+                                     usageEntitlement: dimension.usageEntitlement,
+                                     overageAllowed: dimension.overageAllowed,
+-                                    paymentSchedule: dimension?.paymentSchedule,
+                                 })),
+                                 offeringName: customerData.offering.offeringName,
+                             },
+diff --git a/src/portal/portal.controller.ts b/src/portal/portal.controller.ts
+index 36b1fc9121afef93f42535a17352613a6418e1d8..489b78c7de1a2e7216666ea902477536a97938c4 100644
+--- a/src/portal/portal.controller.ts
++++ b/src/portal/portal.controller.ts
+@@ -49,7 +49,6 @@ import { BusinessTokenAuthenticationResponse } from './dto/businessTokenAuthenti
+ import { LocalJWTAuthService } from '../authz/jwt-local.strategy.js';
+ import { CreateCustomerOnboarding, CreateCustomerOnboardingResponse } from './dto/createCustomerOnboarding.dto.js';
+ import { PortalUsageQueryParamDto } from './dto/portalUsageQueryParam.dto.js';
+-import { PaymentSessionResponse } from './dto/paymentSessionResponst.dto.js';
+ import { PaymentStatus } from '../payment/payment.service.js';
+ import { Response } from 'express';
+ import { InvoicesService } from '../invoice/invoices.service.js';
+diff --git a/src/scheduler/dto/scheduler.dto.ts b/src/scheduler/dto/scheduler.dto.ts
+index 3035776346b81bba1ffb1a255cf380f560fc6797..ea330339acc044d8fa8775efa81fab783f3b36bf 100644
+--- a/src/scheduler/dto/scheduler.dto.ts
++++ b/src/scheduler/dto/scheduler.dto.ts
+@@ -17,6 +17,7 @@ import {
+     TokenAsyncAggregatorDto,
+     TokenAsyncProcessorDto,
+ } from '../../token-consumer/dto/schedulerAsyncProcessor.dto.js';
++import { OfferingTopUpDto } from '../../microservices/offeringTopUpHandler/dto/offeringTopUp.dto.js';
+ 
+ export enum SchedulerStatus {
+     live = 'live',
+@@ -112,7 +113,8 @@ export class SchedulerDto {
+         | EntitlementCheckerDto
+         | InvoiceStatusCheckerDto
+         | TokenAsyncProcessorDto
+-        | TokenAsyncAggregatorDto;
++        | TokenAsyncAggregatorDto
++        | OfferingTopUpDto;
+ 
+     /**
+      *  The rate for the scheduler to use
+diff --git a/src/scheduler/entities/scheduler.entity.ts b/src/scheduler/entities/scheduler.entity.ts
+index 31793e934b7a41594ba414c6f3a5fd4a5e177a84..64ffb7c30edf785338de9947603f38de53103c4d 100644
+--- a/src/scheduler/entities/scheduler.entity.ts
++++ b/src/scheduler/entities/scheduler.entity.ts
+@@ -11,6 +11,7 @@ import { CostSchedulerDto } from '../../cost/dto/cost.dto.js';
+ import { EntitlementCheckerDto } from '../../microservices/entitlementChecker/dto/entitlementChecker.dto.js';
+ import { InvoiceStatusCheckerDto } from '../../microservices/invoiceStatusChecker/dto/invoiceStatusChecker.dto.js';
+ import { TokenAsyncProcessorDto } from '../../token-consumer/dto/schedulerAsyncProcessor.dto.js';
++import { OfferingTopUpDto } from '../../microservices/offeringTopUpHandler/dto/offeringTopUp.dto.js';
+ 
+ export class SchedulerEntity {
+     @ApiHideProperty()
+@@ -55,7 +56,8 @@ export class SchedulerEntity {
+         | CostSchedulerDto
+         | EntitlementCheckerDto
+         | InvoiceStatusCheckerDto
+-        | TokenAsyncProcessorDto;
++        | TokenAsyncProcessorDto
++        | OfferingTopUpDto;
+ 
+     /**
+      *  The rate for the scheduler to use
+diff --git a/src/scheduler/scheduler.service.ts b/src/scheduler/scheduler.service.ts
+index bd2e2406dcf0b26bfa492673123d7380208bd25e..2a4ec78ebfa7fd8d13dd8c0acc4b31cb6c5d43e7 100644
+--- a/src/scheduler/scheduler.service.ts
++++ b/src/scheduler/scheduler.service.ts
+@@ -170,19 +170,36 @@ export class SchedulerService {
+         // Based on the type, get the correct function
+         if (passedInScheduleType === schedulerType.billing) {
+             SchedulerService.logger.log('Schedule Type matches billing');
+-            await this.billingQueue.add(
+-                billingScheduleConsumers.billingReport,
+-                { ...schedulerEntity },
+-                {
+-                    repeat: {
+-                        cron: rate.toString(),
+-                        startDate: schedulerEntity?.startDate ? new Date(schedulerEntity?.startDate) : undefined,
++            if ('serviceQueueName' in scheduleParameters) {
++                SchedulerService.logger.log(
++                    `dynamic service queue for schedule: ${scheduleParameters?.serviceQueueName}`,
++                );
++                const { serviceQueueName } = scheduleParameters;
++                const response = await this.billingQueue.add(
++                    serviceQueueName,
++                    { ...schedulerEntity },
++                    {
++                        repeat: { cron: rate.toString() },
++                        jobId: `${businessID}#${schedulerID}`,
++                        removeOnComplete: { count: 20 },
++                        removeOnFail: { count: 50 },
+                     },
+-                    jobId: `${businessID}#${schedulerID}`,
+-                    removeOnComplete: { count: 20 },
+-                    removeOnFail: { count: 50 },
+-                },
+-            );
++                );
++            } else {
++                await this.billingQueue.add(
++                    billingScheduleConsumers.billingReport,
++                    { ...schedulerEntity },
++                    {
++                        repeat: {
++                            cron: rate.toString(),
++                            startDate: schedulerEntity?.startDate ? new Date(schedulerEntity?.startDate) : undefined,
++                        },
++                        jobId: `${businessID}#${schedulerID}`,
++                        removeOnComplete: { count: 20 },
++                        removeOnFail: { count: 50 },
++                    },
++                );
++            }
+             return { message: 'Committed Billing Job' };
+         } else if (passedInScheduleType === schedulerType.dimensionDataGathering) {
+             SchedulerService.logger.log('Schedule Type matches dimensionDataGathering');
+diff --git a/src/utils/datetime.ts b/src/utils/datetime.ts
+index f0dee92426926f343b698939f9932627c17d0a27..dd5e5e3aedf91eb69d2787bf70dff649963457d5 100644
+--- a/src/utils/datetime.ts
++++ b/src/utils/datetime.ts
+@@ -12,6 +12,16 @@ export class DatetimeUtils {
+     static sixHoursAgo(date: Date): Date {
+         return new Date(date.getTime() - 6 * 60 * 60 * 1000);
+     }
++    static startOfLastHour(date: Date): Date {
++        date.setUTCMinutes(0, 0, 0);
++        date.setUTCHours(date.getUTCHours() - 1);
++        return date;
++    }
++    static endOfLastHour(date: Date): Date {
++        date.setUTCMinutes(59, 59, 999);
++        date.setUTCHours(date.getUTCHours() - 1);
++        return date;
++    }
+ 
+     static getStartOfMonthGivenDate(date: Date): Date {
+         const year = date.getUTCFullYear();

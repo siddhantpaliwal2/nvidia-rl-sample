@@ -1,0 +1,17 @@
+{
+    "job_name": "eng830-oracle-daytona-r7",
+    "jobs_dir": "sample-run/enterprise-controls",
+    "quiet": true,
+    "environment": {
+        "type": "daytona",
+        "kwargs": {
+            "snapshot_template_name": "harbor-probe-paigo-dimension-pricing-tiers-8g",
+            "assume_global_snapshot": true
+        }
+    },
+    "tasks": [
+        {
+            "path": "tasks/paigo-dimension-pricing-tiers"
+        }
+    ]
+}

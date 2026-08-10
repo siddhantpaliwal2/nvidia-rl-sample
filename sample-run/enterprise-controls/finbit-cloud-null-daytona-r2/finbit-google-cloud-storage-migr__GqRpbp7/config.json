@@ -1,0 +1,18 @@
+{
+    "task": {
+        "path": "tasks/finbit-google-cloud-storage-migration"
+    },
+    "trial_name": "finbit-google-cloud-storage-migr__GqRpbp7",
+    "trials_dir": "sample-run/enterprise-controls/finbit-cloud-null-daytona-r2",
+    "agent": {
+        "name": "nop"
+    },
+    "environment": {
+        "type": "daytona",
+        "kwargs": {
+            "snapshot_template_name": "harbor-probe-finbit-google-cloud-storage-migration-8g",
+            "assume_global_snapshot": true
+        }
+    },
+    "job_id": "03ef25d3-9603-4c82-9ff1-966bcd7b05fd"
+}

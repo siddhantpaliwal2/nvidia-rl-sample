@@ -1,0 +1,26 @@
+# syntax=docker/dockerfile:1
+FROM node:20-bookworm
+
+RUN apt-get update && apt-get install -y --no-install-recommends git python3 \
+ && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+COPY . /app/
+RUN find . -type f -not -path './.git/*' \
+      \( -name '.env' -o -name '.env.*' -o -name '*.pem' -o -name '*.key' \) -delete \
+ && rm -rf node_modules dist
+RUN npm ci --ignore-scripts
+RUN archive=$(npm pack --silent @aws-sdk/client-iam@3.272.0) \
+ && mkdir -p node_modules/@aws-sdk/client-iam \
+ && tar -xzf "$archive" -C node_modules/@aws-sdk/client-iam --strip-components=1 \
+ && rm -f "$archive"
+RUN archive=$(npm pack --silent @aws-sdk/util-utf8@3.254.0) \
+ && mkdir -p node_modules/@aws-sdk/util-utf8 \
+ && tar -xzf "$archive" -C node_modules/@aws-sdk/util-utf8 --strip-components=1 \
+ && rm -f "$archive"
+RUN npm run build
+RUN rm -rf .git && git init -qb main \
+ && git config user.email evaluator@example.invalid \
+ && git config user.name evaluator \
+ && git add -A && git commit -qm 'import task base'
+RUN mkdir -p /logs/verifier
+CMD ["/bin/bash"]

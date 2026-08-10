@@ -1,0 +1,111 @@
+{
+    "id": "c4b1d109-893a-4388-8fa9-e79aa48a1cbd",
+    "task_name": "paigo-dimension-pricing-tiers",
+    "trial_name": "paigo-dimension-pricing-tiers__PFewepq",
+    "trial_uri": "file:///Users/siddhantpaliwal/Desktop/amazon-rl/xai-rl-sample/sample-run/enterprise-controls/eng830-null-daytona-r4/paigo-dimension-pricing-tiers__PFewepq",
+    "task_id": {
+        "path": "tasks/paigo-dimension-pricing-tiers"
+    },
+    "source": null,
+    "task_checksum": "cbbbb6ac25639d7abd79feda768af36ab00502ebfe8cc9a68d4b6e591fc310ea",
+    "config": {
+        "task": {
+            "path": "tasks/paigo-dimension-pricing-tiers",
+            "git_url": null,
+            "git_commit_id": null,
+            "name": null,
+            "ref": null,
+            "overwrite": false,
+            "download_dir": null,
+            "source": null
+        },
+        "trial_name": "paigo-dimension-pricing-tiers__PFewepq",
+        "trials_dir": "sample-run/enterprise-controls/eng830-null-daytona-r4",
+        "install_only": false,
+        "timeout_multiplier": 1.0,
+        "agent_timeout_multiplier": null,
+        "verifier_timeout_multiplier": null,
+        "agent_setup_timeout_multiplier": null,
+        "environment_build_timeout_multiplier": null,
+        "agent": {
+            "name": "nop",
+            "import_path": null,
+            "model_name": null,
+            "n_concurrent": null,
+            "concurrency_group": null,
+            "skills": [],
+            "override_timeout_sec": null,
+            "override_setup_timeout_sec": null,
+            "max_timeout_sec": null,
+            "extra_allowed_hosts": [],
+            "kwargs": {},
+            "mcp_servers": []
+        },
+        "environment": {
+            "type": "daytona",
+            "import_path": null,
+            "force_build": false,
+            "delete": true,
+            "cpu_enforcement_policy": "auto",
+            "memory_enforcement_policy": "auto",
+            "override_cpus": null,
+            "override_memory_mb": null,
+            "override_storage_mb": null,
+            "override_gpus": null,
+            "override_tpu": null,
+            "mounts": null,
+            "extra_docker_compose": [],
+            "kwargs": {
+                "snapshot_template_name": "harbor-probe-paigo-dimension-pricing-tiers-8g",
+                "assume_global_snapshot": true
+            },
+            "extra_allowed_hosts": []
+        },
+        "verifier": {
+            "override_timeout_sec": null,
+            "max_timeout_sec": null,
+            "disable": false
+        },
+        "artifacts": [],
+        "extra_instruction_paths": [],
+        "job_id": "3d30925f-665e-4f5a-b768-508b7ef63705"
+    },
+    "agent_info": {
+        "name": "nop",
+        "version": "1.0.0",
+        "model_info": null
+    },
+    "agent_result": {
+        "n_input_tokens": null,
+        "n_cache_tokens": null,
+        "n_output_tokens": null,
+        "cost_usd": null,
+        "rollout_details": null,
+        "metadata": null
+    },
+    "verifier_result": {
+        "rewards": {
+            "reward": 0.0
+        }
+    },
+    "exception_info": null,
+    "started_at": "2026-08-08T02:35:09.072584Z",
+    "finished_at": "2026-08-08T02:35:52.117205Z",
+    "environment_setup": {
+        "started_at": "2026-08-08T02:35:09.092407Z",
+        "finished_at": "2026-08-08T02:35:32.649078Z"
+    },
+    "agent_setup": {
+        "started_at": "2026-08-08T02:35:32.649229Z",
+        "finished_at": "2026-08-08T02:35:32.649344Z"
+    },
+    "agent_execution": {
+        "started_at": "2026-08-08T02:35:32.649518Z",
+        "finished_at": "2026-08-08T02:35:32.649687Z"
+    },
+    "verifier": {
+        "started_at": "2026-08-08T02:35:37.223668Z",
+        "finished_at": "2026-08-08T02:35:51.903664Z"
+    },
+    "step_results": null
+}

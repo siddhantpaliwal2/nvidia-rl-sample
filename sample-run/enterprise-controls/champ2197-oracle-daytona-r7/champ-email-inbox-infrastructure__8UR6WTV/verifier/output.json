@@ -1,0 +1,52 @@
+{
+  "tests": [
+    {
+      "name": "Email inbox infrastructure contract derives stable identity, domain, counters, and deliverability bands",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract persists the normalized email account in the dedicated collection",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract looks up accounts through inbox-specific datastore fields",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract rejects a lookup when no account has the requested email",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract deduplicates campaign associations and refuses partial id sets",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract skips existing campaign links and persists each new association once",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract requests the documented multi-factor ranking and page limit",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract sizes a campaign pool from volume, duration, and daily capacity",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract hydrates Smartlead reputation and creation time before saving",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract surfaces a missing Smartlead inbox and delegates deletion safely",
+      "status": "passed"
+    },
+    {
+      "name": "Entity email template  should be defined",
+      "status": "passed"
+    },
+    {
+      "name": "Entity email template  should be able to get email template by id",
+      "status": "passed"
+    }
+  ]
+}

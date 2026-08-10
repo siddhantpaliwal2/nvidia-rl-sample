@@ -1,0 +1,28 @@
+version = "1.0"
+
+[metadata]
+author_name = "Siddhant Paliwal"
+author_email = "paliwal.siddhant@gmail.com"
+title = "Add prepaid-credit top-up billing"
+repository = "paigo-tech/paigo-backend"
+base_commit = "bbad236ac1116d756576fa98efba49f8f8fd3bce"
+difficulty = "hard"
+category = "feature-development"
+tags = ["long-horizon", "billing", "payments", "migration", "typescript", "swe-bench-pro"]
+human_solve_time = "3d"
+requires_internet = false
+repo_type = "service"
+task_type = "feature-development"
+verifier_runtime_sec = 300
+
+[verifier]
+timeout_sec = 1800
+
+[agent]
+timeout_sec = 9000
+
+[environment]
+build_timeout_sec = 3600.0
+cpus = 2
+memory_mb = 8192
+storage_mb = 20480

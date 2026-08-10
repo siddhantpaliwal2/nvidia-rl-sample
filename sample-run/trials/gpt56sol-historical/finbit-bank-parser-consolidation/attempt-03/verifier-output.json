@@ -1,0 +1,32 @@
+{
+  "tests": [
+    {
+      "name": "Bank parser consolidation normalizes compact and OCR-corrupted month dates",
+      "status": "failed"
+    },
+    {
+      "name": "Bank parser consolidation recognizes opening balances and repeated transaction headers",
+      "status": "failed"
+    },
+    {
+      "name": "Bank parser consolidation parses an irregular date through the description-below-date layout",
+      "status": "passed"
+    },
+    {
+      "name": "Bank parser consolidation retains balance-only continuation rows in the description-above-date layout",
+      "status": "passed"
+    },
+    {
+      "name": "Bank parser consolidation routes heterogeneous bank layouts through the correct shared parser",
+      "status": "failed"
+    },
+    {
+      "name": "Bank parser consolidation preserves standard numeric date parsing",
+      "status": "passed"
+    },
+    {
+      "name": "Bank parser consolidation preserves the dedicated Bank of Baroda saving-account route",
+      "status": "passed"
+    }
+  ]
+}

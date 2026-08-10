@@ -1,0 +1,90 @@
+ts-jest[backports] (WARN) "[jest-config].globals.ts-jest.tsConfig" is deprecated, use "[jest-config].globals.ts-jest.tsconfig" instead.
+ts-jest[backports] (WARN) Your Jest configuration is outdated. Use the CLI to help migrating it: ts-jest config:migrate <config-file>.
+FAIL src/customer/customerIdentityMigration.gold.spec.ts
+  ● Customer identity migration › maps infrastructure labels to customer-owned measurements
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: ObjectContaining {"customerId": "customer-1", "dimensionId": "dimension-1", "recordValue": 7.25}
+    Received: {"_measurement": "usageMeasurement", "applicationId": undefined, "businessID": "business-1", "customerId": undefined, "dimensionId": "dimension-1", "metadata": {"source": "agent"}, "recordValue": 7.25, "serviceId": undefined, "timeStamp": "2023-03-10T00:00:00.000Z"}
+
+    Number of calls: 1
+
+      92 |             ]),
+      93 |         } as any);
+    > 94 |         expect(publish).toHaveBeenCalledWith(
+         |                         ^
+      95 |             expect.objectContaining({ customerId: 'customer-1', dimensionId: 'dimension-1', recordValue: 7.25 }),
+      96 |         );
+      97 |     });
+
+      at Object.<anonymous> (customer/customerIdentityMigration.gold.spec.ts:94:25)
+
+  ● Customer identity migration › queries usage through the customer offering and preserves time and interval overrides
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: {"businessID": "business-1", "customerId": "customer-1"}
+
+    Number of calls: 0
+
+      123 |             ),
+      124 |         ).resolves.toEqual([{ dimensionId: 'dimension-1', usage: [] }]);
+    > 125 |         expect(dependencies.findOne).toHaveBeenCalledWith({ customerId: 'customer-1', businessID: 'business-1' });
+          |                                      ^
+      126 |         expect(aggregate).toHaveBeenCalledWith(
+      127 |             expect.objectContaining({
+      128 |                 customerId: 'customer-1',
+
+      at Object.<anonymous> (customer/customerIdentityMigration.gold.spec.ts:125:38)
+
+  ● Customer identity migration › prevents deleting an offering while customers still reference it
+
+    expect(received).rejects.toBeInstanceOf(expected)
+
+    Expected constructor: ConflictException
+    Received constructor: TypeError
+
+      194 |             dependencies as any,
+      195 |         );
+    > 196 |         await expect(service.delete({ businessID: 'business-1', offeringId: 'offering-1' })).rejects.toBeInstanceOf(
+          |                                                                                                      ^
+      197 |             ConflictException,
+      198 |         );
+      199 |     });
+
+      at Object.toBeInstanceOf (../node_modules/@jest/expect/node_modules/expect/build/index.js:241:22)
+      at Object.<anonymous> (customer/customerIdentityMigration.gold.spec.ts:196:102)
+
+  ● Customer identity migration › wraps customer usage results without changing their records
+
+    expect(received).resolves.toEqual()
+
+    Received promise rejected instead of resolved
+    Rejected to value: [TypeError: this.InfluxService.getLatestCustomer is not a function]
+
+      212 |             dependencies as any,
+      213 |         );
+    > 214 |         await expect(
+          |               ^
+      215 |             service.findUsageForCustomer(
+      216 |                 { customerId: 'customer-1', businessID: 'business-1' },
+      217 |                 { aggregationInterval: 'day' } as any,
+
+      at expect (../node_modules/@jest/expect/node_modules/expect/build/index.js:128:15)
+      at Object.<anonymous> (customer/customerIdentityMigration.gold.spec.ts:214:15)
+
+[95m[Nest] 5933  - [39m08/10/2026, 8:24:59 PM [95m  DEBUG[39m [38;5;3m[UsageService] [39m[95mGathering Usage for businessID: business-1 and customerId: customer-1[39m
+[32m[Nest] 5933  - [39m08/10/2026, 8:24:59 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mFinding saasClientID: customer-1 for business-1[39m
+[32m[Nest] 5933  - [39m08/10/2026, 8:24:59 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mFinding invoices for customer customer-1 of business business-1[39m
+[95m[Nest] 5933  - [39m08/10/2026, 8:24:59 PM [95m  DEBUG[39m [38;5;3m[CustomerService] [39m[95m[][39m
+[32m[Nest] 5933  - [39m08/10/2026, 8:24:59 PM [32m    LOG[39m [38;5;3m[OfferingService] [39m[32mAttempting to delete offering: offering-1 for business-1[39m
+[32m[Nest] 5933  - [39m08/10/2026, 8:24:59 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mFinding usage for customer customer-1 of business business-1[39m
+PASS src/measurement-config/measurementConfigControllerHistorical.gold.spec.ts
+
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       4 failed, 5 passed, 9 total
+Snapshots:   0 total
+Time:        1.95 s
+Test results written to: ../tmp/jest-unit.json
+Force exiting Jest: Have you considered using `--detectOpenHandles` to detect async operations that kept running after all tests finished?

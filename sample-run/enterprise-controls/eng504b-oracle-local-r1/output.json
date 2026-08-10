@@ -1,0 +1,8 @@
+{
+  "tests": [
+    {
+      "name": "BillingService should be defined",
+      "status": "passed"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+version = "1.0"
+
+[metadata]
+author_name = "Siddhant Paliwal"
+author_email = "paliwal.siddhant@gmail.com"
+title = "Migrate document storage to Google Cloud Storage"
+repository = "finbit-inc/fin360"
+base_commit = "1cfc84885a84535fc5889fe79bb40acb5f303218"
+difficulty = "hard"
+category = "migration"
+tags = ["long-horizon", "migration", "cloud-storage", "groovy", "grails", "swe-bench-pro"]
+human_solve_time = "1d"
+requires_internet = false
+repo_type = "service"
+task_type = "feature"
+verifier_runtime_sec = 300
+
+[verifier]
+timeout_sec = 1800
+
+[agent]
+timeout_sec = 9000
+
+[environment]
+build_timeout_sec = 3600.0
+cpus = 2
+memory_mb = 8192
+storage_mb = 20480

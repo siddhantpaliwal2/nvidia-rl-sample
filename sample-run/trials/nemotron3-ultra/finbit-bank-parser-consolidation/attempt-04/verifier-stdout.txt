@@ -1,0 +1,78 @@
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/lib/org.slf4j/slf4j-simple/jars/slf4j-simple-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/dist/grails-plugin-log4j-2.3.11.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.SimpleLoggerFactory]
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/lib/org.slf4j/slf4j-simple/jars/slf4j-simple-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/dist/grails-plugin-log4j-2.3.11.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/app/lib/tika-app-1.14.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/app/lib/traprange-1.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.SimpleLoggerFactory]
+PASS Bank parser consolidation normalizes compact and OCR-corrupted month dates
+PASS Bank parser consolidation recognizes opening balances and repeated transaction headers
+[main] ERROR com.bankScraper.bank.BankTransactionUtil - 03-JUY-2017 WIRE PAYMENT 125.00 875.00
+[main] ERROR com.bankScraper.bank.BankTransactionUtil - Exception occurred during parsing null download statement 'HTMLHavingDescriptionBelowDate' ====>>>>>> Unparseable date: "03-JUY-2017"
+java.text.ParseException: Unparseable date: "03-JUY-2017"
+	at java.text.DateFormat.parse(DateFormat.java:366)
+	at java_text_DateFormat$parse.call(Unknown Source)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:45)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:108)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:116)
+	at com.bankScraper.bank.BankTransactionUtil.extractTransactionsFromHTMLHavingDescriptionBelowDate(BankTransactionUtil.groovy:612)
+	at com.bankScraper.bank.BankTransactionUtil$extractTransactionsFromHTMLHavingDescriptionBelowDate$2.call(Unknown Source)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:45)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:108)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:116)
+	at finbit_parser_spec$_run_closure4.doCall(finbit_parser_spec.groovy:44)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrap.invoke(PogoMetaMethodSite.java:252)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.call(PogoMetaMethodSite.java:64)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:45)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:108)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:116)
+	at finbit_parser_spec$_run_closure8.doCall(finbit_parser_spec.groovy:71)
+	at finbit_parser_spec$_run_closure8.doCall(finbit_parser_spec.groovy)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrapNoCoerce.invoke(PogoMetaMethodSite.java:272)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.call(PogoMetaMethodSite.java:64)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:45)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.call(PogoMetaMethodSite.java:69)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:112)
+	at finbit_parser_spec$_run_closure1.doCall(finbit_parser_spec.groovy:15)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrapNoCoerce.invoke(PogoMetaMethodSite.java:272)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.call(PogoMetaMethodSite.java:64)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:45)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:108)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:120)
+	at finbit_parser_spec.run(finbit_parser_spec.groovy:67)
+	at groovy.lang.GroovyShell.runScriptOrMainOrTestOrRunnable(GroovyShell.java:257)
+	at groovy.lang.GroovyShell.run(GroovyShell.java:220)
+	at groovy.lang.GroovyShell.run(GroovyShell.java:150)
+	at groovy.ui.GroovyMain.processOnce(GroovyMain.java:588)
+	at groovy.ui.GroovyMain.run(GroovyMain.java:375)
+	at groovy.ui.GroovyMain.process(GroovyMain.java:361)
+	at groovy.ui.GroovyMain.processArgs(GroovyMain.java:120)
+	at groovy.ui.GroovyMain.main(GroovyMain.java:100)
+FAIL Bank parser consolidation parses an irregular date through the description-below-date layout: PowerAssertionError: assert state.bankTransactionList.size() == 1
+       |     |                   |      |
+       |     []                  0      false
+       com.bankScraper.bank.ProcessedBankStatementVO@38089a5a
+PASS Bank parser consolidation retains balance-only continuation rows in the description-above-date layout
+FAIL Bank parser consolidation routes heterogeneous bank layouts through the correct shared parser: PowerAssertionError: assert calls == ['andhra-regex', 'shared-above', 'shared-below']
+       |     |
+       |     false
+       [shared-above, shared-below]
+PASS Bank parser consolidation preserves standard numeric date parsing
+PASS Bank parser consolidation preserves the dedicated Bank of Baroda saving-account route

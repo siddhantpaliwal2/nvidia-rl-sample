@@ -1,0 +1,215 @@
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/dist/grails-plugin-log4j-2.3.11.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/lib/org.slf4j/slf4j-simple/jars/slf4j-simple-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.GrailsSlf4jLoggerFactory]
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/dist/grails-plugin-log4j-2.3.11.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/lib/org.slf4j/slf4j-simple/jars/slf4j-simple-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/app/lib/tika-app-1.14.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/app/lib/traprange-1.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.GrailsSlf4jLoggerFactory]
+PASS Google storage migration adds GOOGLE target and defaults new documents to it
+2026-08-08 23:26:06 ERROR StackTrace:213 - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: static com.google.cloud.storage.StorageOptions.getDefaultInstance() is applicable for argument types: () values: []
+	at groovy.lang.MetaClassImpl.invokeStaticMissingMethod(MetaClassImpl.java:1374)
+	at groovy.lang.MetaClassImpl.invokeStaticMethod(MetaClassImpl.java:1360)
+	at groovy.lang.ExpandoMetaClass.invokeStaticMethod(ExpandoMetaClass.java:1123)
+	at org.codehaus.groovy.runtime.callsite.StaticMetaClassSite.call(StaticMetaClassSite.java:50)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:45)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:108)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:112)
+	at com.bankScraper.HelperMethod.fetchGoogleCloudStorageService(HelperMethod.groovy:859)
+	at com.bankScraper.HelperMethod$fetchGoogleCloudStorageService$0.callStatic(Unknown Source)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallStatic(CallSiteArray.java:53)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callStatic(AbstractCallSite.java:157)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callStatic(AbstractCallSite.java:161)
+	at com.bankScraper.HelperMethod.uploadObjectToGoogleCloudStorage(HelperMethod.groovy:867)
+	at com.bankScraper.HelperMethod$uploadObjectToGoogleCloudStorage.call(Unknown Source)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:45)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:108)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:120)
+	at finbit_cloud_storage_spec$_run_closure4.doCall(finbit_cloud_storage_spec.groovy:37)
+	at finbit_cloud_storage_spec$_run_closure4.doCall(finbit_cloud_storage_spec.groovy)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrapNoCoerce.invoke(PogoMetaMethodSite.java:272)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.call(PogoMetaMethodSite.java:64)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:45)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.call(PogoMetaMethodSite.java:69)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:112)
+	at finbit_cloud_storage_spec$_run_closure1.doCall(finbit_cloud_storage_spec.groovy:13)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrapNoCoerce.invoke(PogoMetaMethodSite.java:272)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.call(PogoMetaMethodSite.java:64)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:45)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:108)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:120)
+	at finbit_cloud_storage_spec.run(finbit_cloud_storage_spec.groovy:32)
+	at groovy.lang.GroovyShell.runScriptOrMainOrTestOrRunnable(GroovyShell.java:257)
+	at groovy.lang.GroovyShell.run(GroovyShell.java:220)
+	at groovy.lang.GroovyShell.run(GroovyShell.java:150)
+	at groovy.ui.GroovyMain.processOnce(GroovyMain.java:588)
+	at groovy.ui.GroovyMain.run(GroovyMain.java:375)
+	at groovy.ui.GroovyMain.process(GroovyMain.java:361)
+	at groovy.ui.GroovyMain.processArgs(GroovyMain.java:120)
+	at groovy.ui.GroovyMain.main(GroovyMain.java:100)
+2026-08-08 23:26:06 ERROR StackTrace:213 - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: static com.google.cloud.storage.StorageOptions.getDefaultInstance() is applicable for argument types: () values: []
+	at com.bankScraper.HelperMethod.fetchGoogleCloudStorageService(HelperMethod.groovy:859)
+	at com.bankScraper.HelperMethod.uploadObjectToGoogleCloudStorage(HelperMethod.groovy:867)
+	at finbit_cloud_storage_spec$_run_closure4.doCall(finbit_cloud_storage_spec.groovy:37)
+	at finbit_cloud_storage_spec$_run_closure1.doCall(finbit_cloud_storage_spec.groovy:13)
+	at finbit_cloud_storage_spec.run(finbit_cloud_storage_spec.groovy:32)
+2026-08-08 23:26:06 ERROR HelperMethod:213 - Exception while uploading file to Google Cloud Storage ==>> No signature of method: static com.google.cloud.storage.StorageOptions.getDefaultInstance() is applicable for argument types: () values: []
+groovy.lang.MissingMethodException: No signature of method: static com.google.cloud.storage.StorageOptions.getDefaultInstance() is applicable for argument types: () values: []
+	at com.bankScraper.HelperMethod.fetchGoogleCloudStorageService(HelperMethod.groovy:859)
+	at com.bankScraper.HelperMethod.uploadObjectToGoogleCloudStorage(HelperMethod.groovy:867)
+	at finbit_cloud_storage_spec$_run_closure4.doCall(finbit_cloud_storage_spec.groovy:37)
+	at finbit_cloud_storage_spec$_run_closure1.doCall(finbit_cloud_storage_spec.groovy:13)
+	at finbit_cloud_storage_spec.run(finbit_cloud_storage_spec.groovy:32)
+FAIL Google storage migration uploads bytes through the configured storage client: PowerAssertionError: assert HelperMethod.uploadObjectToGoogleCloudStorage(source, 'synthetic/upload.txt')
+                    |                                |
+                    false                            /tmp/synthetic-cloud-upload-2803296384138302769.txt
+2026-08-08 23:26:06 ERROR StackTrace:213 - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: static com.google.cloud.storage.StorageOptions.getDefaultInstance() is applicable for argument types: () values: []
+	at groovy.lang.MetaClassImpl.invokeStaticMissingMethod(MetaClassImpl.java:1374)
+	at groovy.lang.MetaClassImpl.invokeStaticMethod(MetaClassImpl.java:1360)
+	at groovy.lang.ExpandoMetaClass.invokeStaticMethod(ExpandoMetaClass.java:1123)
+	at org.codehaus.groovy.runtime.callsite.StaticMetaClassSite.call(StaticMetaClassSite.java:50)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:112)
+	at com.bankScraper.HelperMethod.fetchGoogleCloudStorageService(HelperMethod.groovy:859)
+	at com.bankScraper.HelperMethod$fetchGoogleCloudStorageService$0.callStatic(Unknown Source)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallStatic(CallSiteArray.java:53)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callStatic(AbstractCallSite.java:157)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callStatic(AbstractCallSite.java:161)
+	at com.bankScraper.HelperMethod.downloadObjectFromGoogleCloudStorage(HelperMethod.groovy:884)
+	at com.bankScraper.HelperMethod$downloadObjectFromGoogleCloudStorage$1.call(Unknown Source)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:45)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:108)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:116)
+	at finbit_cloud_storage_spec$_run_closure5.doCall(finbit_cloud_storage_spec.groovy:50)
+	at finbit_cloud_storage_spec$_run_closure5.doCall(finbit_cloud_storage_spec.groovy)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrapNoCoerce.invoke(PogoMetaMethodSite.java:272)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.call(PogoMetaMethodSite.java:64)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:45)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.call(PogoMetaMethodSite.java:69)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:112)
+	at finbit_cloud_storage_spec$_run_closure1.doCall(finbit_cloud_storage_spec.groovy:13)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrapNoCoerce.invoke(PogoMetaMethodSite.java:272)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.call(PogoMetaMethodSite.java:64)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:45)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:108)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:120)
+	at finbit_cloud_storage_spec.run(finbit_cloud_storage_spec.groovy:47)
+	at groovy.lang.GroovyShell.runScriptOrMainOrTestOrRunnable(GroovyShell.java:257)
+	at groovy.lang.GroovyShell.run(GroovyShell.java:220)
+	at groovy.lang.GroovyShell.run(GroovyShell.java:150)
+	at groovy.ui.GroovyMain.processOnce(GroovyMain.java:588)
+	at groovy.ui.GroovyMain.run(GroovyMain.java:375)
+	at groovy.ui.GroovyMain.process(GroovyMain.java:361)
+	at groovy.ui.GroovyMain.processArgs(GroovyMain.java:120)
+	at groovy.ui.GroovyMain.main(GroovyMain.java:100)
+2026-08-08 23:26:06 ERROR StackTrace:213 - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: static com.google.cloud.storage.StorageOptions.getDefaultInstance() is applicable for argument types: () values: []
+	at com.bankScraper.HelperMethod.fetchGoogleCloudStorageService(HelperMethod.groovy:859)
+	at com.bankScraper.HelperMethod.downloadObjectFromGoogleCloudStorage(HelperMethod.groovy:884)
+	at finbit_cloud_storage_spec$_run_closure5.doCall(finbit_cloud_storage_spec.groovy:50)
+	at finbit_cloud_storage_spec$_run_closure1.doCall(finbit_cloud_storage_spec.groovy:13)
+	at finbit_cloud_storage_spec.run(finbit_cloud_storage_spec.groovy:47)
+2026-08-08 23:26:06 ERROR HelperMethod:213 - Exception while downloading file from Google Cloud Storage ==>> No signature of method: static com.google.cloud.storage.StorageOptions.getDefaultInstance() is applicable for argument types: () values: []
+groovy.lang.MissingMethodException: No signature of method: static com.google.cloud.storage.StorageOptions.getDefaultInstance() is applicable for argument types: () values: []
+	at com.bankScraper.HelperMethod.fetchGoogleCloudStorageService(HelperMethod.groovy:859)
+	at com.bankScraper.HelperMethod.downloadObjectFromGoogleCloudStorage(HelperMethod.groovy:884)
+	at finbit_cloud_storage_spec$_run_closure5.doCall(finbit_cloud_storage_spec.groovy:50)
+	at finbit_cloud_storage_spec$_run_closure1.doCall(finbit_cloud_storage_spec.groovy:13)
+	at finbit_cloud_storage_spec.run(finbit_cloud_storage_spec.groovy:47)
+FAIL Google storage migration downloads bytes through the configured storage client: PowerAssertionError: assert stream?.bytes == 'synthetic download payload'.bytes
+       |       |     |                               |
+       null    null  false                           [115, 121, 110, 116, 104, 101, 116, 105, 99, 32, 100, 111, 119, 110, 108, 111, 97, 100, 32, 112, 97, 121, 108, 111, 97, 100]
+2026-08-08 23:26:06 INFO  HelperMethod:152 - === Requesting file for download from Google Cloud Storage location ===>>> synthetic/routed.txt
+2026-08-08 23:26:06 ERROR StackTrace:213 - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: static com.google.cloud.storage.StorageOptions.getDefaultInstance() is applicable for argument types: () values: []
+	at groovy.lang.MetaClassImpl.invokeStaticMissingMethod(MetaClassImpl.java:1374)
+	at groovy.lang.MetaClassImpl.invokeStaticMethod(MetaClassImpl.java:1360)
+	at groovy.lang.ExpandoMetaClass.invokeStaticMethod(ExpandoMetaClass.java:1123)
+	at org.codehaus.groovy.runtime.callsite.StaticMetaClassSite.call(StaticMetaClassSite.java:50)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:112)
+	at com.bankScraper.HelperMethod.fetchGoogleCloudStorageService(HelperMethod.groovy:859)
+	at com.bankScraper.HelperMethod$fetchGoogleCloudStorageService$0.callStatic(Unknown Source)
+	at com.bankScraper.HelperMethod.downloadObjectFromGoogleCloudStorage(HelperMethod.groovy:884)
+	at com.bankScraper.HelperMethod$downloadObjectFromGoogleCloudStorage$1.callStatic(Unknown Source)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallStatic(CallSiteArray.java:53)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callStatic(AbstractCallSite.java:157)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callStatic(AbstractCallSite.java:165)
+	at com.bankScraper.HelperMethod.downloadObjectFromLocalOrS3OrAzure(HelperMethod.groovy:922)
+	at com.bankScraper.HelperMethod$downloadObjectFromLocalOrS3OrAzure$2.call(Unknown Source)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:45)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:108)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:116)
+	at finbit_cloud_storage_spec$_run_closure6.doCall(finbit_cloud_storage_spec.groovy:61)
+	at finbit_cloud_storage_spec$_run_closure6.doCall(finbit_cloud_storage_spec.groovy)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrapNoCoerce.invoke(PogoMetaMethodSite.java:272)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.call(PogoMetaMethodSite.java:64)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:45)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.call(PogoMetaMethodSite.java:69)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:112)
+	at finbit_cloud_storage_spec$_run_closure1.doCall(finbit_cloud_storage_spec.groovy:13)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrapNoCoerce.invoke(PogoMetaMethodSite.java:272)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.call(PogoMetaMethodSite.java:64)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:45)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:108)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:120)
+	at finbit_cloud_storage_spec.run(finbit_cloud_storage_spec.groovy:54)
+	at groovy.lang.GroovyShell.runScriptOrMainOrTestOrRunnable(GroovyShell.java:257)
+	at groovy.lang.GroovyShell.run(GroovyShell.java:220)
+	at groovy.lang.GroovyShell.run(GroovyShell.java:150)
+	at groovy.ui.GroovyMain.processOnce(GroovyMain.java:588)
+	at groovy.ui.GroovyMain.run(GroovyMain.java:375)
+	at groovy.ui.GroovyMain.process(GroovyMain.java:361)
+	at groovy.ui.GroovyMain.processArgs(GroovyMain.java:120)
+	at groovy.ui.GroovyMain.main(GroovyMain.java:100)
+2026-08-08 23:26:06 ERROR StackTrace:213 - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: static com.google.cloud.storage.StorageOptions.getDefaultInstance() is applicable for argument types: () values: []
+	at com.bankScraper.HelperMethod.fetchGoogleCloudStorageService(HelperMethod.groovy:859)
+	at com.bankScraper.HelperMethod.downloadObjectFromGoogleCloudStorage(HelperMethod.groovy:884)
+	at com.bankScraper.HelperMethod.downloadObjectFromLocalOrS3OrAzure(HelperMethod.groovy:922)
+	at finbit_cloud_storage_spec$_run_closure6.doCall(finbit_cloud_storage_spec.groovy:61)
+	at finbit_cloud_storage_spec$_run_closure1.doCall(finbit_cloud_storage_spec.groovy:13)
+	at finbit_cloud_storage_spec.run(finbit_cloud_storage_spec.groovy:54)
+2026-08-08 23:26:06 ERROR HelperMethod:213 - Exception while downloading file from Google Cloud Storage ==>> No signature of method: static com.google.cloud.storage.StorageOptions.getDefaultInstance() is applicable for argument types: () values: []
+groovy.lang.MissingMethodException: No signature of method: static com.google.cloud.storage.StorageOptions.getDefaultInstance() is applicable for argument types: () values: []
+	at com.bankScraper.HelperMethod.fetchGoogleCloudStorageService(HelperMethod.groovy:859)
+	at com.bankScraper.HelperMethod.downloadObjectFromGoogleCloudStorage(HelperMethod.groovy:884)
+	at com.bankScraper.HelperMethod.downloadObjectFromLocalOrS3OrAzure(HelperMethod.groovy:922)
+	at finbit_cloud_storage_spec$_run_closure6.doCall(finbit_cloud_storage_spec.groovy:61)
+	at finbit_cloud_storage_spec$_run_closure1.doCall(finbit_cloud_storage_spec.groovy:13)
+	at finbit_cloud_storage_spec.run(finbit_cloud_storage_spec.groovy:54)
+FAIL Google storage migration routes persisted GOOGLE documents to cloud storage: NullPointerException: Cannot get property 'bytes' on null object
+PASS Google storage migration leaves blank cloud paths inert
+2026-08-08 23:26:06 INFO  HelperMethod:152 - === Requesting file for download from Local location ===>>> /tmp/synthetic-local-download-901791974455914725.txt
+PASS Google storage migration preserves local file download precedence
+2026-08-08 23:26:07 INFO  HelperMethod:152 - === Requesting file for download from Azure location ===>>> /tmp/synthetic-missing-azure-object
+PASS Google storage migration preserves Azure target routing

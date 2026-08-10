@@ -1,0 +1,11 @@
+{
+    "job_name": "champ2197-oracle-local-r8",
+    "jobs_dir": "sample-run/enterprise-controls",
+    "n_concurrent_trials": 1,
+    "quiet": true,
+    "tasks": [
+        {
+            "path": "tasks/champ-email-inbox-infrastructure"
+        }
+    ]
+}

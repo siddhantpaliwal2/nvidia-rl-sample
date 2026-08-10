@@ -1,0 +1,18 @@
+{
+    "task": {
+        "path": "tasks/finbit-bank-parser-consolidation"
+    },
+    "trial_name": "finbit-bank-parser-consolidation__txTgkwW",
+    "trials_dir": "sample-run/enterprise-controls/finbit-parser-null-daytona-r2",
+    "agent": {
+        "name": "nop"
+    },
+    "environment": {
+        "type": "daytona",
+        "kwargs": {
+            "snapshot_template_name": "harbor-probe-finbit-bank-parser-consolidation-8g",
+            "assume_global_snapshot": true
+        }
+    },
+    "job_id": "8fab96af-e25d-439f-8ee4-9e816cca33ed"
+}

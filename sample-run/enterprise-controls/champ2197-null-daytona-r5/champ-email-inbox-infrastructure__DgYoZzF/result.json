@@ -1,0 +1,111 @@
+{
+    "id": "0d87ca75-8bea-46f2-af7d-a95ca1c1d5f1",
+    "task_name": "champ-email-inbox-infrastructure",
+    "trial_name": "champ-email-inbox-infrastructure__DgYoZzF",
+    "trial_uri": "file:///Users/siddhantpaliwal/Desktop/amazon-rl/xai-rl-sample/sample-run/enterprise-controls/champ2197-null-daytona-r5/champ-email-inbox-infrastructure__DgYoZzF",
+    "task_id": {
+        "path": "tasks/champ-email-inbox-infrastructure"
+    },
+    "source": null,
+    "task_checksum": "edafd48e9ebdf73bc2384ed70b27a35eaee735333f49e6c450b7a3deb4541b72",
+    "config": {
+        "task": {
+            "path": "tasks/champ-email-inbox-infrastructure",
+            "git_url": null,
+            "git_commit_id": null,
+            "name": null,
+            "ref": null,
+            "overwrite": false,
+            "download_dir": null,
+            "source": null
+        },
+        "trial_name": "champ-email-inbox-infrastructure__DgYoZzF",
+        "trials_dir": "sample-run/enterprise-controls/champ2197-null-daytona-r5",
+        "install_only": false,
+        "timeout_multiplier": 1.0,
+        "agent_timeout_multiplier": null,
+        "verifier_timeout_multiplier": null,
+        "agent_setup_timeout_multiplier": null,
+        "environment_build_timeout_multiplier": null,
+        "agent": {
+            "name": "nop",
+            "import_path": null,
+            "model_name": null,
+            "n_concurrent": null,
+            "concurrency_group": null,
+            "skills": [],
+            "override_timeout_sec": null,
+            "override_setup_timeout_sec": null,
+            "max_timeout_sec": null,
+            "extra_allowed_hosts": [],
+            "kwargs": {},
+            "mcp_servers": []
+        },
+        "environment": {
+            "type": "daytona",
+            "import_path": null,
+            "force_build": false,
+            "delete": true,
+            "cpu_enforcement_policy": "auto",
+            "memory_enforcement_policy": "auto",
+            "override_cpus": null,
+            "override_memory_mb": null,
+            "override_storage_mb": null,
+            "override_gpus": null,
+            "override_tpu": null,
+            "mounts": null,
+            "extra_docker_compose": [],
+            "kwargs": {
+                "snapshot_template_name": "harbor-probe-champ-email-inbox-infrastructure-8g",
+                "assume_global_snapshot": true
+            },
+            "extra_allowed_hosts": []
+        },
+        "verifier": {
+            "override_timeout_sec": null,
+            "max_timeout_sec": null,
+            "disable": false
+        },
+        "artifacts": [],
+        "extra_instruction_paths": [],
+        "job_id": "36e911cc-64f3-44bd-9207-22fed3e8b2d3"
+    },
+    "agent_info": {
+        "name": "nop",
+        "version": "1.0.0",
+        "model_info": null
+    },
+    "agent_result": {
+        "n_input_tokens": null,
+        "n_cache_tokens": null,
+        "n_output_tokens": null,
+        "cost_usd": null,
+        "rollout_details": null,
+        "metadata": null
+    },
+    "verifier_result": {
+        "rewards": {
+            "reward": 0.0
+        }
+    },
+    "exception_info": null,
+    "started_at": "2026-08-08T06:11:41.800624Z",
+    "finished_at": "2026-08-08T06:11:59.139648Z",
+    "environment_setup": {
+        "started_at": "2026-08-08T06:11:41.819753Z",
+        "finished_at": "2026-08-08T06:11:43.330192Z"
+    },
+    "agent_setup": {
+        "started_at": "2026-08-08T06:11:43.330344Z",
+        "finished_at": "2026-08-08T06:11:43.330473Z"
+    },
+    "agent_execution": {
+        "started_at": "2026-08-08T06:11:43.330661Z",
+        "finished_at": "2026-08-08T06:11:43.330888Z"
+    },
+    "verifier": {
+        "started_at": "2026-08-08T06:11:47.297405Z",
+        "finished_at": "2026-08-08T06:11:58.966017Z"
+    },
+    "step_results": null
+}

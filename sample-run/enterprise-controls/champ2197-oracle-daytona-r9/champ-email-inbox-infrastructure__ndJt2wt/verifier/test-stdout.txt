@@ -1,0 +1,74 @@
+[31m[Nest] 318  - [39m08/10/2026, 3:38:49 AM [31m  ERROR[39m [38;5;3m[EmailAccountEntity] [39m[31mThe following email accounts are missing: missing[39m
+[31m[Nest] 318  - [39m08/10/2026, 3:38:49 AM [31m  ERROR[39m [38;5;3m[EmailinfraService] [39m[31mCound not found smartlead email account by id=missing[39m
+[31m[Nest] 318  - [39m08/10/2026, 3:38:49 AM [31m  ERROR[39m [38;5;3m[EmailinfraService] [39m[31mFailed to save email account, error: NotFoundException: Smartlead email account not found[39m
+PASS src/emailinfra/emailinfra.gold.spec.ts (8.475 s)
+[32m[Nest] 318  - [39m08/10/2026, 3:38:49 AM [32m    LOG[39m [38;5;3m[EmailAccountEntity] [39m[32mGetting email account by id: 1[39m
+[32m[Nest] 318  - [39m08/10/2026, 3:38:49 AM [32m    LOG[39m [38;5;3m[EmailAccountEntity] [39m[32mGetting email account by email: a@example.com[39m
+[32m[Nest] 318  - [39m08/10/2026, 3:38:49 AM [32m    LOG[39m [38;5;3m[EmailAccountEntity] [39m[32mGetting email accounts by smartleadClientId: client-1[39m
+[32m[Nest] 318  - [39m08/10/2026, 3:38:49 AM [32m    LOG[39m [38;5;3m[EmailAccountEntity] [39m[32mGetting all email accounts, pagination: [object Object][39m
+[32m[Nest] 318  - [39m08/10/2026, 3:38:49 AM [32m    LOG[39m [38;5;3m[EmailAccountEntity] [39m[32mGetting email account by email: missing@example.com[39m
+[32m[Nest] 318  - [39m08/10/2026, 3:38:49 AM [32m    LOG[39m [38;5;3m[EmailAccountEntity] [39m[32mCreating email account [object Object][39m
+[32m[Nest] 318  - [39m08/10/2026, 3:38:49 AM [32m    LOG[39m [38;5;3m[EmailAccountEntity] [39m[32mGetting email account by id: inbox-1[39m
+[32m[Nest] 318  - [39m08/10/2026, 3:38:49 AM [32m    LOG[39m [38;5;3m[EmailAccountEntity] [39m[32mDeleting email account by id=inbox-1[39m
+PASS src/email-reply-agent/entities/entity.spec.ts
+
+Test Suites: 2 passed, 2 total
+Tests:       12 passed, 12 total
+Snapshots:   0 total
+Time:        8.564 s
+Test results written to: ../tmp/jest-unit.json
+{
+  "tests": [
+    {
+      "name": "Email inbox infrastructure contract derives stable identity, domain, counters, and deliverability bands",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract persists the normalized email account in the dedicated collection",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract looks up accounts through inbox-specific datastore fields",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract rejects a lookup when no account has the requested email",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract deduplicates campaign associations and refuses partial id sets",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract skips existing campaign links and persists each new association once",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract requests the documented multi-factor ranking and page limit",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract sizes a campaign pool from volume, duration, and daily capacity",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract hydrates Smartlead reputation and creation time before saving",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract surfaces a missing Smartlead inbox and delegates deletion safely",
+      "status": "passed"
+    },
+    {
+      "name": "Entity email template  should be defined",
+      "status": "passed"
+    },
+    {
+      "name": "Entity email template  should be able to get email template by id",
+      "status": "passed"
+    }
+  ]
+}
+
+required passed: 12/12
+reward: 1

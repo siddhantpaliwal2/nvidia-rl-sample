@@ -1,0 +1,61 @@
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/dist/grails-plugin-log4j-2.3.11.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/lib/org.slf4j/slf4j-simple/jars/slf4j-simple-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.GrailsSlf4jLoggerFactory]
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/dist/grails-plugin-log4j-2.3.11.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/lib/org.slf4j/slf4j-simple/jars/slf4j-simple-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/app/lib/tika-app-1.14.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/app/lib/traprange-1.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.GrailsSlf4jLoggerFactory]
+FAIL Google storage migration adds GOOGLE target and defaults new documents to it: IllegalArgumentException: No enum constant com.bankScraper.Enums.StaticFileStorageTarget.GOOGLE
+FAIL Google storage migration uploads bytes through the configured storage client: MissingMethodException: No signature of method: static com.bankScraper.HelperMethod.uploadObjectToGoogleCloudStorage() is applicable for argument types: (java.io.File, java.lang.String) values: [/tmp/synthetic-cloud-upload-5874354061846376347.txt, ...]
+FAIL Google storage migration downloads bytes through the configured storage client: MissingMethodException: No signature of method: static com.bankScraper.HelperMethod.downloadObjectFromGoogleCloudStorage() is applicable for argument types: (java.lang.String) values: [synthetic/download.txt]
+FAIL Google storage migration routes persisted GOOGLE documents to cloud storage: IllegalArgumentException: No enum constant com.bankScraper.Enums.StaticFileStorageTarget.GOOGLE
+FAIL Google storage migration leaves blank cloud paths inert: MissingMethodException: No signature of method: static com.bankScraper.HelperMethod.uploadObjectToGoogleCloudStorage() is applicable for argument types: (java.io.File, java.lang.String) values: [/tmp/synthetic-cloud-blank-454434809322213436.txt, ...]
+2026-08-08 05:07:56 INFO  HelperMethod:152 - === Requesting file for download from Local location ===>>> /tmp/synthetic-local-download-3295049319662398550.txt
+PASS Google storage migration preserves local file download precedence
+2026-08-08 05:07:57 INFO  HelperMethod:152 - === Requesting file for download from Azure location ===>>> /tmp/synthetic-missing-azure-object
+PASS Google storage migration preserves Azure target routing
+{
+  "tests": [
+    {
+      "name": "Google storage migration adds GOOGLE target and defaults new documents to it",
+      "status": "failed"
+    },
+    {
+      "name": "Google storage migration uploads bytes through the configured storage client",
+      "status": "failed"
+    },
+    {
+      "name": "Google storage migration downloads bytes through the configured storage client",
+      "status": "failed"
+    },
+    {
+      "name": "Google storage migration routes persisted GOOGLE documents to cloud storage",
+      "status": "failed"
+    },
+    {
+      "name": "Google storage migration leaves blank cloud paths inert",
+      "status": "failed"
+    },
+    {
+      "name": "Google storage migration preserves local file download precedence",
+      "status": "passed"
+    },
+    {
+      "name": "Google storage migration preserves Azure target routing",
+      "status": "passed"
+    }
+  ]
+}
+
+required passed: 2/7
+  NOT PASSED (failed): Google storage migration adds GOOGLE target and defaults new documents to it
+  NOT PASSED (failed): Google storage migration uploads bytes through the configured storage client
+  NOT PASSED (failed): Google storage migration downloads bytes through the configured storage client
+  NOT PASSED (failed): Google storage migration routes persisted GOOGLE documents to cloud storage
+  NOT PASSED (failed): Google storage migration leaves blank cloud paths inert
+reward: 0

@@ -1,0 +1,23 @@
+FAIL src/emailinfra/emailinfra.gold.spec.ts
+  ● Test suite failed to run
+
+    Cannot find module './entities/emailAccount.entity' from 'emailinfra/emailinfra.gold.spec.ts'
+
+       6 | // enum or repository-wrapper names. Both an injected repository and a domain
+       7 | // entity with static persistence methods are valid designs.
+    >  8 | const emailAccountModule = require('./entities/emailAccount.entity') as any;
+         |                            ^
+       9 | const EmailAccount = emailAccountModule.EmailAccount as any;
+      10 | let emailInfraModule: any = {};
+      11 | try {
+
+      at Resolver._throwModNotFoundError (../node_modules/jest-resolve/build/resolver.js:427:11)
+      at Object.<anonymous> (emailinfra/emailinfra.gold.spec.ts:8:28)
+
+PASS src/email-reply-agent/entities/entity.spec.ts
+
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       2 passed, 2 total
+Snapshots:   0 total
+Time:        6.979 s
+Test results written to: ../tmp/jest-unit.json

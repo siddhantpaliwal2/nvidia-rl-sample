@@ -1,0 +1,39 @@
+{
+    "id": "09e55c6c-378c-42e5-88f8-c928bd1ba2ac",
+    "started_at": "2026-08-09T20:57:12.241518",
+    "updated_at": "2026-08-09T20:57:27.826292",
+    "finished_at": "2026-08-09T20:57:27.826292",
+    "n_total_trials": 1,
+    "stats": {
+        "n_completed_trials": 1,
+        "n_errored_trials": 0,
+        "n_running_trials": 0,
+        "n_pending_trials": 0,
+        "n_cancelled_trials": 0,
+        "n_retries": 0,
+        "evals": {
+            "nop__adhoc": {
+                "n_trials": 1,
+                "n_errors": 0,
+                "metrics": [
+                    {
+                        "mean": 0.0
+                    }
+                ],
+                "pass_at_k": {},
+                "reward_stats": {
+                    "reward": {
+                        "0.0": [
+                            "champ-email-inbox-infrastructure__dStj4r7"
+                        ]
+                    }
+                },
+                "exception_stats": {}
+            }
+        },
+        "n_input_tokens": null,
+        "n_cache_tokens": null,
+        "n_output_tokens": null,
+        "cost_usd": null
+    }
+}

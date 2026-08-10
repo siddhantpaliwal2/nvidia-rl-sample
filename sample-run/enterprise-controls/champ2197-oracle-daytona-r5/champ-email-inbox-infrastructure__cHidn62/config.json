@@ -1,0 +1,15 @@
+{
+    "task": {
+        "path": "tasks/champ-email-inbox-infrastructure"
+    },
+    "trial_name": "champ-email-inbox-infrastructure__cHidn62",
+    "trials_dir": "sample-run/enterprise-controls/champ2197-oracle-daytona-r5",
+    "environment": {
+        "type": "daytona",
+        "kwargs": {
+            "snapshot_template_name": "harbor-probe-champ-email-inbox-infrastructure-8g",
+            "assume_global_snapshot": true
+        }
+    },
+    "job_id": "9f230134-adf0-4309-bca2-4e2381fb38db"
+}

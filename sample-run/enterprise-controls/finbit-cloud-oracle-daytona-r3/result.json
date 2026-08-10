@@ -1,0 +1,39 @@
+{
+    "id": "4e32b5a9-fa44-4644-96a6-94f26d22ad85",
+    "started_at": "2026-08-07T22:41:11.774984",
+    "updated_at": "2026-08-07T22:41:32.813552",
+    "finished_at": "2026-08-07T22:41:32.813552",
+    "n_total_trials": 1,
+    "stats": {
+        "n_completed_trials": 1,
+        "n_errored_trials": 0,
+        "n_running_trials": 0,
+        "n_pending_trials": 0,
+        "n_cancelled_trials": 0,
+        "n_retries": 0,
+        "evals": {
+            "oracle__adhoc": {
+                "n_trials": 1,
+                "n_errors": 0,
+                "metrics": [
+                    {
+                        "mean": 1.0
+                    }
+                ],
+                "pass_at_k": {},
+                "reward_stats": {
+                    "reward": {
+                        "1.0": [
+                            "finbit-google-cloud-storage-migr__YNy6R2x"
+                        ]
+                    }
+                },
+                "exception_stats": {}
+            }
+        },
+        "n_input_tokens": null,
+        "n_cache_tokens": null,
+        "n_output_tokens": null,
+        "cost_usd": null
+    }
+}

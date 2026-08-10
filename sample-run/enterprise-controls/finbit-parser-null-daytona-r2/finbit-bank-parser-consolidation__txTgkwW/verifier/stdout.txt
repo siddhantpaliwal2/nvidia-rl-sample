@@ -1,0 +1,34 @@
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/dist/grails-plugin-log4j-2.3.11.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/lib/org.slf4j/slf4j-simple/jars/slf4j-simple-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.GrailsSlf4jLoggerFactory]
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/dist/grails-plugin-log4j-2.3.11.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/grails-2.3.11/lib/org.slf4j/slf4j-simple/jars/slf4j-simple-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/app/lib/tika-app-1.14.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/app/lib/traprange-1.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.GrailsSlf4jLoggerFactory]
+FAIL Bank parser consolidation normalizes compact and OCR-corrupted month dates: PowerAssertionError: assert BankTransactionUtil.processValue('03- JUL- 2017') == '03JUL2017'
+                           |                             |
+                           03-JUL-2017                   false
+FAIL Bank parser consolidation recognizes opening balances and repeated transaction headers: PowerAssertionError: assert 'OPENING BALANCE'.find(headers.balance_brought_forward)
+                         |    |       |
+                         null |       (B/F[\s]*[.]{3})|(Balance Brought Forward)|(^B/F$)|(B/f)|(Opening Balance)|(Brought[\s]*Forward)|(BALANCE[\s]*FORWARD)|(BALANCE[\s]*B/F)|(Balance[\s]*B/F)
+                              [date:(TRAN[\s]*DT)|(Trans.[\s]*Date)|(^n[\s]*Date$)|(TXN[\s]*DATE)|(Date[\s]*Txn)|(Transaction[\s]*Date)|(Txn[.][\s]*Date)|(Txn Date)|(Txn$)|(Tran[\s]*[Dd]ate)|(^DATE$)|(^Transactio$)|(^Date$)|(Post Date)|(TRAN DATE)|(Post)|(Txn Posted Date)|(TDATE)|(^Transaction$)|(DATE[.])|(Txn[.][\s]*Date), value_date:(Value Date)|(Value)|(VALUE DATE), description:(DESCRIPTION)|(Transaction Details)|(Transaction Particulars)|(Transaction Remarks)|(Description)|(Particulars)|(PARTICULARS)|(Transaction$)|(Narration)|(^Transactio$)|(^Account$)|(NARATION)|(Details)|(Remarks)|(Description\\(Remark\\))|(DESCRIP)|(Particular)|(DESCRIPION)|(TRANSACTION[\s]*DETAILS)|(TRANSACTION[\s]*DETAILS), branch_code:(Branch Code)|(Branch)|(Location)|(Branch[\s]*Name), cheque_no:(REFERENCE)|(Ref No./Cheque)|(Ref)|(Chq.No.)|(Chq./Ref.No.)|(Cheque)|(Cheque Number)|(Cheque No)|(ChequeN[\s]*o[\s]*.)|(Cheque No.)|(Chq No)|(CHQ NO)|(Chq.No)|(CHEQUE[\s]*NO[.])|(Chq[\s]*no[.])|(Cheque[\s]*Num)|(CHQ[.]NO[.]), credit:(CREDITS)|(Credit Amt)|(Deposit Amt)|(Credit[\s]*\(INR\)[\s]*Balance)|(Credit$)|(Deposit Amount)|(Deposits)|(DEPOSITS)|(Deposit)|(CR)|(CREDIT)|(Credit[\s]*Amount)|(DEPOSIT)|(Cr[\s]*Amount), debit:(Withdrawal[\s]*Amt.)|(DEBITS)|(Debit Amt)|(Withdrawl Amt)|(Debit[\s]*\(INR\)[\s]*Balance)|(Debit)|(Withdrawal Amount)|(Withdrawals)|(WITHDRAWALS)|(Withdrawal$)|(WITHDRAWLS)|(DR)|(DEBIT)|(WithDrawal)|(Debit[\s]*Amount)|(WITHDRAWAL)|(Dr[\s]*Amount), amount_type:(CR/DR)|(Cr/D[\s]*r)|(DR/CR)|(Debit\/)|(DR[|]CR), amount:(Withdrawal Deposit \(Cr\) \(Dr\)\/)|(Transaction[\s]*Amount)|(Withdrawal[\s]*\(Dr\)\/)|(Trxn Amount)|(Amount[\s]*\(INR\))|(Transaction$)|(Amount\(in Rs.\))|(^Amount), balance_brought_forward:(B/F[\s]*[.]{3})|(Balance Brought Forward)|(^B/F$)|(B/f)|(Opening Balance)|(Brought[\s]*Forward)|(BALANCE[\s]*FORWARD)|(BALANCE[\s]*B/F)|(Balance[\s]*B/F), balance_after_transaction:(Balance[\s]*Amount)|(Day's[\s]*Closing)|(Balance[(]IN)|(Closing)|(Running[\s]*Balance)|(Closing[\s]*Balance)|(BALANCE AMT)|(^Balance)|(BALANCE)|(Closing Balnace*)|(Available)|(Balance\(in RS.\))|(Account[\s]*Bala([n])?ce)|(Account[\s]*Balance[\s]*\(INR\))|(Total), instrument_id:(Instrument[\s]*ID), closing_balance:(Closing[\s]*Balance)|(TOTAL)|(Total), junk_date:(^TOTAL$)|(Final Tally)|(Account Total)|(Branch Total)|(Closing Balance)|(Grand Total), acceptable_date:(^(0[0-9]|1[1-2]):[0-5][0-9]:[0-5][0-9])]
+FAIL Bank parser consolidation parses an irregular date through the description-below-date layout: PowerAssertionError: assert state.bankTransactionList.size() == 1
+       |     |                   |      |
+       |     []                  0      false
+       com.bankScraper.bank.ProcessedBankStatementVO@34158c08
+FAIL Bank parser consolidation retains balance-only continuation rows in the description-above-date layout: PowerAssertionError: assert state.bankTransactionList.size() == 2
+       |     |                   |      |
+       |     |                   1      false
+       |     [com.bankScraper.bank.BankTransactionResponse@335b5620]
+       com.bankScraper.bank.ProcessedBankStatementVO@29a0cdb
+FAIL Bank parser consolidation routes heterogeneous bank layouts through the correct shared parser: PowerAssertionError: assert calls == ['andhra-regex', 'shared-above', 'shared-below']
+       |     |
+       |     false
+       [baroda-legacy-current, shared-below]
+PASS Bank parser consolidation preserves standard numeric date parsing
+PASS Bank parser consolidation preserves the dedicated Bank of Baroda saving-account route

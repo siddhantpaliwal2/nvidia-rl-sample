@@ -1,0 +1,15 @@
+{
+    "task": {
+        "path": "tasks/paigo-dimension-pricing-tiers"
+    },
+    "trial_name": "paigo-dimension-pricing-tiers__zm5SogM",
+    "trials_dir": "sample-run/enterprise-controls/eng830-oracle-daytona-r9",
+    "environment": {
+        "type": "daytona",
+        "kwargs": {
+            "snapshot_template_name": "harbor-probe-paigo-dimension-pricing-tiers-8g",
+            "assume_global_snapshot": true
+        }
+    },
+    "job_id": "d34347c1-2310-4bd8-9822-f09cb9960d80"
+}

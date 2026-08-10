@@ -1,0 +1,15 @@
+{
+    "task": {
+        "path": "tasks/paigo-top-up-billing-lifecycle"
+    },
+    "trial_name": "paigo-top-up-billing-lifecycle__ip5u36j",
+    "trials_dir": "sample-run/enterprise-controls/eng1167-oracle-daytona-r2",
+    "environment": {
+        "type": "daytona",
+        "kwargs": {
+            "snapshot_template_name": "harbor-probe-paigo-top-up-billing-lifecycle-8g",
+            "assume_global_snapshot": true
+        }
+    },
+    "job_id": "b96cd0fa-5c48-4159-8552-836d0032cc0b"
+}

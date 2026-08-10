@@ -1,0 +1,21 @@
+{
+  "instance_id": "finbit-fin360-bank-parser-consolidation",
+  "repo": "finbit-inc/fin360",
+  "base_commit": "GENERATED",
+  "patch": "GENERATED",
+  "test_patch": "GENERATED",
+  "fail_to_pass": [
+    "Bank parser consolidation normalizes compact and OCR-corrupted month dates",
+    "Bank parser consolidation recognizes opening balances and repeated transaction headers",
+    "Bank parser consolidation parses an irregular date through the description-below-date layout",
+    "Bank parser consolidation retains balance-only continuation rows in the description-above-date layout",
+    "Bank parser consolidation routes heterogeneous bank layouts through the correct shared parser"
+  ],
+  "pass_to_pass": [
+    "Bank parser consolidation preserves standard numeric date parsing",
+    "Bank parser consolidation preserves the dedicated Bank of Baroda saving-account route"
+  ],
+  "selected_test_files_to_run": [
+    "xai-tests/finbit_parser_spec.groovy"
+  ]
+}

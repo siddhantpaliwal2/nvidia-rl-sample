@@ -1,0 +1,173 @@
+FAIL src/emailinfra/emailinfra.gold.spec.ts (7.075 s)
+  ● Email inbox infrastructure contract › derives stable identity, domain, counters, and deliverability bands
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "inbox-1"
+    Received: undefined
+
+      136 |         deliverabilityScore: score,
+      137 |       });
+    > 138 |       expect(account.id).toBe('inbox-1');
+          |                          ^
+      139 |       expect(account.domain).toBe('example.com');
+      140 |       expect(account.numberOfCampaignAssociated).toBe(1);
+      141 |       expect(account.deliverability).toBe(expected);
+
+      at Object.<anonymous> (emailinfra/emailinfra.gold.spec.ts:138:26)
+
+  ● Email inbox infrastructure contract › persists the normalized email account in the dedicated collection
+
+    TypeError: account.save is not a function
+
+      154 |     });
+      155 |
+    > 156 |     await account.save(db);
+          |                   ^
+      157 |     expect(db.store).toHaveBeenCalledTimes(1);
+      158 |     const request = db.store.mock.calls[0][0];
+      159 |     expect(request.context.uniqueId).toBe('inbox-1');
+
+      at Object.<anonymous> (emailinfra/emailinfra.gold.spec.ts:156:19)
+
+  ● Email inbox infrastructure contract › requests the documented multi-factor ranking and page limit
+
+    TypeError: Cannot set property numberOfCampaignAssociated of #<EmailAccount> which has only a getter
+        at Function.assign (<anonymous>)
+
+      36 |
+      37 |   constructor(data: Partial<EmailAccount>) {
+    > 38 |     Object.assign(this, data);
+         |            ^
+      39 |     this.domain = this.email?.split('@')[1]?.toLowerCase();
+      40 |     this.tags = [...(data.tags || [])];
+      41 |     this.campaignIds = [...(data.campaignIds || [])];
+
+      at new EmailAccount (emailinfra/entities/emailinfra.entity.ts:38:12)
+      at emailinfra/emailinfra.service.ts:177:52
+          at Array.map (<anonymous>)
+      at EmailinfraService.getEmailAccountBySmartleadClientId (emailinfra/emailinfra.service.ts:177:35)
+      at EmailinfraService.getBestEmailAccountsForCampaign (emailinfra/emailinfra.service.ts:32:22)
+      at Object.<anonymous> (emailinfra/emailinfra.gold.spec.ts:288:22)
+
+  ● Email inbox infrastructure contract › sizes a campaign pool from volume, duration, and daily capacity
+
+    TypeError: Cannot set property numberOfCampaignAssociated of #<EmailAccount> which has only a getter
+        at Function.assign (<anonymous>)
+
+      36 |
+      37 |   constructor(data: Partial<EmailAccount>) {
+    > 38 |     Object.assign(this, data);
+         |            ^
+      39 |     this.domain = this.email?.split('@')[1]?.toLowerCase();
+      40 |     this.tags = [...(data.tags || [])];
+      41 |     this.campaignIds = [...(data.campaignIds || [])];
+
+      at new EmailAccount (emailinfra/entities/emailinfra.entity.ts:38:12)
+      at emailinfra/emailinfra.service.ts:177:52
+          at Array.map (<anonymous>)
+      at EmailinfraService.getEmailAccountBySmartleadClientId (emailinfra/emailinfra.service.ts:177:35)
+      at EmailinfraService.getBestEmailAccountsForCampaign (emailinfra/emailinfra.service.ts:32:22)
+      at Object.<anonymous> (emailinfra/emailinfra.gold.spec.ts:321:20)
+
+  ● Email inbox infrastructure contract › hydrates Smartlead reputation and creation time before saving
+
+    TypeError: Cannot read properties of undefined (reading 'getEmailAccountById')
+
+       95 |
+       96 |   async saveEmailAccount(emailAccount: EmailAccountDto): Promise<EmailAccount> {
+    >  97 |     const remoteAccount = await this.smartleadService.getEmailAccountById(
+          |                                                       ^
+       98 |       emailAccount.smartleadInboxId,
+       99 |     );
+      100 |     if (!remoteAccount) {
+
+      at EmailinfraService.saveEmailAccount (emailinfra/emailinfra.service.ts:97:55)
+      at Object.<anonymous> (emailinfra/emailinfra.gold.spec.ts:348:19)
+
+  ● Email inbox infrastructure contract › surfaces a missing Smartlead inbox and delegates deletion safely
+
+    expect(received).rejects.toBeInstanceOf(expected)
+
+    Expected constructor: NotFoundException
+    Received constructor: TypeError
+
+      374 |         smartleadInboxId: 'missing',
+      375 |       }),
+    > 376 |     ).rejects.toBeInstanceOf(NotFoundException);
+          |               ^
+      377 |
+      378 |     const deletionDb = memoryDatastore([
+      379 |       {
+
+      at Object.toBeInstanceOf (../node_modules/expect/build/index.js:218:22)
+      at Object.<anonymous> (emailinfra/emailinfra.gold.spec.ts:376:15)
+
+PASS src/email-reply-agent/entities/entity.spec.ts
+
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       6 failed, 6 passed, 12 total
+Snapshots:   0 total
+Time:        7.156 s
+Test results written to: ../tmp/jest-unit.json
+{
+  "tests": [
+    {
+      "name": "Email inbox infrastructure contract derives stable identity, domain, counters, and deliverability bands",
+      "status": "failed"
+    },
+    {
+      "name": "Email inbox infrastructure contract persists the normalized email account in the dedicated collection",
+      "status": "failed"
+    },
+    {
+      "name": "Email inbox infrastructure contract looks up accounts through inbox-specific datastore fields",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract rejects a lookup when no account has the requested email",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract deduplicates campaign associations and refuses partial id sets",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract skips existing campaign links and persists each new association once",
+      "status": "passed"
+    },
+    {
+      "name": "Email inbox infrastructure contract requests the documented multi-factor ranking and page limit",
+      "status": "failed"
+    },
+    {
+      "name": "Email inbox infrastructure contract sizes a campaign pool from volume, duration, and daily capacity",
+      "status": "failed"
+    },
+    {
+      "name": "Email inbox infrastructure contract hydrates Smartlead reputation and creation time before saving",
+      "status": "failed"
+    },
+    {
+      "name": "Email inbox infrastructure contract surfaces a missing Smartlead inbox and delegates deletion safely",
+      "status": "failed"
+    },
+    {
+      "name": "Entity email template  should be defined",
+      "status": "passed"
+    },
+    {
+      "name": "Entity email template  should be able to get email template by id",
+      "status": "passed"
+    }
+  ]
+}
+
+required passed: 6/12
+  NOT PASSED (failed): Email inbox infrastructure contract derives stable identity, domain, counters, and deliverability bands
+  NOT PASSED (failed): Email inbox infrastructure contract persists the normalized email account in the dedicated collection
+  NOT PASSED (failed): Email inbox infrastructure contract requests the documented multi-factor ranking and page limit
+  NOT PASSED (failed): Email inbox infrastructure contract sizes a campaign pool from volume, duration, and daily capacity
+  NOT PASSED (failed): Email inbox infrastructure contract hydrates Smartlead reputation and creation time before saving
+  NOT PASSED (failed): Email inbox infrastructure contract surfaces a missing Smartlead inbox and delegates deletion safely
+reward: 0

@@ -1,0 +1,25 @@
+{
+  "instance_id": "paigo-backend-eng411-s3-datastore-measurement",
+  "repo": "paigo-tech/paigo-backend",
+  "base_commit": "GENERATED",
+  "patch": "GENERATED",
+  "test_patch": "GENERATED",
+  "fail_to_pass": [
+    "S3 datastore measurement configuration accepts datastoreBased S3 configuration and materializes nested validation",
+    "S3 datastore measurement configuration defaults an omitted platform to S3 and region to us-east-1",
+    "S3 datastore measurement configuration persists and restores every datastore access field",
+    "S3 datastore measurement configuration provisions a scoped IAM role and returns ingestion and DLQ locations",
+    "S3 datastore measurement configuration updates account trust while preserving the existing role and external ID",
+    "S3 datastore measurement configuration creates, persists, and returns provisioned datastore configuration",
+    "S3 connector usage delivery derives the business from the object key and ingests a valid record",
+    "S3 connector usage delivery writes malformed connector records to the mirrored message key in the DLQ",
+    "S3 connector usage delivery keeps the generic DLQ writer usable for an already-relative source key"
+  ],
+  "pass_to_pass": [
+    "AppController root should return \"Hello World!\""
+  ],
+  "selected_test_files_to_run": [
+    "src/appControllerHistorical.gold.spec.ts",
+    "src/measurement-config/datastoreMeasurement.gold.spec.ts"
+  ]
+}

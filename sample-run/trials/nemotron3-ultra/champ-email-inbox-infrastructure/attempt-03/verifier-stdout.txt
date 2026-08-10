@@ -1,0 +1,22 @@
+FAIL src/emailinfra/emailinfra.gold.spec.ts
+  ● Test suite failed to run
+
+    Expected EmailAccount from emailAccount.entity or emailinfra.entity
+
+      23 |   emailAccountModule.EmailAccount ?? emailInfraModule.EmailAccount;
+      24 | if (!EmailAccount) {
+    > 25 |   throw new Error(
+         |         ^
+      26 |     'Expected EmailAccount from emailAccount.entity or emailinfra.entity',
+      27 |   );
+      28 | }
+
+      at Object.<anonymous> (emailinfra/emailinfra.gold.spec.ts:25:9)
+
+PASS src/email-reply-agent/entities/entity.spec.ts
+
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       2 passed, 2 total
+Snapshots:   0 total
+Time:        6.696 s
+Test results written to: ../tmp/jest-unit.json

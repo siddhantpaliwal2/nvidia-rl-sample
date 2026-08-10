@@ -1,0 +1,121 @@
+{
+  "id": "20b93d43-a0c5-417a-b78d-bc8ad221f48c",
+  "task_name": "paigo-s3-datastore-measurement",
+  "trial_name": "paigo-s3-datastore-measurement__DjF9Tmq",
+  "trial_uri": "file:///Users/siddhantpaliwal/Desktop/amazon-rl/xai-rl-sample/sample-run/enterprise-raw/enterprise-exact-frontier-r1-gpt56sol-paigo-s3-datastore-measurement-a04/paigo-s3-datastore-measurement__DjF9Tmq",
+  "task_id": {
+    "path": "tasks/paigo-s3-datastore-measurement"
+  },
+  "source": null,
+  "task_checksum": "c718e515c522e3958fb0598109fdf8160734116ac85b0a459b43b5b2abf81a2a",
+  "config": {
+    "task": {
+      "path": "tasks/paigo-s3-datastore-measurement",
+      "git_url": null,
+      "git_commit_id": null,
+      "name": null,
+      "ref": null,
+      "overwrite": false,
+      "download_dir": null,
+      "source": null
+    },
+    "trial_name": "paigo-s3-datastore-measurement__DjF9Tmq",
+    "trials_dir": "/Users/siddhantpaliwal/Desktop/amazon-rl/xai-rl-sample/sample-run/enterprise-raw/enterprise-exact-frontier-r1-gpt56sol-paigo-s3-datastore-measurement-a04",
+    "install_only": false,
+    "timeout_multiplier": 1.0,
+    "agent_timeout_multiplier": null,
+    "verifier_timeout_multiplier": null,
+    "agent_setup_timeout_multiplier": null,
+    "environment_build_timeout_multiplier": null,
+    "agent": {
+      "name": "harness.harbor_agents:OpenCodeNode22",
+      "import_path": null,
+      "model_name": "openrouter/openai/gpt-5.6-sol",
+      "n_concurrent": null,
+      "concurrency_group": null,
+      "skills": [],
+      "override_timeout_sec": null,
+      "override_setup_timeout_sec": null,
+      "max_timeout_sec": null,
+      "extra_allowed_hosts": [],
+      "kwargs": {
+        "version": "1.18.13",
+        "opencode_config": {
+          "permission": {
+            "task": "deny"
+          }
+        }
+      },
+      "mcp_servers": []
+    },
+    "environment": {
+      "type": "daytona",
+      "import_path": null,
+      "force_build": false,
+      "delete": true,
+      "cpu_enforcement_policy": "auto",
+      "memory_enforcement_policy": "auto",
+      "override_cpus": null,
+      "override_memory_mb": null,
+      "override_storage_mb": null,
+      "override_gpus": null,
+      "override_tpu": null,
+      "mounts": null,
+      "extra_docker_compose": [],
+      "kwargs": {
+        "snapshot_template_name": "harbor-probe-paigo-s3-datastore-measurement-8g",
+        "assume_global_snapshot": true
+      },
+      "extra_allowed_hosts": []
+    },
+    "verifier": {
+      "override_timeout_sec": null,
+      "max_timeout_sec": null,
+      "disable": false
+    },
+    "artifacts": [],
+    "extra_instruction_paths": [],
+    "job_id": "d93fb10f-289a-42d5-9bd1-86fa3d0e6a11"
+  },
+  "agent_info": {
+    "name": "opencode",
+    "version": "1.18.13",
+    "model_info": {
+      "name": "openai/gpt-5.6-sol",
+      "provider": "openrouter"
+    }
+  },
+  "agent_result": {
+    "n_input_tokens": 1559056,
+    "n_cache_tokens": 1558957,
+    "n_output_tokens": 12791,
+    "cost_usd": 1.7652485000000002,
+    "rollout_details": null,
+    "metadata": null
+  },
+  "verifier_result": {
+    "rewards": {
+      "reward": 0.0
+    }
+  },
+  "exception_info": null,
+  "started_at": "2026-08-08T09:23:26.458910Z",
+  "finished_at": "2026-08-08T10:58:11.274175Z",
+  "environment_setup": {
+    "started_at": "2026-08-08T09:23:26.481919Z",
+    "finished_at": "2026-08-08T09:23:28.044170Z"
+  },
+  "agent_setup": {
+    "started_at": "2026-08-08T09:23:28.044259Z",
+    "finished_at": "2026-08-08T09:23:49.799063Z"
+  },
+  "agent_execution": {
+    "started_at": "2026-08-08T09:23:49.799228Z",
+    "finished_at": "2026-08-08T10:25:55.788013Z"
+  },
+  "verifier": {
+    "started_at": "2026-08-08T10:42:36.797509Z",
+    "finished_at": "2026-08-08T10:58:10.763308Z"
+  },
+  "step_results": null
+}

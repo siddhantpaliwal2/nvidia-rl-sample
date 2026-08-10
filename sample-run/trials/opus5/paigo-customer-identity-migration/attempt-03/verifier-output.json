@@ -1,0 +1,40 @@
+{
+  "tests": [
+    {
+      "name": "Customer identity migration persists and restores the offering attached to a customer",
+      "status": "passed"
+    },
+    {
+      "name": "Customer identity migration writes and reads standard measurements with customerId as the ownership tag",
+      "status": "passed"
+    },
+    {
+      "name": "Customer identity migration maps infrastructure labels to customer-owned measurements",
+      "status": "passed"
+    },
+    {
+      "name": "Customer identity migration queries usage through the customer offering and preserves time and interval overrides",
+      "status": "passed"
+    },
+    {
+      "name": "Customer identity migration returns customer reads with invoices and the hydrated offering",
+      "status": "passed"
+    },
+    {
+      "name": "Customer identity migration exposes customer usage and forwards business, customer, and query parameters",
+      "status": "passed"
+    },
+    {
+      "name": "Customer identity migration prevents deleting an offering while customers still reference it",
+      "status": "passed"
+    },
+    {
+      "name": "Customer identity migration wraps customer usage results without changing their records",
+      "status": "passed"
+    },
+    {
+      "name": "MeasurementConfigController should be defined",
+      "status": "passed"
+    }
+  ]
+}

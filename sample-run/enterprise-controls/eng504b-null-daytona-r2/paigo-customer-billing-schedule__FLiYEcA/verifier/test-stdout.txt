@@ -1,0 +1,202 @@
+ts-jest[backports] (WARN) "[jest-config].globals.ts-jest.tsConfig" is deprecated, use "[jest-config].globals.ts-jest.tsconfig" instead.
+ts-jest[backports] (WARN) Your Jest configuration is outdated. Use the CLI to help migrating it: ts-jest config:migrate <config-file>.
+FAIL src/billing/customerBillingScheduleMigration.gold.spec.ts
+  ● Customer billing schedule migration › creates a monthly billing schedule only when a new customer has an offering
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: {"businessID": "business-1", "rate": "0 4 1 * *", "scheduleParameters": {"businessID": "business-1", "customerId": "9a520a1e-8335-4f54-8d1a-0084afeece7a"}, "schedulerID": "9a520a1e-8335-4f54-8d1a-0084afeece7a", "schedulerStatus": "live", "schedulerType": "billing", "subject": "subject-1"}
+
+      53 |             'subject-1',
+      54 |         );
+    > 55 |         expect(scheduler.create).not.toHaveBeenCalled();
+         |                                      ^
+      56 |     });
+      57 |
+      58 |     it('replaces the billing schedule when an enrolled customer changes offering', async () => {
+
+      at Object.<anonymous> (billing/customerBillingScheduleMigration.gold.spec.ts:55:38)
+
+  ● Customer billing schedule migration › replaces the billing schedule when an enrolled customer changes offering
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: {"businessID": "business-1", "isBillingQueue": true, "schedulerID": "customer-1"}
+
+    Number of calls: 0
+
+      74 |             'subject-1',
+      75 |         );
+    > 76 |         expect(scheduler.remove).toHaveBeenCalledWith({
+         |                                  ^
+      77 |             schedulerID: 'customer-1',
+      78 |             businessID: 'business-1',
+      79 |             isBillingQueue: true,
+
+      at Object.<anonymous> (billing/customerBillingScheduleMigration.gold.spec.ts:76:34)
+
+  ● Customer billing schedule migration › continues an offering update when the previous billing schedule is already absent
+
+    expect(jest.fn()).toHaveBeenCalledTimes(expected)
+
+    Expected number of calls: 1
+    Received number of calls: 0
+
+      109 |             ),
+      110 |         ).resolves.toEqual(expect.objectContaining({ customerId: 'customer-1' }));
+    > 111 |         expect(scheduler.create).toHaveBeenCalledTimes(1);
+          |                                  ^
+      112 |     });
+      113 |
+      114 |     it('builds an invoice from customer usage and records its billed time range', async () => {
+
+      at Object.<anonymous> (billing/customerBillingScheduleMigration.gold.spec.ts:111:34)
+
+  ● Customer billing schedule migration › builds an invoice from customer usage and records its billed time range
+
+    TypeError: this.servicesService.findAllServicesWithCustomerId is not a function
+
+      23 |         // 1. Called via the scheduler contains a customerId, and BusinessID, gets set when a customer is created
+      24 |         // 2, Get all services for the customer
+    > 25 |         const { data } = await this.servicesService.findAllServicesWithCustomerId({ customerId, businessID });
+         |                                                     ^
+      26 |         if (data.length) {
+      27 |             const lineItems = await Billing.generateLineItemsFromServices({
+      28 |                 data,
+
+      at BillingService.create (billing/billing.service.ts:25:53)
+      at Object.<anonymous> (billing/customerBillingScheduleMigration.gold.spec.ts:129:23)
+
+  ● Customer billing schedule migration › routes billing scheduler emissions exclusively to the billing queue
+
+    expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+    Expected: "billingReport", ObjectContaining {"businessID": "business-1", "scheduleParameters": {"customerId": "customer-1"}, "schedulerID": "customer-1"}
+
+    Number of calls: 0
+
+      160 |             },
+      161 |         } as any);
+    > 162 |         expect(billingQueue.add).toHaveBeenCalledWith(
+          |                                  ^
+      163 |             billingScheduleConsumers.billingReport,
+      164 |             expect.objectContaining({
+      165 |                 schedulerID: 'customer-1',
+
+      at Object.<anonymous> (billing/customerBillingScheduleMigration.gold.spec.ts:162:34)
+
+  ● Customer billing schedule migration › returns no usage rather than failing when a customer has no offering
+
+    expect(received).resolves.toEqual()
+
+    Received promise rejected instead of resolved
+    Rejected to value: [ConflictException: No offering found for customer cannot get usage]
+
+      199 |             {} as any,
+      200 |         );
+    > 201 |         await expect(
+          |               ^
+      202 |             service.findUsageForCustomer({ customerId: 'customer-1', businessID: 'business-1' }, {} as any),
+      203 |         ).resolves.toEqual([]);
+      204 |     });
+
+      at expect (../node_modules/@jest/expect/node_modules/expect/build/index.js:128:15)
+      at Object.<anonymous> (billing/customerBillingScheduleMigration.gold.spec.ts:201:15)
+
+[32m[Nest] 269  - [39m08/08/2026, 5:28:07 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mCustomer DTO[39m
+[32m[Nest] 269  - [39m08/08/2026, 5:28:07 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mObject:[39m
+{
+  "businessID": "business-1",
+  "customerName": "Acme",
+  "paymentChannel": "manual",
+  "offeringId": "offering-1"
+}
+
+[32m[Nest] 269  - [39m08/08/2026, 5:28:07 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mPoints[39m
+[32m[Nest] 269  - [39m08/08/2026, 5:28:07 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mObject:[39m
+[
+  {}
+]
+
+[32m[Nest] 269  - [39m08/08/2026, 5:28:07 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mCustomer DTO[39m
+[32m[Nest] 269  - [39m08/08/2026, 5:28:07 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mObject:[39m
+{
+  "businessID": "business-1",
+  "customerName": "No plan",
+  "paymentChannel": "manual"
+}
+
+[32m[Nest] 269  - [39m08/08/2026, 5:28:07 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mPoints[39m
+[32m[Nest] 269  - [39m08/08/2026, 5:28:07 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mObject:[39m
+[
+  {}
+]
+
+[32m[Nest] 269  - [39m08/08/2026, 5:28:07 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mAttempting to update saasClientID: customer-1 for business-1[39m
+[32m[Nest] 269  - [39m08/08/2026, 5:28:07 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mPoints[39m
+[32m[Nest] 269  - [39m08/08/2026, 5:28:07 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mObject:[39m
+[
+  {}
+]
+
+[32m[Nest] 269  - [39m08/08/2026, 5:28:07 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mAttempting to update saasClientID: customer-1 for business-1[39m
+[32m[Nest] 269  - [39m08/08/2026, 5:28:07 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mPoints[39m
+[32m[Nest] 269  - [39m08/08/2026, 5:28:07 AM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mObject:[39m
+[
+  {}
+]
+
+Test Suites: 1 failed, 1 total
+Tests:       6 failed, 2 passed, 8 total
+Snapshots:   0 total
+Time:        2.344 s
+Test results written to: ../tmp/jest-unit.json
+Force exiting Jest: Have you considered using `--detectOpenHandles` to detect async operations that kept running after all tests finished?
+{
+  "tests": [
+    {
+      "name": "Customer billing schedule migration keeps BillingService constructible across the dependency migration",
+      "status": "passed"
+    },
+    {
+      "name": "Customer billing schedule migration creates a monthly billing schedule only when a new customer has an offering",
+      "status": "failed"
+    },
+    {
+      "name": "Customer billing schedule migration replaces the billing schedule when an enrolled customer changes offering",
+      "status": "failed"
+    },
+    {
+      "name": "Customer billing schedule migration continues an offering update when the previous billing schedule is already absent",
+      "status": "failed"
+    },
+    {
+      "name": "Customer billing schedule migration builds an invoice from customer usage and records its billed time range",
+      "status": "failed"
+    },
+    {
+      "name": "Customer billing schedule migration routes billing scheduler emissions exclusively to the billing queue",
+      "status": "failed"
+    },
+    {
+      "name": "Customer billing schedule migration keeps non-billing scheduler emissions on the data queue",
+      "status": "passed"
+    },
+    {
+      "name": "Customer billing schedule migration returns no usage rather than failing when a customer has no offering",
+      "status": "failed"
+    }
+  ]
+}
+
+required passed: 2/8
+  NOT PASSED (failed): Customer billing schedule migration creates a monthly billing schedule only when a new customer has an offering
+  NOT PASSED (failed): Customer billing schedule migration replaces the billing schedule when an enrolled customer changes offering
+  NOT PASSED (failed): Customer billing schedule migration continues an offering update when the previous billing schedule is already absent
+  NOT PASSED (failed): Customer billing schedule migration builds an invoice from customer usage and records its billed time range
+  NOT PASSED (failed): Customer billing schedule migration routes billing scheduler emissions exclusively to the billing queue
+  NOT PASSED (failed): Customer billing schedule migration returns no usage rather than failing when a customer has no offering
+reward: 0

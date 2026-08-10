@@ -1,0 +1,230 @@
+ts-jest[ts-jest-transformer] (WARN) Define `ts-jest` config under `globals` is deprecated. Please do
+transform: {
+    <transform_regex>: ['ts-jest', { /* ts-jest config goes here in Jest */ }],
+},
+ts-jest[backports] (WARN) "[jest-config].globals.ts-jest.tsConfig" is deprecated, use "[jest-config].globals.ts-jest.tsconfig" instead.
+ts-jest[backports] (WARN) Your Jest configuration is outdated. Use the CLI to help migrating it: ts-jest config:migrate <config-file>.
+PASS src/offering/entities/offeringPackageHistorical.gold.spec.ts
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency EUR[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency EUR[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[Offering] [39m[95mEnrolling customer fakeCustomerID in foobar. FreeTrialEndDate: 2023-08-17T23:59:59.999Z[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[Offering] [39m[95mEnrolling customer fakeCustomerID in foobar. FreeTrialEndDate: undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32msubscription start: 2023-08-01T00:00:00.000Z,  subscription end: 2023-08-31T23:59:59.999Z. No free trial[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32msubscription end: 2023-08-31T23:59:59.999Z, start date: Tue Aug 15 2023 08:42:11 GMT+0000 (Coordinated Universal Time) in processing free trial end date[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating free trial end invoice for foobar for fakeCustomerID, lineItems: [{"name":"foobar","quantity":1,"unitCost":53.67,"description":"Subscription"}][39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[Offering] [39m[95mEnrolling customer fakeCustomerID in foobar. FreeTrialEndDate: undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32msubscription start: 2023-08-01T00:00:00.000Z,  subscription end: 2023-08-31T23:59:59.999Z. No free trial[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32msubscription start: 2023-08-01T00:00:00.000Z,  subscription end: 2023-08-31T23:59:59.999Z. No free trial[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[Offering] [39m[95mEnrolling customer fakeCustomerID in foobar. FreeTrialEndDate: 2023-09-15T23:59:59.999Z[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[Offering] [39m[95mEnrolling customer fakeCustomerID in foobar. FreeTrialEndDate: undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32msubscription start: 2023-08-01T00:00:00.000Z,  subscription end: 2023-08-31T23:59:59.999Z. No free trial[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[Offering] [39m[95mEnrolling customer fakeCustomerID in foobar. FreeTrialEndDate: 2023-09-15T23:59:59.999Z[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32msubscription start: 2023-08-01T00:00:00.000Z,  subscription end: 2023-08-31T23:59:59.999Z. No free trial[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mFree trial is in the current billing cycle: 2023-08-25T00:00:00.000Z, 2023-08-31T23:59:59.999Z[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mfree trial end date: 2023-11-24T23:59:59.999Z,  subscription end: 2023-08-31T23:59:59.999Z. Usage is negated for the whole subscription period[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32msubscription start: 2023-08-01T00:00:00.000Z,  subscription end: 2023-08-31T23:59:59.999Z. No free trial[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[Offering] [39m[95mEnrolling customer fakeCustomerID in foobar. FreeTrialEndDate: undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32msubscription start: 2023-08-01T00:00:00.000Z,  subscription end: 2023-08-31T23:59:59.999Z. No free trial[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-07-01T00:00:00.000Z to 2023-07-31T23:59:59.999Z, with free trial end date undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [][39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-07-01T00:00:00.000Z to 2023-07-31T23:59:59.999Z, with free trial end date undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [{"name":"fake - foobar","quantity":1000,"unitCost":2}][39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-07-01T00:00:00.000Z to 2023-07-31T23:59:59.999Z, with free trial end date undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [{"name":"fake - foobar","quantity":10000,"unitCost":2}][39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: undefined[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mRunning Unenrollment for Customer: fakeCustomerID, isChangeOfPlan: undefined, currentBillingCycleStartTime: 2023-08-01T00:00:00.000Z, settingsInvoiceGeneration: undefined[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mBooleanCheck: undefined[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mSetting queueInvoice to undefined[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mSetting consolidatedInvoice to undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-08-01T00:00:00.000Z to 2023-08-16T23:59:59.999Z, with free trial end date undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [{"name":"fake - foobar","quantity":1,"unitCost":2}][39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-07-01T00:00:00.000Z to 2023-07-31T23:59:59.999Z, with free trial end date undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [{"name":"fake - foobar","quantity":1,"unitCost":2}][39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-07-01T00:00:00.000Z to 2023-07-31T23:59:59.999Z, with free trial end date undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [{"name":"fake - foobar","quantity":10000,"unitCost":2},{"name":"fake - foobar","quantity":2,"unitCost":1}][39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-07-01T00:00:00.000Z to 2023-07-31T23:59:59.999Z, with free trial end date 2023-08-17T23:59:59.999Z[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [{"name":"fake - foobar - Free Trial Credit","quantity":-10,"unitCost":2},{"name":"fake - foobar","quantity":10,"unitCost":2}][39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: undefined[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mRunning Unenrollment for Customer: fakeCustomerID, isChangeOfPlan: undefined, currentBillingCycleStartTime: 2023-08-01T00:00:00.000Z, settingsInvoiceGeneration: undefined[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mBooleanCheck: undefined[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mSetting queueInvoice to undefined[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mSetting consolidatedInvoice to undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-08-01T00:00:00.000Z to 2023-08-16T23:59:59.999Z, with free trial end date undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [{"name":"fake - foobar","quantity":1,"unitCost":2}][39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-07-01T00:00:00.000Z to 2023-07-31T23:59:59.999Z, with free trial end date 2023-07-09T02:50:15.755Z[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [][39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: undefined[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mRunning Unenrollment for Customer: fakeCustomerID, isChangeOfPlan: undefined, currentBillingCycleStartTime: 2023-08-01T00:00:00.000Z, settingsInvoiceGeneration: undefined[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mBooleanCheck: undefined[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mSetting queueInvoice to undefined[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mSetting consolidatedInvoice to undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-08-01T00:00:00.000Z to 2023-08-16T23:59:59.999Z, with free trial end date undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [][39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mRunning Unenrollment for Customer: fakeCustomerID, isChangeOfPlan: undefined, currentBillingCycleStartTime: 2023-08-01T00:00:00.000Z, settingsInvoiceGeneration: undefined[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mBooleanCheck: undefined[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mSetting queueInvoice to undefined[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mSetting consolidatedInvoice to undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-08-01T00:00:00.000Z to 2023-08-16T23:59:59.999Z, with free trial end date undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [][39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mRunning Unenrollment for Customer: fakeCustomerID, isChangeOfPlan: true, currentBillingCycleStartTime: 2023-08-01T00:00:00.000Z, settingsInvoiceGeneration: consolidatedPerBillingCycle[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mBooleanCheck: true[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mSetting queueInvoice to true[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mSetting consolidatedInvoice to undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-08-01T00:00:00.000Z to 2023-08-16T23:59:59.999Z, with free trial end date undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [][39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer fakeCustomerID, offering foobar, customer currency USD[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: true, Consolidate Invoice: undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mAttempting to delete schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mFinding schedulerID: fakeCustomerID#free-trial for fakeBusinessID[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-07-01T00:00:00.000Z to 2023-07-31T23:59:59.999Z, with free trial end date undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [][39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: true[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-07-01T00:00:00.000Z to 2023-07-31T23:59:59.999Z, with free trial end date undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [{"name":"fake - foobar","quantity":100,"unitCost":5.5}][39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mProcessing billing for foobar from 2023-07-01T00:00:00.000Z to 2023-07-31T23:59:59.999Z, with free trial end date undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[UsageBased] [39m[32mCreating invoice for foobar for fakeCustomerID, lineItems: [{"name":"fake - foobar","quantity":2,"unitCost":1}][39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[32m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [32m    LOG[39m [38;5;3m[Offering] [39m[32mGetting currency for customer undefined, offering foobar, customer currency undefined[39m
+[95m[Nest] 5263  - [39m08/16/2023, 12:00:00 AM [95m  DEBUG[39m [38;5;3m[UsageBased] [39m[95mFinished Invoice Input, processing with the following parameters: QueueInvoice: undefined, Consolidate Invoice: true[39m
+PASS src/dimensions/dto/dimensionTiers.gold.spec.ts
+
+Test Suites: 2 passed, 2 total
+Tests:       89 passed, 89 total
+Snapshots:   0 total
+Time:        2.625 s
+Test results written to: ../tmp/jest-unit.json

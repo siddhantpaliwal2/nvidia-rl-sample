@@ -1,0 +1,27 @@
+{
+  "instance_id": "champ-state-machine-champ2197-email-inbox-infrastructure",
+  "repo": "10x-sales/state-machine",
+  "base_commit": "GENERATED",
+  "patch": "GENERATED",
+  "test_patch": "GENERATED",
+  "fail_to_pass": [
+    "Email inbox infrastructure contract derives stable identity, domain, counters, and deliverability bands",
+    "Email inbox infrastructure contract persists the normalized email account in the dedicated collection",
+    "Email inbox infrastructure contract looks up accounts through inbox-specific datastore fields",
+    "Email inbox infrastructure contract rejects a lookup when no account has the requested email",
+    "Email inbox infrastructure contract deduplicates campaign associations and refuses partial id sets",
+    "Email inbox infrastructure contract skips existing campaign links and persists each new association once",
+    "Email inbox infrastructure contract requests the documented multi-factor ranking and page limit",
+    "Email inbox infrastructure contract sizes a campaign pool from volume, duration, and daily capacity",
+    "Email inbox infrastructure contract hydrates Smartlead reputation and creation time before saving",
+    "Email inbox infrastructure contract surfaces a missing Smartlead inbox and delegates deletion safely"
+  ],
+  "pass_to_pass": [
+    "Entity email template  should be defined",
+    "Entity email template  should be able to get email template by id"
+  ],
+  "selected_test_files_to_run": [
+    "src/emailinfra/emailinfra.gold.spec.ts",
+    "src/email-reply-agent/entities/entity.spec.ts"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "tests": [
+    {
+      "name": "Google storage migration adds GOOGLE target and defaults new documents to it",
+      "status": "passed"
+    },
+    {
+      "name": "Google storage migration uploads bytes through the configured storage client",
+      "status": "failed"
+    },
+    {
+      "name": "Google storage migration downloads bytes through the configured storage client",
+      "status": "failed"
+    },
+    {
+      "name": "Google storage migration routes persisted GOOGLE documents to cloud storage",
+      "status": "failed"
+    },
+    {
+      "name": "Google storage migration leaves blank cloud paths inert",
+      "status": "failed"
+    },
+    {
+      "name": "Google storage migration preserves local file download precedence",
+      "status": "passed"
+    },
+    {
+      "name": "Google storage migration preserves Azure target routing",
+      "status": "passed"
+    }
+  ]
+}

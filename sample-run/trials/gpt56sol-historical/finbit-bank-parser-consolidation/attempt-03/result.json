@@ -1,0 +1,121 @@
+{
+  "id": "08742d8c-5162-4204-8f28-b84fcdc19727",
+  "task_name": "finbit-bank-parser-consolidation",
+  "trial_name": "finbit-bank-parser-consolidation__3uMTYtR",
+  "trial_uri": "file:///Users/siddhantpaliwal/Desktop/amazon-rl/xai-rl-sample/sample-run/enterprise-raw/enterprise-exact-frontier-r1-gpt56sol-finbit-bank-parser-consolidation-a03/finbit-bank-parser-consolidation__3uMTYtR",
+  "task_id": {
+    "path": "tasks/finbit-bank-parser-consolidation"
+  },
+  "source": null,
+  "task_checksum": "fc4a38c9f982ea1d371d79eba5212436a24b4c59ef5b79ba9329caa9f1fa41a7",
+  "config": {
+    "task": {
+      "path": "tasks/finbit-bank-parser-consolidation",
+      "git_url": null,
+      "git_commit_id": null,
+      "name": null,
+      "ref": null,
+      "overwrite": false,
+      "download_dir": null,
+      "source": null
+    },
+    "trial_name": "finbit-bank-parser-consolidation__3uMTYtR",
+    "trials_dir": "/Users/siddhantpaliwal/Desktop/amazon-rl/xai-rl-sample/sample-run/enterprise-raw/enterprise-exact-frontier-r1-gpt56sol-finbit-bank-parser-consolidation-a03",
+    "install_only": false,
+    "timeout_multiplier": 1.0,
+    "agent_timeout_multiplier": null,
+    "verifier_timeout_multiplier": null,
+    "agent_setup_timeout_multiplier": null,
+    "environment_build_timeout_multiplier": null,
+    "agent": {
+      "name": "harness.harbor_agents:OpenCodeNode22",
+      "import_path": null,
+      "model_name": "openrouter/openai/gpt-5.6-sol",
+      "n_concurrent": null,
+      "concurrency_group": null,
+      "skills": [],
+      "override_timeout_sec": null,
+      "override_setup_timeout_sec": null,
+      "max_timeout_sec": null,
+      "extra_allowed_hosts": [],
+      "kwargs": {
+        "version": "1.18.13",
+        "opencode_config": {
+          "permission": {
+            "task": "deny"
+          }
+        }
+      },
+      "mcp_servers": []
+    },
+    "environment": {
+      "type": "daytona",
+      "import_path": null,
+      "force_build": false,
+      "delete": true,
+      "cpu_enforcement_policy": "auto",
+      "memory_enforcement_policy": "auto",
+      "override_cpus": null,
+      "override_memory_mb": null,
+      "override_storage_mb": null,
+      "override_gpus": null,
+      "override_tpu": null,
+      "mounts": null,
+      "extra_docker_compose": [],
+      "kwargs": {
+        "snapshot_template_name": "harbor-probe-finbit-bank-parser-consolidation-8g",
+        "assume_global_snapshot": true
+      },
+      "extra_allowed_hosts": []
+    },
+    "verifier": {
+      "override_timeout_sec": null,
+      "max_timeout_sec": null,
+      "disable": false
+    },
+    "artifacts": [],
+    "extra_instruction_paths": [],
+    "job_id": "97aaa4d7-baa1-4031-9f62-7f93b9bc201e"
+  },
+  "agent_info": {
+    "name": "opencode",
+    "version": "1.18.13",
+    "model_info": {
+      "name": "openai/gpt-5.6-sol",
+      "provider": "openrouter"
+    }
+  },
+  "agent_result": {
+    "n_input_tokens": 4548578,
+    "n_cache_tokens": 4548452,
+    "n_output_tokens": 17758,
+    "cost_usd": 4.106238499999998,
+    "rollout_details": null,
+    "metadata": null
+  },
+  "verifier_result": {
+    "rewards": {
+      "reward": 0.0
+    }
+  },
+  "exception_info": null,
+  "started_at": "2026-08-08T09:20:00.749938Z",
+  "finished_at": "2026-08-08T09:28:39.546082Z",
+  "environment_setup": {
+    "started_at": "2026-08-08T09:20:00.768944Z",
+    "finished_at": "2026-08-08T09:20:02.521771Z"
+  },
+  "agent_setup": {
+    "started_at": "2026-08-08T09:20:02.521875Z",
+    "finished_at": "2026-08-08T09:20:22.775496Z"
+  },
+  "agent_execution": {
+    "started_at": "2026-08-08T09:20:22.775890Z",
+    "finished_at": "2026-08-08T09:28:22.709921Z"
+  },
+  "verifier": {
+    "started_at": "2026-08-08T09:28:27.940119Z",
+    "finished_at": "2026-08-08T09:28:39.349220Z"
+  },
+  "step_results": null
+}

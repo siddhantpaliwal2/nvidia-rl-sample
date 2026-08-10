@@ -1,0 +1,102 @@
+ts-jest[backports] (WARN) "[jest-config].globals.ts-jest.tsConfig" is deprecated, use "[jest-config].globals.ts-jest.tsconfig" instead.
+ts-jest[backports] (WARN) Your Jest configuration is outdated. Use the CLI to help migrating it: ts-jest config:migrate <config-file>.
+PASS src/billing/customerBillingScheduleMigration.gold.spec.ts
+[32m[Nest] 4515  - [39m08/10/2026, 6:09:58 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mCustomer DTO[39m
+[32m[Nest] 4515  - [39m08/10/2026, 6:09:58 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mObject:[39m
+{
+  "businessID": "business-1",
+  "customerName": "Acme",
+  "paymentChannel": "manual",
+  "offeringId": "offering-1"
+}
+
+[32m[Nest] 4515  - [39m08/10/2026, 6:09:58 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mPoints[39m
+[32m[Nest] 4515  - [39m08/10/2026, 6:09:58 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mObject:[39m
+[
+  {}
+]
+
+[32m[Nest] 4515  - [39m08/10/2026, 6:09:58 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mCreating a billing schedule for customer: c70ec697-f150-439f-8820-312b57212855[39m
+[32m[Nest] 4515  - [39m08/10/2026, 6:09:58 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mCustomer DTO[39m
+[32m[Nest] 4515  - [39m08/10/2026, 6:09:58 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mObject:[39m
+{
+  "businessID": "business-1",
+  "customerName": "No plan",
+  "paymentChannel": "manual"
+}
+
+[32m[Nest] 4515  - [39m08/10/2026, 6:09:58 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mPoints[39m
+[32m[Nest] 4515  - [39m08/10/2026, 6:09:58 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mObject:[39m
+[
+  {}
+]
+
+[32m[Nest] 4515  - [39m08/10/2026, 6:09:58 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mNo offering attached to customer: 4a910204-cd68-44d3-a983-0f0f4e149167, skipping billing schedule creation[39m
+[32m[Nest] 4515  - [39m08/10/2026, 6:09:58 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mAttempting to update saasClientID: customer-1 for business-1[39m
+[32m[Nest] 4515  - [39m08/10/2026, 6:09:58 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mPoints[39m
+[32m[Nest] 4515  - [39m08/10/2026, 6:09:58 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mObject:[39m
+[
+  {}
+]
+
+[32m[Nest] 4515  - [39m08/10/2026, 6:09:58 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mOffering for customer customer-1 changed from offering-old to offering-new, replacing the billing schedule[39m
+[32m[Nest] 4515  - [39m08/10/2026, 6:09:58 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mCreating a billing schedule for customer: customer-1[39m
+[32m[Nest] 4515  - [39m08/10/2026, 6:09:58 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mAttempting to update saasClientID: customer-1 for business-1[39m
+[32m[Nest] 4515  - [39m08/10/2026, 6:09:58 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mPoints[39m
+[32m[Nest] 4515  - [39m08/10/2026, 6:09:58 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mObject:[39m
+[
+  {}
+]
+
+[32m[Nest] 4515  - [39m08/10/2026, 6:09:58 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mOffering for customer customer-1 changed from offering-old to offering-new, replacing the billing schedule[39m
+[32m[Nest] 4515  - [39m08/10/2026, 6:09:58 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mScheduler for customer customer-1 not found[39m
+[32m[Nest] 4515  - [39m08/10/2026, 6:09:58 PM [32m    LOG[39m [38;5;3m[CustomerService] [39m[32mCreating a billing schedule for customer: customer-1[39m
+[32m[Nest] 4515  - [39m08/10/2026, 6:09:58 PM [32m    LOG[39m [38;5;3m[BillingService] [39m[32mGenerating an invoice for customer: customer-1 in business: business-1 between 2023-02-01T00:00:00.000Z and 2023-02-28T00:00:00.000Z[39m
+[32m[Nest] 4515  - [39m08/10/2026, 6:09:58 PM [32m    LOG[39m [38;5;3m[SchedulerService] [39m[32mEmitting a billing job onto the billing queue[39m
+[32m[Nest] 4515  - [39m08/10/2026, 6:09:58 PM [32m    LOG[39m [38;5;3m[UsageService] [39m[32mNo offering found for customer: customer-1 in business: business-1, returning no usage[39m
+
+Test Suites: 1 passed, 1 total
+Tests:       8 passed, 8 total
+Snapshots:   0 total
+Time:        1.605 s
+Test results written to: ../tmp/jest-unit.json
+Force exiting Jest: Have you considered using `--detectOpenHandles` to detect async operations that kept running after all tests finished?
+{
+  "tests": [
+    {
+      "name": "Customer billing schedule migration keeps BillingService constructible across the dependency migration",
+      "status": "passed"
+    },
+    {
+      "name": "Customer billing schedule migration creates a monthly billing schedule only when a new customer has an offering",
+      "status": "passed"
+    },
+    {
+      "name": "Customer billing schedule migration replaces the billing schedule when an enrolled customer changes offering",
+      "status": "passed"
+    },
+    {
+      "name": "Customer billing schedule migration continues an offering update when the previous billing schedule is already absent",
+      "status": "passed"
+    },
+    {
+      "name": "Customer billing schedule migration builds an invoice from customer usage and records its billed time range",
+      "status": "passed"
+    },
+    {
+      "name": "Customer billing schedule migration routes billing scheduler emissions exclusively to the billing queue",
+      "status": "passed"
+    },
+    {
+      "name": "Customer billing schedule migration keeps non-billing scheduler emissions on the data queue",
+      "status": "passed"
+    },
+    {
+      "name": "Customer billing schedule migration returns no usage rather than failing when a customer has no offering",
+      "status": "passed"
+    }
+  ]
+}
+
+required passed: 8/8
+reward: 1

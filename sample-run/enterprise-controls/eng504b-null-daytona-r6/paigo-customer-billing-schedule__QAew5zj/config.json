@@ -1,0 +1,18 @@
+{
+    "task": {
+        "path": "tasks/paigo-customer-billing-schedule-migration"
+    },
+    "trial_name": "paigo-customer-billing-schedule__QAew5zj",
+    "trials_dir": "sample-run/enterprise-controls/eng504b-null-daytona-r6",
+    "agent": {
+        "name": "nop"
+    },
+    "environment": {
+        "type": "daytona",
+        "kwargs": {
+            "snapshot_template_name": "harbor-probe-paigo-customer-billing-schedule-migration-8g",
+            "assume_global_snapshot": true
+        }
+    },
+    "job_id": "0a562e4f-e997-4d3a-8dc6-027837ff9ff2"
+}

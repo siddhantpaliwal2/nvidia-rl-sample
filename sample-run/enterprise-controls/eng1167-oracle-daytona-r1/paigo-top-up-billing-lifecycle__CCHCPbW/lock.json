@@ -1,0 +1,35 @@
+{
+    "schema_version": 1,
+    "task": {
+        "name": "paigo-top-up-billing-lifecycle",
+        "type": "local",
+        "digest": "sha256:6a0b3f404351493cf39a5de142d0a52b34a9ac60261795861662dafccdbbc297",
+        "path": "tasks/paigo-top-up-billing-lifecycle"
+    },
+    "install_only": false,
+    "timeout_multiplier": 1.0,
+    "agent": {
+        "name": "oracle",
+        "skills": [],
+        "extra_allowed_hosts": [],
+        "kwargs": {},
+        "mcp_servers": []
+    },
+    "skills": [],
+    "environment": {
+        "type": "daytona",
+        "force_build": false,
+        "delete": true,
+        "cpu_enforcement_policy": "auto",
+        "memory_enforcement_policy": "auto",
+        "extra_docker_compose": [],
+        "kwargs": {
+            "snapshot_template_name": "harbor-probe-paigo-top-up-billing-lifecycle-8g",
+            "assume_global_snapshot": true
+        },
+        "extra_allowed_hosts": []
+    },
+    "verifier": {
+        "disable": false
+    }
+}

@@ -1,0 +1,24 @@
+{
+  "instance_id": "paigo-backend-eng504-customer-identity-migration",
+  "repo": "paigo-tech/paigo-backend",
+  "base_commit": "GENERATED",
+  "patch": "GENERATED",
+  "test_patch": "GENERATED",
+  "fail_to_pass": [
+    "Customer identity migration persists and restores the offering attached to a customer",
+    "Customer identity migration writes and reads standard measurements with customerId as the ownership tag",
+    "Customer identity migration maps infrastructure labels to customer-owned measurements",
+    "Customer identity migration queries usage through the customer offering and preserves time and interval overrides",
+    "Customer identity migration returns customer reads with invoices and the hydrated offering",
+    "Customer identity migration exposes customer usage and forwards business, customer, and query parameters",
+    "Customer identity migration prevents deleting an offering while customers still reference it",
+    "Customer identity migration wraps customer usage results without changing their records"
+  ],
+  "pass_to_pass": [
+    "MeasurementConfigController should be defined"
+  ],
+  "selected_test_files_to_run": [
+    "src/measurement-config/measurementConfigControllerHistorical.gold.spec.ts",
+    "src/customer/customerIdentityMigration.gold.spec.ts"
+  ]
+}

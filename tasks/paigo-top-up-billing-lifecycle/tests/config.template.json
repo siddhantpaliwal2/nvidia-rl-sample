@@ -1,0 +1,26 @@
+{
+  "instance_id": "paigo-backend-eng1167-top-up-billing-lifecycle",
+  "repo": "paigo-tech/paigo-backend",
+  "base_commit": "GENERATED",
+  "patch": "GENERATED",
+  "test_patch": "GENERATED",
+  "fail_to_pass": [
+    "Top-up offering contract accepts topUp for usage-based offerings and rejects it for subscriptions",
+    "Top-up offering contract rejects top-up fields on a non-top-up billing cycle",
+    "Top-up offering contract defaults the threshold and round-trips top-up fields through persistence",
+    "Top-up offering contract creates one hourly offering-level scheduler with a stable id",
+    "Top-up offering contract does not top up a wallet at or above its threshold",
+    "Top-up offering contract charges only the gap to the configured balance and stores payment as credit",
+    "Hourly top-up usage processing deducts the full hourly usage from wallet credit without issuing a usage invoice",
+    "Hourly top-up usage processing records usage beyond the current balance before evaluating the refill",
+    "Hourly top-up usage processing does no wallet mutation when the hour has no billable usage"
+  ],
+  "pass_to_pass": [
+    "OfferingPackageEntity Offering Line Items should respect the precision when using USD",
+    "OfferingPackageEntity Offering Free trial scheduler must set parameters correctly"
+  ],
+  "selected_test_files_to_run": [
+    "src/offering/entities/offeringPackageHistorical.gold.spec.ts",
+    "src/offering/topUpBilling.gold.spec.ts"
+  ]
+}

@@ -1,0 +1,80 @@
+Selected strategy: _DaytonaDirect
+Creating new AsyncDaytona client
+snapshot.get(harbor-probe-champ-email-inbox-infrastructure-8g) failed; assuming global snapshot
+Using snapshot: harbor-probe-champ-email-inbox-infrastructure-8g
+Trial champ-email-inbox-infrastructure__CEVT7Fu failed: Failed to create sandbox: Invalid credentials
+Failed to download logs to sample-run/enterprise-controls/champ2197-null-daytona-r6/champ-email-inbox-infrastructure__CEVT7Fu/agent
+Collecting main service artifacts
+Failed to download artifact '/logs/artifacts' from service 'main' (best-effort)
+Traceback (most recent call last):
+  File "/Users/siddhantpaliwal/.local/share/uv/tools/harbor/lib/python3.13/site-packages/harbor/trial/trial.py", line 350, in run
+    await self._prepare()
+  File "/Users/siddhantpaliwal/.local/share/uv/tools/harbor/lib/python3.13/site-packages/harbor/trial/trial.py", line 379, in _prepare
+    await self._setup_agent_environment()
+  File "/Users/siddhantpaliwal/.local/share/uv/tools/harbor/lib/python3.13/site-packages/harbor/trial/trial.py", line 1097, in _setup_agent_environment
+    await self._start_agent_environment()
+  File "/Users/siddhantpaliwal/.local/share/uv/tools/harbor/lib/python3.13/site-packages/harbor/trial/trial.py", line 1103, in _start_agent_environment
+    await asyncio.wait_for(
+    ...<4 lines>...
+    )
+  File "/Users/siddhantpaliwal/.local/share/uv/python/cpython-3.13.1-macos-aarch64-none/lib/python3.13/asyncio/tasks.py", line 507, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "/Users/siddhantpaliwal/.local/share/uv/tools/harbor/lib/python3.13/site-packages/harbor/environments/daytona/environment.py", line 1901, in start
+    return await self._strategy.start(force_build)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/siddhantpaliwal/.local/share/uv/tools/harbor/lib/python3.13/site-packages/harbor/environments/daytona/environment.py", line 326, in start
+    await env._create_sandbox(params=params, daytona=daytona)
+  File "/Users/siddhantpaliwal/.local/share/uv/tools/harbor/lib/python3.13/site-packages/tenacity/asyncio/__init__.py", line 193, in async_wrapped
+    return await copy(fn, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/siddhantpaliwal/.local/share/uv/tools/harbor/lib/python3.13/site-packages/tenacity/asyncio/__init__.py", line 112, in __call__
+    do = await self.iter(retry_state=retry_state)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/siddhantpaliwal/.local/share/uv/tools/harbor/lib/python3.13/site-packages/tenacity/asyncio/__init__.py", line 157, in iter
+    result = await action(retry_state)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/siddhantpaliwal/.local/share/uv/tools/harbor/lib/python3.13/site-packages/tenacity/_utils.py", line 111, in inner
+    return call(*args, **kwargs)
+  File "/Users/siddhantpaliwal/.local/share/uv/tools/harbor/lib/python3.13/site-packages/tenacity/__init__.py", line 393, in <lambda>
+    self._add_action_func(lambda rs: rs.outcome.result())
+                                     ~~~~~~~~~~~~~~~~~^^
+  File "/Users/siddhantpaliwal/.local/share/uv/python/cpython-3.13.1-macos-aarch64-none/lib/python3.13/concurrent/futures/_base.py", line 449, in result
+    return self.__get_result()
+           ~~~~~~~~~~~~~~~~~^^
+  File "/Users/siddhantpaliwal/.local/share/uv/python/cpython-3.13.1-macos-aarch64-none/lib/python3.13/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/Users/siddhantpaliwal/.local/share/uv/tools/harbor/lib/python3.13/site-packages/tenacity/asyncio/__init__.py", line 116, in __call__
+    result = await fn(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/siddhantpaliwal/.local/share/uv/tools/harbor/lib/python3.13/site-packages/harbor/environments/daytona/environment.py", line 1460, in _create_sandbox
+    self._sandbox = await asyncio.shield(create_task)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/siddhantpaliwal/.local/share/uv/tools/harbor/lib/python3.13/site-packages/daytona/_utils/errors.py", line 199, in async_wrapper
+    process_n_raise_exception(e)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/Users/siddhantpaliwal/.local/share/uv/tools/harbor/lib/python3.13/site-packages/daytona/_utils/errors.py", line 143, in process_n_raise_exception
+    raise create_daytona_error(
+    ...<5 lines>...
+    ) from None
+daytona.common.errors.DaytonaAuthenticationError: Failed to create sandbox: Invalid credentials
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/siddhantpaliwal/.local/share/uv/tools/harbor/lib/python3.13/site-packages/harbor/trial/artifact_handler.py", line 322, in _download_artifact
+    await source_env.service_download_dir(
+    ...<3 lines>...
+    )
+  File "/Users/siddhantpaliwal/.local/share/uv/tools/harbor/lib/python3.13/site-packages/harbor/environments/compose_service_ops.py", line 140, in service_download_dir
+    await self.download_dir(source_dir, target_dir)
+  File "/Users/siddhantpaliwal/.local/share/uv/tools/harbor/lib/python3.13/site-packages/harbor/environments/daytona/environment.py", line 1938, in download_dir
+    return await self._strategy.download_dir(source_dir, target_dir)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/siddhantpaliwal/.local/share/uv/tools/harbor/lib/python3.13/site-packages/harbor/environments/daytona/environment.py", line 393, in download_dir
+    await self._env._sdk_download_dir(source_dir, target_dir)
+  File "/Users/siddhantpaliwal/.local/share/uv/tools/harbor/lib/python3.13/site-packages/harbor/environments/daytona/environment.py", line 1868, in _sdk_download_dir
+    raise RuntimeError("Sandbox not found. Please build the environment first.")
+RuntimeError: Sandbox not found. Please build the environment first.
+Sandbox not found. Please build the environment first.
+Not retrying trial because the maximum number of retries has been reached

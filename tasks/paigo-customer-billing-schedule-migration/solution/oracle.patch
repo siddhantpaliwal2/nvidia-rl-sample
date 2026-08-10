@@ -1,0 +1,898 @@
+diff --git a/src/analytics/analytics.service.ts b/src/analytics/analytics.service.ts
+index 222ffa2008211e42a631175c677b959b0faec82f..f0760c3fddae137e44aee9ea9e8886bedfe6dfe7 100644
+--- a/src/analytics/analytics.service.ts
++++ b/src/analytics/analytics.service.ts
+@@ -35,8 +35,7 @@ export type CostSourceFunctionInput = {
+     businessID: string;
+     creds: AwsCredentialIdentityProvider;
+     months: Array<{ startDate: string; endDate: string }>;
+-    serviceIds?: string[];
+-    applicationIds?: string[];
++    customerIds?: string[];
+ };
+ 
+ export type ReturnedCostTypes = 'storageCost' | 'computeCost' | 'archiveCost';
+@@ -146,16 +145,16 @@ export class AnalyticsService {
+         businessID: string,
+         startDate: Date,
+         endDate: Date,
+-        serviceAndApplicationIds?: string[]
++        customerIds?: string[]
+     ): Promise<monthlyCost> {
+         const monthlyComputeCost = {};
+         let monthlyComputeCostDBModels = [];
+-        if (serviceAndApplicationIds && serviceAndApplicationIds.length > 0) {
++        if (customerIds?.length) {
+             monthlyComputeCostDBModels = await this.influxService.aggregateMonthlyComputeCostsByCustomer({
+                 businessID,
+                 startDate,
+                 endDate,
+-                serviceAndApplicationIds,
++                customerIds,
+             });
+         } else {
+             monthlyComputeCostDBModels = await this.influxService.aggregateMonthlyComputeCosts({
+@@ -164,7 +163,6 @@ export class AnalyticsService {
+                 endDate,
+             });
+         }
+-        AnalyticsService.logger.debug(JSON.stringify(monthlyComputeCostDBModels));
+         if (monthlyComputeCostDBModels.length > 0) {
+             monthlyComputeCostDBModels.forEach((monthlyCostDBModel) => {
+                 const { _time, _value } = monthlyCostDBModel;
+@@ -410,24 +408,7 @@ export class AnalyticsService {
+                 if (!customerId) {
+                     throw new BadRequestException('customerId is required for contributionMargin metric');
+                 }
+-                const { data: services } = await this.servicesService.findAllServicesWithCustomerId({
+-                    businessID,
+-                    customerId,
+-                });
+ 
+-                const { serviceIds, applicationIds } = services.reduce(
+-                    (acc, { serviceId, applicationId }): { serviceIds: string[]; applicationIds: string[] } => {
+-                        acc.serviceIds.push(serviceId);
+-                        if (applicationId) {
+-                            acc.applicationIds.push(applicationId);
+-                        }
+-                        return acc;
+-                    },
+-                    {
+-                        serviceIds: [],
+-                        applicationIds: [],
+-                    }
+-                );
+                 const perCustomerRevenue = await this.getMonthlyRevenue(businessID, startDate, endDate, customerId);
+                 const perCustomerCosts = await Promise.all(
+                     costSourceFunctions.map(async (sourceFunction) =>
+@@ -436,9 +417,8 @@ export class AnalyticsService {
+                             endDate,
+                             businessID,
+                             creds: creds,
++                            customerIds: [customerId],
+                             months,
+-                            serviceIds,
+-                            applicationIds,
+                         })
+                     )
+                 );
+@@ -487,18 +467,16 @@ export class AnalyticsService {
+                     endDate,
+                     creds,
+                     businessID,
++                    customerIds = [],
+                     months,
+-                    serviceIds,
+-                    applicationIds,
+                 }: CostSourceFunctionInput): Promise<GeneralizedMonthlyCost> => {
+                     const results = await getMonthlyCostOfVolumeAndSnapshot({
+                         startDate,
+                         endDate,
+                         creds,
+                         businessID,
++                        customerIds,
+                         months,
+-                        serviceIds,
+-                        applicationIds,
+                     });
+                     AnalyticsService.logger.debug('EBS results', results);
+                     // Transform into the correct output format
+@@ -523,18 +501,16 @@ export class AnalyticsService {
+                     endDate,
+                     creds,
+                     businessID,
++                    customerIds = [],
+                     months,
+-                    serviceIds,
+-                    applicationIds,
+                 }: CostSourceFunctionInput): Promise<GeneralizedMonthlyCost> => {
+                     const results = await getMonthlyCostOfVolumeAndSnapshot({
+                         startDate,
+                         endDate,
+                         creds,
+                         businessID,
++                        customerIds,
+                         months,
+-                        serviceIds,
+-                        applicationIds,
+                     });
+                     // Transform into the correct output format
+                     const zeroValuesForMonths = months.reduce((acc, { startDate }) => {
+@@ -557,14 +533,10 @@ export class AnalyticsService {
+                     startDate,
+                     endDate,
+                     businessID,
+-                    serviceIds = [],
+-                    applicationIds = [],
++                    customerIds = [],
+                     months,
+                 }: CostSourceFunctionInput): Promise<GeneralizedMonthlyCost> => {
+-                    const results = await this.getMonthlyComputeCost(businessID, startDate, endDate, [
+-                        ...serviceIds,
+-                        ...applicationIds,
+-                    ]);
++                    const results = await this.getMonthlyComputeCost(businessID, startDate, endDate, [...customerIds]);
+                     const zeroValuesForMonths = months.reduce((acc, { startDate }) => {
+                         acc[startDate] = 0;
+                         return acc;
+diff --git a/src/billing/billing.module.ts b/src/billing/billing.module.ts
+index 96a3eedc8d6dee08cbb783e2e2d25698e14a07ae..2817cdfc9388eb2a731993d5b62c172882c99787 100644
+--- a/src/billing/billing.module.ts
++++ b/src/billing/billing.module.ts
+@@ -1,15 +1,15 @@
+ import { Module, forwardRef } from '@nestjs/common';
+ import { BillingService } from './billing.service';
+-import { PrivateAPIServicesModule } from '../services/services.module';
+ import { PrivateAPIInvoicesModule } from '../invoice/invoices.module';
+ import { InfluxModule } from '../influx/influx.module';
+ import { BullModule } from '@nestjs/bull';
++import { PrivateAPICustomerModule } from '../customer/customer.module';
+ 
+ @Module({
+     providers: [BillingService],
+     imports: [
+         InfluxModule,
+-        forwardRef(() => PrivateAPIServicesModule),
++        forwardRef(() => PrivateAPICustomerModule),
+         forwardRef(() => PrivateAPIInvoicesModule),
+         BullModule.registerQueue({
+             name: 'scheduler_billing_queue',
+diff --git a/src/billing/billing.service.ts b/src/billing/billing.service.ts
+index 2dc36fc7731d331d5a67a243e24b576315bea103..990818faa66bc9d9852e236f49176008e6c41e3c 100644
+--- a/src/billing/billing.service.ts
++++ b/src/billing/billing.service.ts
+@@ -1,5 +1,4 @@
+-import { Inject, Injectable, Logger, forwardRef } from '@nestjs/common';
+-import { ServicesService } from '../services/services.service';
++import { Inject, Logger, forwardRef } from '@nestjs/common';
+ import { InfluxService } from '../influx/influx.service';
+ import { InvoicesService } from '../invoice/invoices.service';
+ import { Billing, billingScheduleConsumers } from './entities/billing.entity';
+@@ -8,32 +7,35 @@ import { Process, Processor } from '@nestjs/bull';
+ import { CreateBillingReportDto } from './dto/createBillingReport.dto';
+ import { Job } from 'bull';
+ import { SchedulerEntity } from '../scheduler/entities/scheduler.entity';
++import { CustomerService } from '../customer/customer.service';
++import { AuditService } from '../audit/audit.service';
++import { AuditScope } from '../audit/entities/audit.interface';
++import { serializeError } from 'serialize-error';
+ 
+ @Processor('scheduler_billing_queue')
+ export class BillingService {
+     private static readonly logger = new Logger(BillingService.name);
+     constructor(
+         readonly InfluxService: InfluxService,
+-        @Inject(forwardRef(() => ServicesService)) readonly servicesService: ServicesService,
++        @Inject(forwardRef(() => CustomerService)) readonly customerService: CustomerService,
+         @Inject(forwardRef(() => InvoicesService)) readonly invoicesService: InvoicesService
+     ) {}
+     @Process({ name: billingScheduleConsumers.billingReport })
+-    async create({ data: { scheduleParameters } }: Job<SchedulerEntity>) {
+-        const { customerId, businessID } = scheduleParameters as CreateBillingReportDto;
+-        // 1. Called via the scheduler contains a customerId, and BusinessID, gets set when a customer is created
+-        // 2, Get all services for the customer
+-        const { data } = await this.servicesService.findAllServicesWithCustomerId({ customerId, businessID });
+-        if (data.length) {
+-            const lineItems = await Billing.generateLineItemsFromServices({
+-                data,
+-                influxService: this.InfluxService,
++    async create({ data: { scheduleParameters, businessID } }: Job<SchedulerEntity>) {
++        const { customerId } = scheduleParameters as CreateBillingReportDto;
++        BillingService.logger.log(`Starting billing report for customer: ${customerId}`);
++        try {
++            const { data } = await this.customerService.findOne({ businessID, customerId });
++            const { startTime, endTime } = Billing.billingCycleToTimeRange(data[0]?.offering.billingCycle);
++            // 5. Create the Invoice by calling the invoice module and passing the line items (Might need to manually call the email in the invioceModule look into this )
++            const { invoiceId } = await this.invoicesService.generateInvoiceForUsageTotal({
+                 businessID,
++                customerId,
++                start: startTime,
++                end: endTime,
+             });
+-            BillingService.logger.log(`Line Items for billing: ${JSON.stringify(lineItems)}`);
+-            // 5. Create the Invoice by calling the invoice module and passing the line items (Might need to manually call the email in the invioceModule look into this )
+-            const { invoiceId } = await this.invoicesService.create({ businessID, customerId, items: lineItems });
+             // Should set Invoice to Draft status, actual payment will be handled by the payment module and is done when there is a state change with the invoice status.
+-            const { startTime, endTime } = Billing.billingCycleToTimeRange(data[0]?.offering.billingCycle);
++
+             const entity = new Billing({
+                 invoiceId,
+                 businessID,
+@@ -45,8 +47,13 @@ export class BillingService {
+             // 6. Save Billing information to the Ledger
+             const point = Billing.transformer(entity, this.InfluxService);
+             await this.InfluxService.loadPoints(`${process.env.STAGE}-aggregate-usage`, 'paigo', [point]);
+-        } else {
+-            BillingService.logger.log(`No Billing Data found for customer:${customerId} in business: ${businessID}`);
++            BillingService.logger.log(`Finished billing report for customer: ${customerId}, invoiceId: ${invoiceId}`);
++        } catch (error) {
++            AuditService.publishEvent({
++                message: 'Failed to create billing Invoice',
++                topic: AuditScope.ERROR,
++                data: [{ error: serializeError(error), customerId, businessID }],
++            });
+         }
+     }
+ }
+diff --git a/src/billing/dto/createBillingReport.dto.ts b/src/billing/dto/createBillingReport.dto.ts
+index 06da985a33903f9909604684434bdf441f5ceb59..53caa635a6da863ca693d219deab35f2d5cd1dbb 100644
+--- a/src/billing/dto/createBillingReport.dto.ts
++++ b/src/billing/dto/createBillingReport.dto.ts
+@@ -1,4 +1,3 @@
+ export class CreateBillingReportDto {
+     customerId: string;
+-    businessID: string;
+ }
+diff --git a/src/customer/customer.controller.ts b/src/customer/customer.controller.ts
+index 000c4a6f9ca51520123515a392fe6d40adc9bc51..4d3a303e28aa571cabdb604d9f7a6f7b8fbfaae5 100644
+--- a/src/customer/customer.controller.ts
++++ b/src/customer/customer.controller.ts
+@@ -142,8 +142,8 @@ export class PublicAPICustomerController {
+     update(@Body() updateCustomerDto: UpdateCustomerDto, @Req() request: Request, @Param('customerId') customerId) {
+         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+         //@ts-ignore
+-        const { businessID } = request.user;
+-        return this.customerService.update({ ...updateCustomerDto, businessID, customerId });
++        const { businessID, sub } = request.user;
++        return this.customerService.update({ ...updateCustomerDto, businessID, customerId }, sub);
+     }
+ 
+     /**
+diff --git a/src/customer/customer.service.ts b/src/customer/customer.service.ts
+index b172128c42a510171cd268ac2a8fc8fe4f31b248..f5a2c42347ae4c05fb69d1a76716aaae8ba5cfc8 100644
+--- a/src/customer/customer.service.ts
++++ b/src/customer/customer.service.ts
+@@ -34,15 +34,17 @@ export class CustomerService {
+         const points = CustomerEntity.transformer(customerEntity, this.InfluxService);
+         CustomerService.logger.log('Points', points);
+         await loadPoints(`${process.env.STAGE}-config`, `paigo`, points);
+-        await this.schedulerService.create({
+-            schedulerID: customerId,
+-            schedulerType: schedulerType.billing,
+-            schedulerStatus: SchedulerStatus.live,
+-            scheduleParameters: { customerId, businessID: createCustomerDto.businessID },
+-            rate: SupportedMeasurementFrequencies.monthly,
+-            subject,
+-            businessID: createCustomerDto.businessID,
+-        });
++        if (customerEntity.offeringId) {
++            await this.schedulerService.create({
++                schedulerID: customerId,
++                schedulerType: schedulerType.billing,
++                schedulerStatus: SchedulerStatus.live,
++                scheduleParameters: { customerId, businessID: createCustomerDto.businessID },
++                rate: SupportedMeasurementFrequencies.monthly,
++                subject,
++                businessID: createCustomerDto.businessID,
++            });
++        }
+         return { message: 'New customer added', customerId: customerEntity.customerId };
+     }
+ 
+@@ -179,7 +181,10 @@ export class CustomerService {
+         return { message: 'Deleted Customer', customerId };
+     }
+ 
+-    async update({ customerId, businessID, ...updatedFields }: UpdateCustomerDto): Promise<CreateCustomerResponseDto> {
++    async update(
++        { customerId, businessID, ...updatedFields }: UpdateCustomerDto,
++        sub: string
++    ): Promise<CreateCustomerResponseDto> {
+         CustomerService.logger.log(`Attempting to update saasClientID: ${customerId} for ${businessID}`);
+         const {
+             data: [{ ...rest }],
+@@ -187,6 +192,28 @@ export class CustomerService {
+         const { loadPoints } = this.InfluxService;
+         const customerEntity = new CustomerEntity({ ...rest, ...updatedFields, customerId, businessID });
+         const points = CustomerEntity.transformer(customerEntity, this.InfluxService);
++        if (updatedFields?.offeringId) {
++            if (rest?.offeringId) {
++                try {
++                    await this.schedulerService.remove({ schedulerID: customerId, businessID, isBillingQueue: true });
++                } catch (e) {
++                    if (e instanceof NotFoundException) {
++                        CustomerService.logger.log(`Scheduler for customer ${customerId} not found`);
++                    } else {
++                        throw e;
++                    }
++                }
++            }
++            await this.schedulerService.create({
++                schedulerID: customerId,
++                schedulerType: schedulerType.billing,
++                schedulerStatus: SchedulerStatus.live,
++                scheduleParameters: { customerId, businessID },
++                rate: SupportedMeasurementFrequencies.monthly,
++                subject: sub,
++                businessID,
++            });
++        }
+         CustomerService.logger.log('Points', points);
+         await loadPoints(`${process.env.STAGE}-config`, `paigo`, points);
+         return { message: 'Customer updated added', customerId: customerId };
+@@ -206,25 +233,3 @@ export class CustomerService {
+         }
+     }
+ }
+-const memes = [
+-    {
+-        result: '_result',
+-        table: 0,
+-        _start: '1970-01-01T05:00:00Z',
+-        _stop: '2023-03-11T18:01:08.828Z',
+-        _time: '2023-03-11T18:00:58.734376199Z',
+-        _value: 'Wall Street Trading',
+-        _field: 'customerName',
+-        _measurement: 'CustomerConfig',
+-        address:
+-            '{"countryCode":"us","postalCode":"W1J 8AJ","state":"London","city":"London","streetLineOne":"1 Downing Street","streetLineTwo":""}',
+-        businessID: 'myCoolCorp',
+-        customerId: 'b9459f53-054b-4437-8ecd-b6f8070344fc',
+-        customerVatId: 'VAT GB 1234567',
+-        email: 'matt.sun@paigo.tech',
+-        offeringId: 'bc546e8a-3a2c-4089-8133-1efac1759ff5',
+-        paymentChannel: 'Stripe',
+-        paymentChannelOptions_stripeCustomerId: 'acct-xxxxxxxxxxxxxxxx',
+-        taxExempt: 'none',
+-    },
+-];
+diff --git a/src/customer/dto/read-customer.dto.ts b/src/customer/dto/read-customer.dto.ts
+index 8f3b8932acf2a5999cfb90bc9e0c01a4077029c4..c91b73dbd31dd2fd2a90caf68c4a628c6a7a1dcf 100644
+--- a/src/customer/dto/read-customer.dto.ts
++++ b/src/customer/dto/read-customer.dto.ts
+@@ -117,7 +117,7 @@ export class BasicUsageDocument {
+     @IsRFC3339()
+     @IsString()
+     @IsNotEmpty()
+-    public timeStamp: string;
++    public timestamp: string;
+ 
+     /**
+      * The amount of the usage on this record.
+diff --git a/src/dimensions/dimensions.service.ts b/src/dimensions/dimensions.service.ts
+index 6bc5746265a9de56cc4fa83b7bb723e7fede15c5..a1d9d0e4dd7265c57efac75e03ae3ae4e314f8e9 100644
+--- a/src/dimensions/dimensions.service.ts
++++ b/src/dimensions/dimensions.service.ts
+@@ -43,7 +43,6 @@ export class DimensionsService {
+         const { loadPoints } = this.InfluxService;
+         const { measurementId, businessID } = createDimensionDto;
+         let inputForEntity;
+-        const inputForAggregationSchedule = this.determineAggregationScheduleInput(dimensionId, businessID);
+         if (measurementId) {
+             inputForEntity = await this.measurementConfigService.createMeasurementConfig(
+                 createDimensionDto,
+@@ -60,15 +59,6 @@ export class DimensionsService {
+ 
+         await loadPoints(`${process.env.STAGE}-config`, 'paigo', [dbModel]);
+ 
+-        await this.schedulerService.create({
+-            schedulerID: dimensionId,
+-            schedulerType: schedulerType.aggregation,
+-            schedulerStatus: SchedulerStatus.live,
+-            scheduleParameters: inputForAggregationSchedule,
+-            rate: inputForAggregationSchedule.rate,
+-            subject,
+-            businessID,
+-        });
+         if (measurementId) {
+             const {
+                 data: [{ measurementMode: argumentMeasurementMode, measurementConfiguration }],
+diff --git a/src/dimensions/dimensionsAggregation.service.ts b/src/dimensions/dimensionsAggregation.service.ts
+index 88244458f1d11101dac21882601b4d1378df2c42..3256df0b3331493bf3cad392450d7cc7f447362d 100644
+--- a/src/dimensions/dimensionsAggregation.service.ts
++++ b/src/dimensions/dimensionsAggregation.service.ts
+@@ -63,7 +63,7 @@ export class DimensionAggregationService {
+                                 dimensionId,
+                                 businessID,
+                                 customerId,
+-                                timeStamp: startTime,
++                                timestamp: startTime,
+                                 recordValue: parseFloat(value),
+                                 metadata: {},
+                             });
+diff --git a/src/influx/influx.service.ts b/src/influx/influx.service.ts
+index ba040ba81692a8d07e97b07ffcde8b106ddbe2a9..d8dc560b8b454060eedb1347607fa870b11a3b9b 100644
+--- a/src/influx/influx.service.ts
++++ b/src/influx/influx.service.ts
+@@ -1283,15 +1283,10 @@ export class InfluxService {
+ 
+         return res;
+     }
+-    aggregateMonthlyComputeCostsByCustomer({
+-        businessID,
+-        startDate,
+-        endDate,
+-        serviceAndApplicationIds,
+-    }): Promise<Array<any>> {
++    aggregateMonthlyComputeCostsByCustomer({ businessID, startDate, endDate, customerIds }): Promise<Array<any>> {
+         const queryApi = this.dbclient.getQueryApi(this.org);
+         const averageEC2CostFluxQuery = `
+-        arrayValues = [${this.buildArrayValues(serviceAndApplicationIds)}]
++        arrayValues = [${this.buildArrayValues(customerIds)}]
+         
+         from(bucket: "${process.env.STAGE}-usage-data")
+         |> range(start: ${new Date(startDate).toISOString()}, stop:${new Date(endDate).toISOString()})
+diff --git a/src/measurement-config/dto/create-standard-measurement.dto.ts b/src/measurement-config/dto/create-standard-measurement.dto.ts
+index 3fc46b080059ca8f644fd186818a626ce9a04c54..cd2255a2b47c87a824c4ed300904941678e8895c 100644
+--- a/src/measurement-config/dto/create-standard-measurement.dto.ts
++++ b/src/measurement-config/dto/create-standard-measurement.dto.ts
+@@ -25,7 +25,7 @@ export class CreateStandardMeasurementDto {
+     @IsRFC3339()
+     @IsString()
+     @IsNotEmpty()
+-    public timeStamp: string;
++    public timestamp: string;
+ 
+     /**
+      * REQUIRED.<br>
+@@ -70,12 +70,12 @@ export class CreateStandardMeasurementDto {
+      **/
+     @IsObject()
+     @IsOptional()
+-    public metadata: Record<string, string>;
++    public metadata: Record<string, string | number | null>;
+ 
+     constructor(doc) {
+         if (doc) {
+             this.businessID = doc.businessID;
+-            this.timeStamp = doc.timeStamp;
++            this.timestamp = doc.timestamp;
+             this.customerId = doc.customerId;
+             this.dimensionId = doc.dimensionId;
+             this.recordValue = doc.recordValue;
+diff --git a/src/measurement-config/entities/measurement-config.entity.ts b/src/measurement-config/entities/measurement-config.entity.ts
+index b8dfaf8573fd257a0f70bbc659420e83bf13fd97..dc7c580712e77b4050d48e01157a830cb15db812 100644
+--- a/src/measurement-config/entities/measurement-config.entity.ts
++++ b/src/measurement-config/entities/measurement-config.entity.ts
+@@ -518,7 +518,7 @@ export class DatastoreAccessInformation {
+                         ],
+                         Condition: {
+                             StringLike: {
+-                                's3:prefix': 'myCoolCorp/*',
++                                's3:prefix': `${businessID}/*`,
+                             },
+                         },
+                     },
+diff --git a/src/measurement-config/entities/measurement.interface.ts b/src/measurement-config/entities/measurement.interface.ts
+index 88a14ab76472b8512db4d743db052b250e802245..51a041a055205c828898274f86d2e109d132325d 100644
+--- a/src/measurement-config/entities/measurement.interface.ts
++++ b/src/measurement-config/entities/measurement.interface.ts
+@@ -9,28 +9,28 @@ export enum ValidMeasurementTypes {
+ export abstract class MeasurementFormat {
+     dimensionId?: string;
+     customerId: string;
+-    timeStamp?: string;
++    timestamp?: string;
+     recordValue: number;
+     businessID: string;
+-    metadata: Record<string, string>;
++    metadata: Record<string, string | number | null>;
+     _measurement: string;
+     static getPointForm(measurement: MeasurementFormat, influxService: InfluxService): Point {
+         const point = influxService.getPoint(measurement._measurement);
+-        point.timestamp(new Date(measurement.timeStamp));
++        point.timestamp(new Date(measurement.timestamp));
+         point.tag('customerId', measurement.customerId);
+         point.tag('dimensionId', measurement.dimensionId);
+         point.tag('businessID', measurement.businessID);
+         point.floatField('recordValue', measurement.recordValue);
+         if (measurement?.metadata) {
+             Object.keys(measurement.metadata).forEach((key) => {
+-                point.tag(`metadata_${key}`, measurement.metadata[key]);
++                point.tag(`metadata_${key}`, JSON.stringify(measurement.metadata[key]));
+             });
+         }
+         return point;
+     }
+     static toEntity(dbModel: MeasurementInfluxDbModel): MeasurementFormat {
+         const measurementInput: MeasurementFormat = {
+-            timeStamp: dbModel._time,
++            timestamp: dbModel._time,
+             dimensionId: dbModel.dimensionId,
+             recordValue: dbModel._value,
+             metadata: {},
+@@ -42,7 +42,7 @@ export abstract class MeasurementFormat {
+             if (key.startsWith('metadata_') && dbModel[key]) {
+                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                 // @ts-ignore
+-                measurementInput.metadata[key.replace('metadata_', '')] = dbModel[key];
++                measurementInput.metadata[key.replace('metadata_', '')] = JSON.parse(dbModel[key]);
+             }
+         });
+         return measurementInput;
+diff --git a/src/measurement-config/entities/standardMeasurement.entity.ts b/src/measurement-config/entities/standardMeasurement.entity.ts
+index b0bfd186e9276b9a09fc108f194c23f657ae41f1..c852f3dec3197881e672079d1c6e1c102258edcd 100644
+--- a/src/measurement-config/entities/standardMeasurement.entity.ts
++++ b/src/measurement-config/entities/standardMeasurement.entity.ts
+@@ -14,20 +14,20 @@ export enum DlqType {
+ }
+ export class StandardMeasurementEntity implements MeasurementFormat {
+     private static readonly logger = new Logger(StandardMeasurementEntity.name);
+-    public timeStamp?: string;
++    public timestamp?: string;
+     public dimensionId?: string;
+     public businessID: string;
+     public customerId: string;
+     public recordValue: number;
+-    public metadata: Record<string, string>;
++    public metadata: Record<string, string | number | null>;
+     public _measurement: string;
+     public static allowedTags = ['paigoCustomerId', 'paigoDimensionId'];
+ 
+     constructor(measurement: MeasurementFormat) {
+-        if (measurement.timeStamp) {
+-            this.timeStamp = measurement.timeStamp;
++        if (measurement.timestamp) {
++            this.timestamp = measurement.timestamp;
+         } else {
+-            this.timeStamp = new Date().toISOString();
++            this.timestamp = new Date().toISOString();
+         }
+         this.dimensionId = measurement.dimensionId;
+         this.customerId = measurement.customerId;
+diff --git a/src/measurement-config/entities/standardMeasurementPreProcessor.ts b/src/measurement-config/entities/standardMeasurementPreProcessor.ts
+index ddf385eba6af41bc1b8a4754731b3920823abb09..79e1c4cf86a73d2276f451139f09e1a0d656cae0 100644
+--- a/src/measurement-config/entities/standardMeasurementPreProcessor.ts
++++ b/src/measurement-config/entities/standardMeasurementPreProcessor.ts
+@@ -20,23 +20,23 @@ export class StandardMeasurementPreProcessorEntity {
+     // metadata as a JSON object keys are the metadata names values are strings
+     public metadata: Record<string, string>;
+     // Optional Timestamp, if not provided will be set to the current time
+-    public timeStamp?: string;
++    public timestamp?: string;
+ 
+     constructor(
+         rawDataValue: string,
+         businessID: string,
+         measurementType: PreProcessorMeasurementType,
+         metadata: Record<string, string>,
+-        timeStamp?: string
++        timestamp?: string
+     ) {
+         this.rawDataValue = rawDataValue;
+         this.businessID = businessID;
+         this.measurementType = measurementType;
+         this.metadata = metadata;
+-        if (timeStamp) {
+-            this.timeStamp = timeStamp;
++        if (timestamp) {
++            this.timestamp = timestamp;
+         } else {
+-            this.timeStamp = new Date().toISOString();
++            this.timestamp = new Date().toISOString();
+         }
+     }
+     static async createStandardMeasurement(
+@@ -70,7 +70,7 @@ export class StandardMeasurementPreProcessorEntity {
+             recordValue: Number(preprocessed.rawDataValue),
+             metadata: preprocessed.metadata,
+             _measurement: UsageEntity._measurement,
+-            timeStamp: preprocessed.timeStamp,
++            timestamp: preprocessed.timestamp,
+             dimensionId,
+             customerId,
+         });
+diff --git a/src/measurement-config/measurement-config.service.ts b/src/measurement-config/measurement-config.service.ts
+index 031e00e6b0b62c22df1ca3173f48fe3231746c23..eeb1b2f337ff2f4c268ddd78055e6424e959cb14 100644
+--- a/src/measurement-config/measurement-config.service.ts
++++ b/src/measurement-config/measurement-config.service.ts
+@@ -33,7 +33,6 @@ import {
+     aggregationMethod,
+     CreateDimensionDto,
+     roundingEnum,
+-    SampleType,
+ } from '../dimensions/dto/create-dimension.dto';
+ import { DimensionsService } from '../dimensions/dimensions.service';
+ 
+@@ -146,8 +145,12 @@ export class MeasurementConfigService {
+         }
+ 
+         const entities = dbModels.map((dbModel) => MeasurementConfigEntity.dbModelToEntity(dbModel));
+-
+-        return ReadMeasurementConfigResponse.entityToReadResponse(entities);
++        const filtered = entities.filter((e) => e);
++        if (filtered.length === 0) {
++            throw new NotFoundException(`No Measurement Configuration found for ID: ${measurementId}`);
++        } else {
++            return ReadMeasurementConfigResponse.entityToReadResponse(entities);
++        }
+     }
+ 
+     async update(
+@@ -254,7 +257,6 @@ export class MeasurementConfigService {
+             consumptionUnit: dimensionConsumptionUnit,
+             usageIncrement: dimensionUsageIncrement,
+             rounding: dimensionRounding,
+-            sampleType: dimensionSampleType,
+             aggregationInterval: dimensionAggregationInterval,
+             aggregationMethod: dimensionAggregationMethod,
+         } = dimension;
+@@ -279,9 +281,6 @@ export class MeasurementConfigService {
+                 if (dimensionRounding !== roundingEnum.ceiling) {
+                     throw new BadRequestException('Rounding for EBS Volume and Snapshot Measurement must be Ceiling');
+                 }
+-                if (dimensionSampleType !== SampleType.gauge) {
+-                    throw new BadRequestException('Sample Type for EBS Volume and Snapshot Measurement must be Gauge');
+-                }
+                 if (dimensionAggregationInterval !== aggregationInterval.hour) {
+                     throw new BadRequestException(
+                         'Aggregation Interval for EBS Volume and Snapshot Measurement must be Hour'
+@@ -305,9 +304,6 @@ export class MeasurementConfigService {
+                 if (dimensionRounding !== roundingEnum.ceiling) {
+                     throw new BadRequestException('Rounding for EC2 Egress Measurement must be Ceiling');
+                 }
+-                if (dimensionSampleType !== SampleType.gauge) {
+-                    throw new BadRequestException('Sample Type for EC2 Egress Measurement must be Gauge');
+-                }
+                 if (dimensionAggregationInterval !== aggregationInterval.hour) {
+                     throw new BadRequestException('Aggregation Interval for EC2 Egress Measurement must be Hour');
+                 }
+@@ -329,9 +325,6 @@ export class MeasurementConfigService {
+                 if (dimensionRounding !== roundingEnum.ceiling) {
+                     throw new BadRequestException('Rounding for EC2 Running Time Measurement must be Ceiling');
+                 }
+-                if (dimensionSampleType !== SampleType.gauge) {
+-                    throw new BadRequestException('Sample Type for EC2 Running Time Measurement must be Gauge');
+-                }
+                 if (dimensionAggregationInterval !== aggregationInterval.hour) {
+                     throw new BadRequestException('Aggregation Interval for EC2 Running Time Measurement must be Hour');
+                 }
+@@ -355,9 +348,6 @@ export class MeasurementConfigService {
+                 if (dimensionRounding !== roundingEnum.ceiling) {
+                     throw new BadRequestException('Rounding for EKS pod running time Measurement must be Ceiling');
+                 }
+-                if (dimensionSampleType !== SampleType.gauge) {
+-                    throw new BadRequestException('Sample Type for EKS pod running time Measurement must be Gauge');
+-                }
+                 if (dimensionAggregationInterval !== aggregationInterval.hour) {
+                     throw new BadRequestException(
+                         'Aggregation Interval for EKS pod running time Measurement must be Hour'
+diff --git a/src/offering/dto/createOffering.dto.ts b/src/offering/dto/createOffering.dto.ts
+index 52805306a10c7be70214170d1f49a5e2639f6202..a273cad14893654b8c9441152063488cffcf06c0 100644
+--- a/src/offering/dto/createOffering.dto.ts
++++ b/src/offering/dto/createOffering.dto.ts
+@@ -48,7 +48,7 @@ export class CreateOfferingDTO {
+     public offeringVisibility?: OfferingVisibility;
+ 
+     /**
+-     * Discount to be applied to the bill of services subscribed to this offering. Only numerical string is allowed.
++     * Discount to be applied to the bill of customers subscribed to this offering. Only numerical string is allowed.
+      * <br><br>Example: `"0.2"` for 20% off.
+      *
+      * @example "0.2"
+@@ -70,7 +70,7 @@ export class CreateOfferingDTO {
+ 
+     /**
+      * The type of offering plan.
+-     * <br>  • `usage-based` - The offering is a pure usage-based offering, or pay-as-you-go. Customer will be billed based on the precise usage of the service.
++     * <br>  • `usage-based` - The offering is a pure usage-based offering, or pay-as-you-go. Customers on this plan will be billed precisely based on consumption.
+      * <br>  • `tier` - The offering is a tiered offering, or a subscription. Customer will be billed based on the tier price they are subscribed to.
+      * <br><br>Default: `usage-based`
+      *
+diff --git a/src/offering/entities/offeringPackage.entity.ts b/src/offering/entities/offeringPackage.entity.ts
+index 99ab713b88bbb31dead25e2507df033dbae433fe..2b4cfdd92159c943a3f732cedd0b4843caae5a7e 100644
+--- a/src/offering/entities/offeringPackage.entity.ts
++++ b/src/offering/entities/offeringPackage.entity.ts
+@@ -1,7 +1,6 @@
+ import { Point } from '@influxdata/influxdb-client';
+ import { Logger } from '@nestjs/common';
+ import { ApiHideProperty } from '@nestjs/swagger';
+-import { randomUUID } from 'crypto';
+ import { InfluxService } from '../../influx/influx.service';
+ import { OfferingVisibility, validBillingCycles } from '../dto/createOffering.dto';
+ 
+@@ -100,7 +99,7 @@ export class OfferingPackageEntity {
+             this.offeringName = offeringName;
+             this.currency = currency ? currency : 'USD';
+             this.offeringType = offeringType;
+-            this.billingCycle = billingCycle;
++            this.billingCycle = billingCycle ? billingCycle : validBillingCycles.monthly;
+             this.offeringVisibility = offeringVisibility;
+             this.dimensionIds = dimensionIds;
+             this.offeringId = offeringId;
+@@ -122,7 +121,10 @@ export class OfferingPackageEntity {
+         aggregatePriceDocumentPoint.tag('currency', offeringPackageEntity.currency);
+         aggregatePriceDocumentPoint.tag('offeringVisibility', offeringPackageEntity.offeringVisibility);
+         aggregatePriceDocumentPoint.tag('offeringType', offeringPackageEntity.offeringType);
+-        aggregatePriceDocumentPoint.tag('billingCycle', offeringPackageEntity.billingCycle);
++        aggregatePriceDocumentPoint.tag(
++            'billingCycle',
++            offeringPackageEntity.billingCycle ? offeringPackageEntity.billingCycle : validBillingCycles.monthly
++        );
+         aggregatePriceDocumentPoint.tag('businessID', offeringPackageEntity.businessID);
+         aggregatePriceDocumentPoint.tag('discount', offeringPackageEntity.discount);
+         aggregatePriceDocumentPoint.tag('prepaidCredit', offeringPackageEntity.prepaidCredit);
+@@ -161,7 +163,7 @@ export class OfferingPackageEntity {
+ 
+         const input = {
+             offeringName: _value,
+-            billingCycle,
++            billingCycle: billingCycle ? billingCycle : validBillingCycles.monthly,
+             currency,
+             businessID,
+             offeringId,
+diff --git a/src/openApiPublicSpecGenerator.ts b/src/openApiPublicSpecGenerator.ts
+index a381a32b1334c294072f8ec6e187409166beaf33..b83eb0fa2d60ecd8f3af6139d1f3f8a851fafad8 100644
+--- a/src/openApiPublicSpecGenerator.ts
++++ b/src/openApiPublicSpecGenerator.ts
+@@ -66,7 +66,6 @@ Paigo API has the following endpoints:
+         .addTag('Dimensions', 'Manage dimensions in Paigo.')
+         .addTag('Offerings', 'Manage offerings in Paigo.')
+         .addTag('Customers', 'Manage customers in Paigo.')
+-        .addTag('Services', 'Manage services in Paigo.')
+         .addTag('Measurements', 'Manage measurements in Paigo.')
+         .addServer('https://api.int.paigo.tech', 'Sandbox Environment API')
+         .addServer('https://api.prod.paigo.tech', 'Product Environment API')
+@@ -83,7 +82,6 @@ Paigo API has the following endpoints:
+         .build();
+     const document = SwaggerModule.createDocument(app, config, {
+         include: [
+-            PublicAPIServicesModule,
+             PublicAPIOfferingModule,
+             PublicAPIDimensionsModule,
+             MeasurementConfigModule,
+diff --git a/src/openApiSpecGenerator.ts b/src/openApiSpecGenerator.ts
+index 5b56fe3006fe8d5e937df7b5ab83ff2bb03319e4..aa4b267612decbe1e6a7a8d247a9ee08a278d59c 100644
+--- a/src/openApiSpecGenerator.ts
++++ b/src/openApiSpecGenerator.ts
+@@ -7,7 +7,6 @@ import { TimingInterceptor } from './interceptors/timing.interceptor';
+ import { MeasurementModule } from './measurement/measurement.module';
+ import { PrivateAPIInvoicesModule } from './invoice/invoices.module';
+ import { PrivateAPIOfferingModule, PublicAPIOfferingModule } from './offering/offering.module';
+-import { PrivateAPIServicesModule, PublicAPIServicesModule } from './services/services.module';
+ import { BillingModule } from './billing/billing.module';
+ import { MargincalcModule } from './margincalc/margincalc.module';
+ import { FeatureRequestModule } from './featureRequest/featureRequest.module';
+@@ -67,10 +66,6 @@ async function bootstrap() {
+             'Offerings',
+             'An offering represents, a SKU to your business. As an example a SaaS business may have a public offering where users pay per megabyte, and they could have a different offering with a big client where they pay per Gb'
+         )
+-        .addTag(
+-            'Services',
+-            'A service is a specific implementation of a SaaS offering, for example you may have multiple services per customer, a dev service and a prod service would be two examples. Each service can have the same offering or different offerings.'
+-        )
+         .addTag(
+             'Customers',
+             'Customers are the clients who are interacting with your SaaS. Importantly for Paigo we need to know your customers Identifier and the payment channel which to charge them through'
+@@ -101,8 +96,6 @@ async function bootstrap() {
+             PrivateAPIInvoicesModule,
+             PublicAPIOfferingModule,
+             PrivateAPIOfferingModule,
+-            PublicAPIServicesModule,
+-            PrivateAPIServicesModule,
+             BillingModule,
+             AppModule,
+             MargincalcModule,
+diff --git a/src/scheduler/scheduler.service.ts b/src/scheduler/scheduler.service.ts
+index 12c91dc4a7484d7b3f8086de98813c9f0f6ff21c..d32df20c9880d4d152d70f090ec8fe81cae7efaa 100644
+--- a/src/scheduler/scheduler.service.ts
++++ b/src/scheduler/scheduler.service.ts
+@@ -227,7 +227,14 @@ export class SchedulerService {
+     async emitOne({ schedulerId, payload }) {
+         const { dimensionType, ...rest } = payload;
+         const schedulerEntity = new SchedulerEntity({ schedulerID: schedulerId, ...rest });
+-        await this.queue.add(dimensionType, schedulerEntity);
+-        return { message: 'completed' };
++        if (rest?.schedulerType === schedulerType.billing) {
++            SchedulerService.logger.log('Emitting billing job');
++            await this.billingQueue.add(billingScheduleConsumers.billingReport, schedulerEntity);
++            return { message: 'completed' };
++        } else {
++            SchedulerService.logger.log('Emitting data gathering job');
++            await this.queue.add(dimensionType, schedulerEntity);
++            return { message: 'completed' };
++        }
+     }
+ }
+diff --git a/src/usage/usage.service.ts b/src/usage/usage.service.ts
+index e0b12b44a6068938471ad193596d51a6b6694aa5..78802305a5ff825bca59e47f834d9c160236e8f0 100644
+--- a/src/usage/usage.service.ts
++++ b/src/usage/usage.service.ts
+@@ -56,7 +56,7 @@ export class UsageService {
+             });
+             return aggregateData;
+         } else {
+-            throw new ConflictException('No offering found for customer cannot get usage');
++            return [];
+         }
+     }
+ 
+diff --git a/src/utils/aws/costExplorer.ts b/src/utils/aws/costExplorer.ts
+index 398ac66c510968ab3f1050c1c58541fd037d68ee..2f9361a67fc3fa81573a38a2e21887f9159dc4a4 100644
+--- a/src/utils/aws/costExplorer.ts
++++ b/src/utils/aws/costExplorer.ts
+@@ -63,44 +63,22 @@ export const getMonthlyBill = async (
+  * Assumes that if they are empty / not provided that the caller wants to see all resources IE: not perCustomer
+  */
+ 
+-const tagFilterBuilder = ({ serviceIds, applicationIds }: { serviceIds: string[]; applicationIds: string[] }) => {
+-    if (serviceIds?.length || applicationIds?.length) {
++const tagFilterBuilder = ({ customerIds }: { customerIds?: string[] }) => {
++    if (customerIds?.length) {
+         return {
+-            Or: [
+-                {
+-                    Tags: {
+-                        Key: 'paigoApplicationId',
+-                        Values: applicationIds,
+-                    },
+-                },
+-                {
+-                    Tags: {
+-                        Key: 'paigoServiceId',
+-                        Values: serviceIds,
+-                    },
+-                },
+-            ],
++            Tags: {
++                Key: 'paigoCustomerId',
++                Values: customerIds,
++            },
+         };
+     } else {
+         return {
+-            Or: [
+-                {
+-                    Not: {
+-                        Tags: {
+-                            Key: 'paigoApplicationId',
+-                            Values: [''],
+-                        },
+-                    },
+-                },
+-                {
+-                    Not: {
+-                        Tags: {
+-                            Key: 'paigoServiceId',
+-                            Values: [''],
+-                        },
+-                    },
++            Not: {
++                Tags: {
++                    Key: 'paigoCustomerId',
++                    Values: [''],
+                 },
+-            ],
++            },
+         };
+     }
+ };
+@@ -125,8 +103,7 @@ export const getMonthlyCostOfVolumeAndSnapshot = async ({
+     startDate,
+     endDate,
+     creds,
+-    serviceIds,
+-    applicationIds,
++    customerIds,
+ }: CostSourceFunctionInput): Promise<MonthlyStorageCost> => {
+     const client = new CostExplorerClient({ region: 'us-east-1', credentials: creds });
+     const param = {
+@@ -141,7 +118,7 @@ export const getMonthlyCostOfVolumeAndSnapshot = async ({
+                         },
+                     },
+                 },
+-                tagFilterBuilder({ serviceIds, applicationIds }),
++                tagFilterBuilder({ customerIds }),
+                 {
+                     Dimensions: {
+                         Key: 'USAGE_TYPE_GROUP',

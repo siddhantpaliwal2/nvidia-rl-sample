@@ -1,0 +1,31 @@
+{
+    "task": {
+        "path": "tasks/paigo-dimension-pricing-tiers"
+    },
+    "trial_name": "paigo-dimension-pricing-tiers__nouWWdp",
+    "trials_dir": "sample-run/enterprise-controls/eng830-opencode-install-check",
+    "install_only": true,
+    "agent": {
+        "name": "harness.harbor_agents:OpenCodeNode22",
+        "model_name": "amazon-bedrock/global.anthropic.claude-opus-5",
+        "kwargs": {
+            "version": "1.18.13",
+            "opencode_config": {
+                "permission": {
+                    "task": "deny"
+                }
+            }
+        }
+    },
+    "environment": {
+        "type": "daytona",
+        "kwargs": {
+            "snapshot_template_name": "harbor-probe-paigo-dimension-pricing-tiers-8g",
+            "assume_global_snapshot": true
+        }
+    },
+    "verifier": {
+        "disable": true
+    },
+    "job_id": "12211412-abcb-45a0-9869-a9c178e79f8e"
+}

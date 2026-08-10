@@ -1,0 +1,14 @@
+diff --git a/src/dimensions/dto/tierValidator.ts b/src/dimensions/dto/tierValidator.ts
+index 2cae276995153decfc0a32341426599a4f48f527..b64cbab3bce0e90f7b9b75a8196b2f779e12a124 100644
+--- a/src/dimensions/dto/tierValidator.ts
++++ b/src/dimensions/dto/tierValidator.ts
+@@ -180,6 +180,9 @@ export class TiersCannotOverlapRule implements ValidatorConstraintInterface {
+             if (index === sortedTiers.length - 1) {
+                 return false;
+             }
++            if (tier?.upperBound === 'inf') {
++                return true;
++            }
+             const nextTier = sortedTiers[index + 1];
+             if (nextTier?.upperBound === 'inf') {
+                 return tier?.upperBound === 'inf';

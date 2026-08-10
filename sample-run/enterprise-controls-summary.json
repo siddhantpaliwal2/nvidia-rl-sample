@@ -1,0 +1,103 @@
+{
+  "generated_at": "2026-08-10T00:41:21Z",
+  "environment": "daytona",
+  "result_policy": "Null must be reward 0 with every F2P non-passing and every P2P passing; every null-fail/oracle-pass behavior must be reward-gated; oracle must report every required test passing with reward 1; both must have zero exceptions.",
+  "tasks": [
+    {
+      "task": "paigo-dimension-pricing-tiers",
+      "oracle_files": 12,
+      "changed_loc": 512,
+      "fail_to_pass": 18,
+      "pass_to_pass": 3,
+      "task_sha256": "22385853c9fa7b021ea19cda351a37b20b2105afe998a83f5d291a6e77fd44ab",
+      "null_job": "eng830-null-daytona-r10",
+      "null_reward": 0,
+      "oracle_job": "eng830-oracle-daytona-r10",
+      "oracle_reward": 1
+    },
+    {
+      "task": "paigo-top-up-billing-lifecycle",
+      "oracle_files": 28,
+      "changed_loc": 1450,
+      "fail_to_pass": 9,
+      "pass_to_pass": 2,
+      "task_sha256": "6f4175275a7e2da3eb53dc4a610abed9ca009632493e29b1bdd6c6e8d441f4c0",
+      "null_job": "eng1167-null-daytona-r6",
+      "null_reward": 0,
+      "oracle_job": "eng1167-oracle-daytona-r6",
+      "oracle_reward": 1
+    },
+    {
+      "task": "paigo-s3-datastore-measurement",
+      "oracle_files": 17,
+      "changed_loc": 1809,
+      "fail_to_pass": 9,
+      "pass_to_pass": 1,
+      "task_sha256": "90c6f4ffe3a3635480af1332d23be5cf232345dcedb8bc362b6cd6b8b34dcd05",
+      "null_job": "eng411-null-daytona-r5",
+      "null_reward": 0,
+      "oracle_job": "eng411-oracle-daytona-r5",
+      "oracle_reward": 1
+    },
+    {
+      "task": "paigo-customer-identity-migration",
+      "oracle_files": 44,
+      "changed_loc": 1823,
+      "fail_to_pass": 8,
+      "pass_to_pass": 1,
+      "task_sha256": "27740008f79a8659496ca72f56df2408af9f58a7b3b218a5fcb88574e6b0e2e7",
+      "null_job": "eng504a-null-daytona-r3",
+      "null_reward": 0,
+      "oracle_job": "eng504a-oracle-daytona-r3",
+      "oracle_reward": 1
+    },
+    {
+      "task": "paigo-customer-billing-schedule-migration",
+      "oracle_files": 23,
+      "changed_loc": 343,
+      "fail_to_pass": 6,
+      "pass_to_pass": 2,
+      "task_sha256": "2f37f40152612b938e9fab30384ec2c17083d7efab6c8a56564634affbca4bdc",
+      "null_job": "eng504b-null-daytona-r6",
+      "null_reward": 0,
+      "oracle_job": "eng504b-oracle-daytona-r6",
+      "oracle_reward": 1
+    },
+    {
+      "task": "champ-email-inbox-infrastructure",
+      "oracle_files": 16,
+      "changed_loc": 846,
+      "fail_to_pass": 10,
+      "pass_to_pass": 2,
+      "task_sha256": "df891efdb9d5778c1e89351c5fe9bad07898067a0807e1f21f66820e2e75ed66",
+      "null_job": "champ2197-null-daytona-r10",
+      "null_reward": 0,
+      "oracle_job": "champ2197-oracle-daytona-r10",
+      "oracle_reward": 1
+    },
+    {
+      "task": "finbit-bank-parser-consolidation",
+      "oracle_files": 20,
+      "changed_loc": 1134,
+      "fail_to_pass": 5,
+      "pass_to_pass": 2,
+      "task_sha256": "8d055392c41d7d158a4472144665463aabd9d64f1b212d1ffa4f13e20b5689a7",
+      "null_job": "finbit-parser-null-daytona-r2",
+      "null_reward": 0,
+      "oracle_job": "finbit-parser-oracle-daytona-r2",
+      "oracle_reward": 1
+    },
+    {
+      "task": "finbit-google-cloud-storage-migration",
+      "oracle_files": 4,
+      "changed_loc": 70,
+      "fail_to_pass": 5,
+      "pass_to_pass": 2,
+      "task_sha256": "c30f07e1a12fceacdb403edb9929cdef1446dd47d4728e3809756c20b7546eee",
+      "null_job": "finbit-cloud-null-daytona-r3",
+      "null_reward": 0,
+      "oracle_job": "finbit-cloud-oracle-daytona-r3",
+      "oracle_reward": 1
+    }
+  ]
+}

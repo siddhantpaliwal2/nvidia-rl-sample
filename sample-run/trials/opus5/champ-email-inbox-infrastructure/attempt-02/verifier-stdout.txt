@@ -1,0 +1,13 @@
+PASS src/emailinfra/emailinfra.gold.spec.ts (5.549 s)
+[32m[Nest] 4380  - [39m08/10/2026, 4:12:48 AM [32m    LOG[39m [38;5;3m[EmailinfraService] [39m[32mGetting email accounts page 0 of size 1[39m
+[32m[Nest] 4380  - [39m08/10/2026, 4:12:48 AM [32m    LOG[39m [38;5;3m[EmailinfraService] [39m[32mEmail account 1 is already associated with campaign campaign-1[39m
+[32m[Nest] 4380  - [39m08/10/2026, 4:12:48 AM [32m    LOG[39m [38;5;3m[EmailinfraService] [39m[32mFinding 3 inboxes for campaign campaign-1 of client client-1. 650 emails over 10 days at 20 emails per inbox per day[39m
+[32m[Nest] 4380  - [39m08/10/2026, 4:12:48 AM [32m    LOG[39m [38;5;3m[EmailinfraService] [39m[32mFinding 3 inboxes for campaign campaign-1 of client client-1. 650 emails over 10 days at 20 emails per inbox per day[39m
+[32m[Nest] 4380  - [39m08/10/2026, 4:12:48 AM [32m    LOG[39m [38;5;3m[EmailinfraService] [39m[32mDeleting email account inbox-1[39m
+PASS src/email-reply-agent/entities/entity.spec.ts
+
+Test Suites: 2 passed, 2 total
+Tests:       12 passed, 12 total
+Snapshots:   0 total
+Time:        5.602 s
+Test results written to: ../tmp/jest-unit.json

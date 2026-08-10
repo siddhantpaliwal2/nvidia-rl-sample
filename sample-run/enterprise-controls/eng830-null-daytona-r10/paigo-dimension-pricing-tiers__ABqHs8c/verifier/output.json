@@ -1,0 +1,264 @@
+{
+  "tests": [
+    {
+      "name": "OfferingPackageEntity Offering Line Items should respect the precision of the rate passed into it when converting to EUR",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Offering Line Items should respect the precision when using USD",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Offering Line items should be generated correctly for dimension tiers",
+      "status": "failed"
+    },
+    {
+      "name": "OfferingPackageEntity Offering Line items should be generated correctly for dimension tiers with no upperBound",
+      "status": "failed"
+    },
+    {
+      "name": "OfferingPackageEntity Offering Line items should be generated correctly for a dimension with only one tier",
+      "status": "failed"
+    },
+    {
+      "name": "OfferingPackageEntity Offering Line items should be generated correctly for a dimension where the first tier doesnt have a unit price",
+      "status": "failed"
+    },
+    {
+      "name": "OfferingPackageEntity Offering Line items should be generated correctly for a dimension where any tier doesnt have a unit price",
+      "status": "failed"
+    },
+    {
+      "name": "OfferingPackageEntity Offering Line items should be generated correctly for tiers where there is not overage",
+      "status": "failed"
+    },
+    {
+      "name": "OfferingPackageEntity Offering Line items should be genenerated correctly for a large number of tiers",
+      "status": "failed"
+    },
+    {
+      "name": "OfferingPackageEntity Offering Line items should take into account usage increment with tiers",
+      "status": "failed"
+    },
+    {
+      "name": "OfferingPackageEntity Offering Line items without tiers, consumption price or entitlements should still work fine",
+      "status": "failed"
+    },
+    {
+      "name": "OfferingPackageEntity Offering Free trial scheduler must set parameters correctly",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Subscription unenrollment should credit the remaining plan time if the boolean value is set on the unenrollment call",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Subscription offering enrollment should call scheduler",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Subscriptions that end their free trial should bill for the rest of the subscription in the billing cycle",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings FTPCOP-38: Subscription offering enrollment should create an invoice if no free trial is specified",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings FTPCOP-38: Subscription offering process billing should create an invoice",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Subscription offering enrollment should not create an invoice if a free trial is specified",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Zero consumption price dimensions should not be shown if the freeDimensionOnInvoice value is set to hide",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Zero consumption price dimensions should not be shown if the freeDimensionOnInvoice value is set to hide on unenrollment",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Zero consumption price dimensions should be shown if the freeDimensionOnInvoice value is set to show",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Zero consumption price dimensions should be shown if the freeDimensionOnInvoice value is set to show on unenrollment",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Subscription offering enrollment should call scheduler emit one and create on free trials",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Subscription process billing should create an invoice",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Subscription process billing should consider if a free trial is ending during the month",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Subscription process billing should consider if a free trial is ending much later in the future",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Subscription process billing should consider not look back at free trials which ended in the past",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Subscriptions with usage should consider free trials in the past",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings calculate expected total for remaining subscription, start: 2023 end: 2023 expected total: 75000",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings calculate expected total for remaining subscription, start: 2023 end: 2023 expected total: 100000",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings calculate expected total for remaining subscription, start: 2023 end: 2023 expected total: 53221",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings calculate expected total for remaining subscription, start: 2023 end: 2023 expected total: 53063",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings calculate expected total for remaining subscription, start: 2023 end: 2023 expected total: 53332",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings calculate expected total for remaining subscription, start: 2023 end: 2023 expected total: 95133",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings calculate expected total for remaining subscription, start: 2023 end: 2023 expected total: 99997",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings calculate expected total for remaining subscription lower subscription price, start: 2023 end: 2023 expected total: 26",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Subscription offerings which upgrade should calculate the start time of the subscription to be right now, not the start of the day",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Subscription offerings Subscription Enrollment should understand upgrades when prior offering enrollment date is set",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering FTPCOP-37: Should Create an invoice for process billing when called",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Usage based offerings with a minimum charge should use the minimum charge value if the current usage is below the minimum charge dollar amount",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Usage based offerings with a minimum charge should use the usage value if the current usage is above the minimum charge dollar amount",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Usage based offerings with a minimum charge should be offering enrollment date aware if its set",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Usage based offerings with a minimum charge should be offering enrollment date aware on general process billing requests",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Usage based offerings with a minimum charge should have multiple line items if there are multiple dimensions",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Usage based offerings with a minimum charge during a free trial should have negated the minimum charge",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Unenrollments should be prorated by the number of days left in the current billing cycle",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Zero consumption price dimensions should not be shown if the freeDimensionOnInvoice value is set to hide on usage offerings",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Zero consumption price dimensions should  be shown if the freeDimensionOnInvoice value is set to show on usage offerings",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering FTPCOP-37: Should not create an invoice immedaitely when enrolled is called",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering FTPCOP-5: Should use free trial date exactly when calculating usage",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Usage based offerings for unenrollment should only bill for this month so far",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Usage Based offerings should not call the credit creation service when unenrollment occurs",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Usage Based offerings should not call invoice creation when changing plans and the invoice generation state is set to per billing cycle",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Usage Based offerings should consolidate invoices if the consolidate invoice flag is set on the offering and process billing is called",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering should apply the correct discount to the invoice",
+      "status": "passed"
+    },
+    {
+      "name": "OfferingPackageEntity Usage based offering Usage based offerings should consolidate invoices and pass along the generated invoice as an argument to the consolidate invoice function",
+      "status": "passed"
+    },
+    {
+      "name": "Dimension tier contract accepts an ordered schedule with an optional free first tier",
+      "status": "failed"
+    },
+    {
+      "name": "Dimension tier contract rejects finite bounds that do not align to the usage increment",
+      "status": "failed"
+    },
+    {
+      "name": "Dimension tier contract rejects descending or overlapping bounds",
+      "status": "failed"
+    },
+    {
+      "name": "Dimension tier contract requires an infinite bound to be the final tier",
+      "status": "failed"
+    },
+    {
+      "name": "Dimension tier contract rejects tier schedules combined with legacy pricing fields",
+      "status": "failed"
+    },
+    {
+      "name": "Dimension tier contract requires a price on every tier after the first",
+      "status": "failed"
+    },
+    {
+      "name": "Dimension tier contract persists and restores a schedule without changing its values",
+      "status": "failed"
+    },
+    {
+      "name": "Dimension tier contract includes persisted tiers when constructing a read DTO",
+      "status": "failed"
+    },
+    {
+      "name": "Dimension tier contract accepts null as the explicit clear operation on update",
+      "status": "failed"
+    }
+  ]
+}

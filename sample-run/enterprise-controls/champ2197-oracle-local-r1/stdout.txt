@@ -1,0 +1,47 @@
+FAIL src/emailinfra/emailinfra.gold.spec.ts
+  ● Test suite failed to run
+
+    [96msrc/emailinfra/emailinfra.service.ts[0m:[93m12[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module 'ramda' or its corresponding type declarations.
+
+    [7m12[0m import * as R from 'ramda';
+    [7m  [0m [91m                   ~~~~~~~[0m
+
+PASS src/email-reply-agent/entities/entity.spec.ts
+FAIL src/emailinfra/entities/emailAccount.entity.spec.ts
+  ● Test suite failed to run
+
+    [96msrc/emailinfra/entities/emailAccount.entity.ts[0m:[93m5[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module 'ramda' or its corresponding type declarations.
+
+    [7m5[0m import * as R from 'ramda';
+    [7m [0m [91m                   ~~~~~~~[0m
+
+Test Suites: 2 failed, 1 passed, 3 total
+Tests:       2 passed, 2 total
+Snapshots:   0 total
+Time:        3.391 s
+Test results written to: ../tmp/jest-unit.json
+{
+  "tests": [
+    {
+      "name": "Entity email template  should be defined",
+      "status": "passed"
+    },
+    {
+      "name": "Entity email template  should be able to get email template by id",
+      "status": "passed"
+    }
+  ]
+}
+
+required passed: 2/12
+  NOT PASSED (not-run): Email inbox infrastructure contract derives stable identity, domain, counters, and deliverability bands
+  NOT PASSED (not-run): Email inbox infrastructure contract persists the normalized email account in the dedicated collection
+  NOT PASSED (not-run): Email inbox infrastructure contract looks up accounts through inbox-specific datastore fields
+  NOT PASSED (not-run): Email inbox infrastructure contract rejects a lookup when no account has the requested email
+  NOT PASSED (not-run): Email inbox infrastructure contract deduplicates campaign associations and refuses partial id sets
+  NOT PASSED (not-run): Email inbox infrastructure contract skips existing campaign links and persists each new association once
+  NOT PASSED (not-run): Email inbox infrastructure contract requests the documented multi-factor ranking and page limit
+  NOT PASSED (not-run): Email inbox infrastructure contract sizes a campaign pool from volume, duration, and daily capacity
+  NOT PASSED (not-run): Email inbox infrastructure contract hydrates Smartlead reputation and creation time before saving
+  NOT PASSED (not-run): Email inbox infrastructure contract surfaces a missing Smartlead inbox and delegates deletion safely
+reward: 0

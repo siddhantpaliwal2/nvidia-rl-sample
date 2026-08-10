@@ -1,0 +1,31 @@
+# syntax=docker/dockerfile:1
+# Build context must be a checkout of paigo-backend at the task base commit.
+#
+#   docker build -f Dockerfile.repo -t paigo-backend-eng830-base:v1 /path/to/checkout
+FROM node:20-bookworm
+
+RUN apt-get update && apt-get install -y --no-install-recommends git python3 \
+ && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+COPY . /app/
+
+# Remove local configuration and credential-bearing developer artifacts before
+# dependencies or source enter the evaluation image.
+RUN find . -type f -not -path './.git/*' \
+      \( -name '.env' -o -name '.env.*' -o -name '*.pem' -o -name '*.key' \) \
+      -delete \
+ && rm -rf node_modules dist
+
+RUN npm ci --ignore-scripts
+RUN npm run build
+
+# The historical checkout may contain earlier tests. They remain visible so an
+# agent can run regressions, but the gold PR tests are injected only at grade time.
+RUN rm -rf .git && git init -qb main \
+ && git config user.email evaluator@example.invalid \
+ && git config user.name evaluator \
+ && git add -A && git commit -qm 'import task base'
+
+RUN mkdir -p /logs/verifier
+CMD ["/bin/bash"]
