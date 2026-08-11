@@ -12,7 +12,7 @@
   - [Pass@k results](#passk-results)
   - [Measured effort](#measured-effort)
   - [Per-attempt Nemotron matrix](#per-attempt-nemotron-matrix)
-  - [Trace-backed capability gaps](#trace-backed-capability-gaps)
+  - [Cross-trace capability and training gaps](#cross-trace-capability-and-training-gaps)
   - [Fairness and validity](#fairness-and-validity)
 - [Nemotron's win conditions](#nemotrons-win-conditions)
   - [Complete the full pricing vertical slice](#1-complete-the-full-pricing-vertical-slice)
@@ -224,25 +224,232 @@ complete assertion matrix; those trials remain reward 0.
 | Google storage | 3 | 0 | 4/7 | 41 | 44 | 2m 52.9s | 1.56M (0.89M) / 10.2k | $0.63 | complete |
 | Google storage | 4 | 0 | 4/7 | 37 | 42 | 1m 44.5s | 1.18M (0.79M) / 6.9k | $0.42 | complete |
 
-### Trace-backed capability gaps
+### Cross-trace capability and training gaps
 
-| Task | Repeated Nemotron blocker | Comparator evidence | Minimum behavioral condition for a future win |
-|---|---|---|---|
-| Top-up lifecycle | 4/4 miss schema legality, persisted defaults, refill-gap accounting, usage deduction, and the no-usage path | Opus 4/4 | Carry the `topUp` contract through validation, persistence, scheduler identity, wallet accounting, and hourly processing as one invariant |
-| S3 datastore | 4/4 miss scoped IAM provisioning, trust updates, persisted config, business derivation, and mirrored DLQ keys | Opus 3/4 | Complete both control plane and data plane; config-only or connector-only work cannot score |
-| Customer identity | 4/4 miss query forwarding, offering deletion guard, and usage-result wrapping | Opus 4/4 | Preserve existing API semantics while migrating ownership tags and repository relations |
-| Billing schedule | 4/4 miss invoice construction/time range and exclusive billing-queue routing | Opus 3/4 | Connect scheduler emission to the correct queue and complete the usage-to-invoice record |
-| Email inboxes | 4/4 fail suite loading because `EmailAccount` is not exported from either accepted entity module | Opus 3/4 | Expose the expected domain entity before satisfying persistence, atomic association, ranking, hydration, and deletion |
-| Bank parser | 4/4 miss heterogeneous bank routing; Opus also misses it 4/4 | Opus 0/4, but 6/7 every time | Resolve the shared-parser routing table without regressing dates, continuation rows, or bank-specific fallbacks |
-| Google storage | 4/4 miss configured-client upload, download, and persisted-GOOGLE dispatch | Opus 3/4 | Use the injected `Storage` boundary end to end while preserving local, Azure, and S3 fallback behavior |
+The generated reasoning text is useful as an observable record of what the
+agent said it was tracking, but it should not be treated as a faithful readout
+of hidden model cognition. Research on chain-of-thought faithfulness shows why the edits, tool
+calls, and verifier must remain the source of truth
+([Chen et al., 2025](https://arxiv.org/abs/2505.05410)).
+The papers below provide diagnostic vocabulary and intervention hypotheses;
+they did not study Nemotron or these tasks.
 
-Selected trace pairs:
+Across the 32 traces per model, the visible work loop also differs:
 
-- Pricing: [Nemotron solve](trials/nemotron3-ultra/paigo-dimension-pricing-tiers/attempt-02/trajectory.json) and [Opus solve](trials/opus5/paigo-dimension-pricing-tiers/attempt-01/trajectory.json)
-- Top-up: [Nemotron long failure](trials/nemotron3-ultra/paigo-top-up-billing-lifecycle/attempt-02/trajectory.json) and [Opus solve](trials/opus5/paigo-top-up-billing-lifecycle/attempt-01/trajectory.json)
-- S3: [Nemotron best partial](trials/nemotron3-ultra/paigo-s3-datastore-measurement/attempt-03/trajectory.json) and [Opus solve](trials/opus5/paigo-s3-datastore-measurement/attempt-01/trajectory.json)
-- Billing: [Nemotron near miss](trials/nemotron3-ultra/paigo-customer-billing-schedule-migration/attempt-01/trajectory.json) and [Opus solve](trials/opus5/paigo-customer-billing-schedule-migration/attempt-02/trajectory.json)
-- Parser: [Nemotron 6/7](trials/nemotron3-ultra/finbit-bank-parser-consolidation/attempt-01/trajectory.json) and [Opus 6/7](trials/opus5/finbit-bank-parser-consolidation/attempt-01/trajectory.json)
+| Observable trace marker | Nemotron | Opus | What was counted |
+|---|---:|---:|---|
+| Used `git diff` or `git status` | 3/32 | 32/32 | Any repository-state inspection in a shell call |
+| Created or edited a spec/test file | 9/32 | 23/32 | Any write/edit whose path is a test or spec |
+| Ran validation after the final source edit | 20/32 | 28/32 | A later build, test, lint, or compiler command |
+| Validation calls per attempt | 5.9 mean / 4 median | 12.3 mean / 10 median | Build, test, lint, type-check, or compiler calls |
+
+These markers are correlational, not a causal explanation: every Opus run
+inspected repository state and eight still failed, while Nemotron pricing attempt 4
+solved without a final diff. They show how much executable evidence each model
+usually created before stopping.
+
+#### 1. Constraint recognition did not reliably bind requirements to edits
+
+[PDoctor](https://arxiv.org/abs/2404.17833) defines an erroneous agent plan by
+whether its execution violates constraints derived from the user request;
+[AgentDebug](https://arxiv.org/abs/2509.25370) similarly separates planning,
+action, reflection, memory, and system errors so an early mismatch can be
+localized instead of hidden by later work.
+
+The billing trace shows that the issue was not initial comprehension. Nemotron
+[attempt 1, steps 8 and 13](trials/nemotron3-ultra/paigo-customer-billing-schedule-migration/attempt-01/trajectory.json)
+correctly enumerated all nine ticket requirements. At step 40 it then closed
+the queue requirement as:
+
+```text
+Route billing scheduler emissions to scheduler_billing_queue ...
+(already done in scheduler.service.ts)
+```
+
+It never edited that emitter. The verifier consequently failed exclusive
+billing-queue routing and invoice construction, leaving the run at
+[6/8](trials/nemotron3-ultra/paigo-customer-billing-schedule-migration/attempt-01/verifier-output.json).
+Opus [attempt 2](trials/opus5/paigo-customer-billing-schedule-migration/attempt-02/trajectory.json)
+kept the emitter as an explicit todo and changed the actual branch:
+
+```ts
+if (schedulerEntity.schedulerType === schedulerType.billing) {
+  await this.billingQueue.add(
+    billingScheduleConsumers.billingReport,
+    { ...schedulerEntity },
+  );
+} else {
+  await this.queue.add(dimensionType, schedulerEntity);
+}
+```
+
+That run passed [8/8](trials/opus5/paigo-customer-billing-schedule-migration/attempt-02/verifier-output.json).
+The training target is a requirement-to-action ledger: a checklist item can
+close only with a file/function edit or an executed test that proves the
+existing behavior.
+
+The same disconnect appears in S3 attempt 3. The opening plan named
+`MeasurementConfigService.create`, but the final summary mentioned only an
+`update()` change; the create path never orchestrated generated IAM state into
+persistence. Opus placed provisioning before transformation and storage:
+
+```ts
+await MeasurementConfigEntity.setupAccessIfRequired(measurementConfigEntity);
+const dbModel = MeasurementConfigEntity.transformer(measurementConfigEntity, this.InfluxService);
+await loadPoints(`${process.env.STAGE}-config`, 'paigo', dbModel);
+```
+
+Nemotron passed [4/10](trials/nemotron3-ultra/paigo-s3-datastore-measurement/attempt-03/verifier-output.json);
+the paired Opus run passed [10/10](trials/opus5/paigo-s3-datastore-measurement/attempt-01/verifier-output.json).
+
+#### 2. Stated intent was sometimes substituted for runtime state
+
+[CRITIC](https://arxiv.org/abs/2305.11738) reports that tool-grounded critique
+can improve correction, while work on
+[intrinsic self-correction](https://arxiv.org/abs/2310.01798) finds that asking
+a model to reconsider without external feedback can fail or even degrade the
+answer. The relevant gap here is not whether Nemotron wrote a rationale; it is
+whether the rationale was checked against the object that crossed the system
+boundary.
+
+In top-up [attempt 2](trials/nemotron3-ultra/paigo-top-up-billing-lifecycle/attempt-02/trajectory.json),
+the source comment and final summary both said `storePaymentAsCredit: true`,
+but the actual invoice input omitted it:
+
+```ts
+// Create invoice with storePaymentAsCredit: true
+await this.invoicesService.create({
+  businessID: this.businessID,
+  customerId: customer.customerId,
+  items: lineItems,
+  currency: Offering.getCurrency({ customer, offering: this }),
+});
+```
+
+The paired Opus trace put the flag in the serialized command:
+
+```ts
+await this.invoicesService.create({
+  businessID: this.businessID,
+  customerId,
+  items: lineItems,
+  storePaymentAsCredit: true,
+});
+```
+
+Nemotron passed [3/11](trials/nemotron3-ultra/paigo-top-up-billing-lifecycle/attempt-02/verifier-output.json);
+Opus passed [11/11](trials/opus5/paigo-top-up-billing-lifecycle/attempt-01/verifier-output.json).
+The training target is value-flow verification: inspect the final DTO, queue
+payload, database point, or provider argument, not the nearby comment.
+
+#### 3. Conditional prose collapsed into one plausible happy path
+
+PDoctor's constraint view is especially useful for requirements expressed as
+“when present / otherwise.” They are a matrix of runtime states, not one
+implementation choice.
+
+Cloud-storage [attempt 4](trials/nemotron3-ultra/finbit-google-cloud-storage-migration/attempt-04/trajectory.json)
+used the ambient default in both directions:
+
+```groovy
+Storage storage = StorageOptions.getDefaultInstance().getService()
+```
+
+The task also required an optional classpath service account and a fallback
+when it was absent. Opus encoded those as ordered alternatives shared by upload
+and download:
+
+```groovy
+[
+  { -> fetchGoogleCloudStorageServiceUsingServiceAccount() },
+  { -> StorageOptions.newBuilder().build().getService() },
+  { -> StorageOptions.getDefaultInstance().getService() }
+]
+```
+
+Nemotron then said implementation was complete because the repository had no
+usable test script, but the hidden verifier showed the configured-client paths
+were missing: [4/7](trials/nemotron3-ultra/finbit-google-cloud-storage-migration/attempt-04/verifier-output.json)
+versus Opus [7/7](trials/opus5/finbit-google-cloud-storage-migration/attempt-01/verifier-output.json).
+The training target is an explicit condition matrix with one test per branch,
+including absence, blank values, legacy providers, and persisted routing.
+
+#### 4. Tests checked construction instead of the public contract
+
+[SWT-Bench](https://openreview.net/forum?id=9Y8zUO11EQ) finds that generated
+issue-reproduction tests are an effective filter for proposed fixes, more than
+doubling SWE-Agent's precision on fixes that passed them.
+[SWE-Gym](https://arxiv.org/abs/2412.21139) further shows that executable
+real-world environments can train both software agents and trajectory-based
+verifiers.
+
+Email-infrastructure [attempt 3](trials/nemotron3-ultra/champ-email-inbox-infrastructure/attempt-03/trajectory.json)
+did write tests, but both stopped at dependency-injection construction:
+
+```ts
+it('should be defined', () => {
+  expect(service).toBeDefined();
+});
+```
+
+It also created `entities/email-account.entity.ts`. The public verifier imports
+the accepted `EmailAccount` module path, so the suite could not load and only
+2/12 regression checks were confirmed. Opus
+[attempt 2](trials/opus5/champ-email-inbox-infrastructure/attempt-02/trajectory.json)
+created `entities/emailAccount.entity.ts`, imported that exact module in its
+spec, and exercised an in-memory datastore through create, association,
+ranking, hydration, and deletion. It passed
+[12/12](trials/opus5/champ-email-inbox-infrastructure/attempt-02/verifier-output.json).
+The training target is test-first contract discovery: the test must import and
+exercise the public behavior that would disprove the patch, not merely prove
+that an internal class can be instantiated.
+
+#### 5. External feedback did not consistently trigger targeted recovery
+
+The distinction between intrinsic reconsideration and tool-grounded correction
+in CRITIC and the self-correction study appears directly in the traces.
+Nemotron top-up attempt 2 ended with:
+
+```text
+The 6 test failures are pre-existing environment issues ...
+not related to the top-up feature implementation.
+```
+
+No task-specific reproduction established that attribution, and the hidden
+verifier later confirmed eight missing contracts. Billing attempt 1 similarly
+treated 70 visible passing tests as proof of queue behavior that the emitter
+did not contain. By contrast, the Opus email and S3 solves added behavioral
+tests at the public boundary and used their results to change the implementation.
+
+The training target is failure triage tied to evidence: classify every failing
+command, reproduce the nearest requested negative path, and forbid a success
+claim while any failure is merely labeled “pre-existing.”
+
+#### 6. Stopping was unreliable at both short and long horizons
+
+[Failure as a Process](https://arxiv.org/abs/2607.09510), an analysis of 1,794
+complete CLI coding-agent trajectories, finds that failures often begin early
+and remain hidden until recovery becomes impractical. The repeated-trial
+reliability framing in [tau-bench](https://arxiv.org/abs/2406.12045) is also
+relevant: an expressible capability is not yet dependable if it disappears
+across rollouts.
+
+The actual Nemotron endings split into two different gaps:
+
+- Four short unfinished exits stopped after 12-51 tools; pricing attempt 3 made
+  no edits or validation and scored 3/21.
+- Four later cutoffs ended on `length`, malformed tool syntax, or garbled output
+  after 52-128 tools; identity attempt 3 reached a missing dependency fix but
+  emitted malformed tool syntax and the verifier aborted.
+- Of the remaining 24 traces with a completion signal, only two solved. Twenty
+  failed runs nevertheless marked every todo complete.
+
+This is not evidence for a context-window diagnosis: only the recorded
+`reason="length"`, unfinished checklists, malformed calls, and verifier results
+support the claim. The training target is a resumable stop policy plus a final
+contract audit: inspect the diff, map each requirement to evidence, run the
+nearest negative path after the last edit, and stop only when unresolved items
+are explicit.
 
 ### Fairness and validity
 
