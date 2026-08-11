@@ -19,6 +19,7 @@
   - [Preserve the legacy negative path](#2-preserve-the-legacy-negative-path)
   - [Convert conditional efficiency into reliability](#3-convert-conditional-efficiency-into-reliability)
 - [Load-bearing failures](#load-bearing-failures)
+  - [Execution termination: early exit versus false completion](#execution-termination-early-exit-versus-false-completion)
   - [Billing: visible success misses queue and invoice contracts](#billing-visible-success-misses-queue-and-invoice-contracts)
   - [Top-up: effort without state-machine closure](#top-up-effort-without-state-machine-closure)
   - [S3: control plane and data plane remain disconnected](#s3-control-plane-and-data-plane-remain-disconnected)
@@ -313,6 +314,58 @@ stops after 12 tool calls. The practical win condition is not simply lower
 cost; it is retaining the successful vertical-slice strategy across rollouts.
 
 ## Load-bearing failures
+
+### Execution termination: early exit versus false completion
+
+Yes, early termination is visible in the tool logs, but it explains only part
+of the result. There is no callable `complete` tool in these trajectories.
+OpenCode records `reason="stop"` when the model returns a terminal response,
+and Nemotron separately uses `todowrite` to mark checklist items complete.
+Neither signal means that the hidden task contract passed.
+
+| Observed ending | Runs | Tool-level evidence | Verifier outcome |
+|---|---:|---|---:|
+| Short unfinished exit | 4/32 | 12-51 tool calls; no final validation; two runs made no edits at all | 0/4 solved |
+| Later unfinished cutoff | 4/32 | 52-128 tool calls; generation ended on `length`, malformed tool syntax, or garbled output while work was still open | 0/4 solved |
+| Completion signal | 24/32 | Final success claim or every `todowrite` item marked complete | 2/24 solved |
+
+The four clearest short exits were pricing attempt 3, cloud-storage attempt 2,
+customer-identity attempt 4, and top-up attempt 4. Their endings are concrete:
+
+```text
+Pricing attempt 3
+glob -> glob -> read x8 -> stop
+0 edits; 0 build/test calls; 3/21 required checks
+
+Customer-identity attempt 4
+read/grep/glob x33 -> todowrite(1 in progress, 10 pending) -> length
+0 edits; 0 build/test calls; 1/9 required checks
+
+Top-up attempt 4
+... -> read DTO -> read service -> edit service -> "First reading." -> stop
+14 edits; 0 build/test calls; 2/11 required checks
+```
+
+Cloud-storage attempt 2 is the strongest causal example. The last sequence was
+five source edits with no build or test afterward. The final download edit used
+`Paths.get(...)` without importing `java.nio.file.Paths`; the verifier then
+aborted at compilation and reported 0/7 checks. A single post-edit compile
+would have exposed the defect before the model stopped.
+
+The broader issue is false completion. The other 22 failed runs emitted a
+success claim or closed their checklist anyway. For example, billing attempt 2
+ended with “All tasks completed” after the visible 70 tests passed, but the
+hidden verifier still found the missing usage-to-invoice path and exclusive
+billing-queue route (5/8). Top-up attempt 2 used 187 tools and still dismissed
+six visible failures as environment problems before scoring 3/11. Those are
+not short runs; they show that the model treated local evidence as proof of the
+whole enterprise workflow.
+
+The training target therefore has two parts: make tool-use termination robust
+enough to survive malformed or length-limited generations, and require a final
+contract audit before `todowrite` items or the task itself can be closed. Every
+last source edit should be followed by the nearest build/test, and every
+“already done” or “pre-existing failure” claim should need direct evidence.
 
 ### Billing: visible success misses queue and invoice contracts
 
