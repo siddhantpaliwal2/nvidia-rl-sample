@@ -154,5 +154,5 @@ check('Bank parser consolidation preserves the dedicated Bank of Baroda saving-a
     }
 }
 
-new File('/tmp/finbit-unit.json').text = JsonOutput.prettyPrint(JsonOutput.toJson([tests: results]))
+new File('/tmp/bank-parser-unit.json').text = JsonOutput.prettyPrint(JsonOutput.toJson([tests: results]))
 if (results.any { it.status != 'passed' }) System.exit(1)

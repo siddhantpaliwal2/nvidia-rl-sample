@@ -92,8 +92,8 @@ describe('S3 datastore measurement configuration', () => {
         process.env.DB_MEASUREMENT_DLQ_BUCKET_NAME = 'usage-dlq';
         process.env.AWS_REGION = 'us-east-1';
         process.env.STAGE = 'test';
-        mockCreatePolicy.mockResolvedValue({ Policy: { Arn: 'arn:aws:iam::paigo:policy/datastore' } });
-        mockCreateRole.mockResolvedValue({ Role: { Arn: 'arn:aws:iam::paigo:role/datastore' } });
+        mockCreatePolicy.mockResolvedValue({ Policy: { Arn: 'arn:aws:iam::000000000000:policy/datastore' } });
+        mockCreateRole.mockResolvedValue({ Role: { Arn: 'arn:aws:iam::000000000000:role/datastore' } });
         mockAttachRolePolicy.mockResolvedValue({});
         mockPutRolePolicy.mockResolvedValue({});
         mockUpdateAssumeRolePolicy.mockResolvedValue({});
@@ -196,7 +196,7 @@ describe('S3 datastore measurement configuration', () => {
         const result = await DatastoreAccessInformation.setupAccess(accessEntity('123456789012'));
         expect(result).toEqual(
             expect.objectContaining({
-                iamRoleArn: 'arn:aws:iam::paigo:role/datastore',
+                iamRoleArn: 'arn:aws:iam::000000000000:role/datastore',
                 ingestion: 's3://usage-bucket/business-1',
                 dlq: 's3://usage-dlq/business-1',
                 region: 'us-east-1',
@@ -220,7 +220,7 @@ describe('S3 datastore measurement configuration', () => {
         expect(JSON.stringify(policy.Resource || policy.Statement)).toContain('usage-dlq/business-1');
         if (managedPolicy) {
             expect(mockAttachRolePolicy).toHaveBeenCalledWith({
-                PolicyArn: 'arn:aws:iam::paigo:policy/datastore',
+                PolicyArn: 'arn:aws:iam::000000000000:policy/datastore',
                 RoleName: 'datastore-business-1-measurement-1',
             });
         } else {
@@ -254,7 +254,7 @@ describe('S3 datastore measurement configuration', () => {
         );
         expect(returnedConfiguration).toEqual(
             expect.objectContaining({
-                iamRoleArn: 'arn:aws:iam::paigo:role/datastore',
+                iamRoleArn: 'arn:aws:iam::000000000000:role/datastore',
                 ingestion: 's3://usage-bucket/business-1',
                 dlq: 's3://usage-dlq/business-1',
             }),

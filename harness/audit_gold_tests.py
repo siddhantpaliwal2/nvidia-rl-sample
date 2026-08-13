@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from collections import Counter
 from pathlib import Path
 
@@ -23,6 +24,25 @@ PUBLIC_NAMES = {
     "finbit-bank-parser-consolidation": "bank-parser-consolidation",
     "finbit-google-cloud-storage-migration": "google-cloud-storage-migration",
 }
+PRIVACY_REDACTIONS = {
+    "bank-parser-consolidation": (
+        (b"/tmp/finbit-unit.json", b"/tmp/bank-parser-unit.json"),
+    ),
+    "google-cloud-storage-migration": (
+        (b"/tmp/finbit-cloud-unit.json", b"/tmp/cloud-storage-unit.json"),
+    ),
+    "customer-identity-migration": (
+        (b"label_paigo_dimension_id", b"label_platform_dimension_id"),
+        (b"label_paigo_customer_id", b"label_platform_customer_id"),
+    ),
+    "s3-datastore-measurement": (
+        (b"arn:aws:iam::paigo:", b"arn:aws:iam::000000000000:"),
+    ),
+}
+RESTRICTED_NAMES = re.compile(
+    rb"paigo|paygo|champ|finbit|boost[ -]?money|boostmoney|finboost|fin360",
+    flags=re.IGNORECASE,
+)
 
 
 def added_file_bodies(patch: str) -> list[bytes]:
@@ -53,6 +73,12 @@ def digest_counts(items: list[bytes]) -> Counter[str]:
     return Counter(hashlib.sha256(item).hexdigest() for item in items)
 
 
+def redact(task: str, content: bytes) -> bytes:
+    for source, replacement in PRIVACY_REDACTIONS.get(task, ()):
+        content = content.replace(source, replacement)
+    return content
+
+
 def main() -> int:
     errors: list[str] = []
     task_names = {path.name for path in TASKS.iterdir() if path.is_dir()}
@@ -76,11 +102,22 @@ def main() -> int:
     for task in sorted(task_names):
         public_name = PUBLIC_NAMES.get(task, task)
         config = json.loads((TASKS / task / "tests" / "config.json").read_text())
-        patch_files = added_file_bodies(config.get("test_patch", ""))
+        patch_files = [
+            redact(public_name, content)
+            for content in added_file_bodies(config.get("test_patch", ""))
+        ]
         readable_paths = sorted(
             path for path in (GOLD_TESTS / public_name).rglob("*") if path.is_file()
         )
         readable_files = [path.read_bytes() for path in readable_paths]
+        restricted = [
+            path.relative_to(ROOT).as_posix()
+            for path, content in zip(readable_paths, readable_files)
+            if RESTRICTED_NAMES.search(content)
+            or RESTRICTED_NAMES.search(path.as_posix().encode())
+        ]
+        if restricted:
+            errors.append(f"restricted source names remain in {public_name}: {restricted}")
         complete = digest_counts(patch_files) == digest_counts(readable_files)
         if not complete:
             errors.append(f"readable suite differs from task test patch: {public_name}")

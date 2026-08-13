@@ -94,5 +94,5 @@ check('Google storage migration preserves Azure target routing') {
     assert HelperMethod.downloadObjectFromLocalOrS3OrAzure(document).bytes == 'azure payload'.bytes
 }
 
-new File('/tmp/finbit-cloud-unit.json').text = JsonOutput.prettyPrint(JsonOutput.toJson([tests: results]))
+new File('/tmp/cloud-storage-unit.json').text = JsonOutput.prettyPrint(JsonOutput.toJson([tests: results]))
 if (results.any { it.status != 'passed' }) System.exit(1)

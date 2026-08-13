@@ -88,7 +88,7 @@ describe('Customer identity migration', () => {
         );
         await StandardMeasurementPreProcessorEntity.createStandardMeasurement(input, 'pod-1', {
             getLatestPodLabelsByID: jest.fn(async () => [
-                { label_paigo_dimension_id: 'dimension-1', label_paigo_customer_id: 'customer-1' },
+                { label_platform_dimension_id: 'dimension-1', label_platform_customer_id: 'customer-1' },
             ]),
         } as any);
         expect(publish).toHaveBeenCalledWith(
