@@ -20,7 +20,7 @@
     ],
     "extra_test_files": [
       {
-        "source": "gold-tests/paigo-dimension-pricing-tiers.gold-spec.ts",
+        "source": "gold-tests/dimension-pricing-tiers/dimension-pricing-tiers.gold-spec.ts",
         "target": "src/dimensions/dto/dimensionTiers.gold.spec.ts"
       }
     ]
@@ -46,7 +46,7 @@
     ],
     "extra_test_files": [
       {
-        "source": "gold-tests/paigo-top-up-billing-lifecycle.gold-spec.ts",
+        "source": "gold-tests/top-up-billing-lifecycle/top-up-billing-lifecycle.gold-spec.ts",
         "target": "src/offering/topUpBilling.gold.spec.ts"
       }
     ]
@@ -90,7 +90,7 @@
     ],
     "extra_test_files": [
       {
-        "source": "gold-tests/paigo-s3-datastore-measurement.gold-spec.ts",
+        "source": "gold-tests/s3-datastore-measurement/s3-datastore-measurement.gold-spec.ts",
         "target": "src/measurement-config/datastoreMeasurement.gold.spec.ts"
       }
     ]
@@ -115,7 +115,7 @@
     ],
     "extra_test_files": [
       {
-        "source": "gold-tests/paigo-customer-identity-migration.gold-spec.ts",
+        "source": "gold-tests/customer-identity-migration/customer-identity-migration.gold-spec.ts",
         "target": "src/customer/customerIdentityMigration.gold.spec.ts"
       }
     ]
@@ -134,7 +134,7 @@
     "test_paths": [],
     "extra_test_files": [
       {
-        "source": "gold-tests/paigo-customer-billing-schedule-migration.gold-spec.ts",
+        "source": "gold-tests/customer-billing-schedule-migration/customer-billing-schedule-migration.gold-spec.ts",
         "target": "src/billing/customerBillingScheduleMigration.gold.spec.ts"
       }
     ]
@@ -170,51 +170,51 @@
     "test_paths": [],
     "extra_test_files": [
       {
-        "source": "gold-tests/finbit-bank-parser-consolidation/finbit_parser_spec.groovy",
+        "source": "gold-tests/bank-parser-consolidation/bank_parser_spec.groovy",
         "target": "xai-tests/finbit_parser_spec.groovy"
       },
       {
-        "source": "gold-tests/finbit-bank-parser-consolidation/stubs/com/bankScraper/AppUtil.groovy",
+        "source": "gold-tests/bank-parser-consolidation/stubs/com/bankScraper/AppUtil.groovy",
         "target": "xai-tests/stubs/com/bankScraper/AppUtil.groovy"
       },
       {
-        "source": "gold-tests/finbit-bank-parser-consolidation/stubs/com/bankScraper/Enums.groovy",
+        "source": "gold-tests/bank-parser-consolidation/stubs/com/bankScraper/Enums.groovy",
         "target": "xai-tests/stubs/com/bankScraper/Enums.groovy"
       },
       {
-        "source": "gold-tests/finbit-bank-parser-consolidation/stubs/com/bankScraper/HelperMethod.groovy",
+        "source": "gold-tests/bank-parser-consolidation/stubs/com/bankScraper/HelperMethod.groovy",
         "target": "xai-tests/stubs/com/bankScraper/HelperMethod.groovy"
       },
       {
-        "source": "gold-tests/finbit-bank-parser-consolidation/stubs/com/bankScraper/LogEntry.groovy",
+        "source": "gold-tests/bank-parser-consolidation/stubs/com/bankScraper/LogEntry.groovy",
         "target": "xai-tests/stubs/com/bankScraper/LogEntry.groovy"
       },
       {
-        "source": "gold-tests/finbit-bank-parser-consolidation/stubs/com/constants/AppConstant.groovy",
+        "source": "gold-tests/bank-parser-consolidation/stubs/com/constants/AppConstant.groovy",
         "target": "xai-tests/stubs/com/constants/AppConstant.groovy"
       },
       {
-        "source": "gold-tests/finbit-bank-parser-consolidation/stubs/com/bankScraper/bank/AndhraBankUtil.groovy",
+        "source": "gold-tests/bank-parser-consolidation/stubs/com/bankScraper/bank/AndhraBankUtil.groovy",
         "target": "xai-tests/stubs/com/bankScraper/bank/AndhraBankUtil.groovy"
       },
       {
-        "source": "gold-tests/finbit-bank-parser-consolidation/stubs/com/bankScraper/bank/BankOfBarodaUtil.groovy",
+        "source": "gold-tests/bank-parser-consolidation/stubs/com/bankScraper/bank/BankOfBarodaUtil.groovy",
         "target": "xai-tests/stubs/com/bankScraper/bank/BankOfBarodaUtil.groovy"
       },
       {
-        "source": "gold-tests/finbit-bank-parser-consolidation/stubs/com/bankScraper/bank/BankTransactionResponse.groovy",
+        "source": "gold-tests/bank-parser-consolidation/stubs/com/bankScraper/bank/BankTransactionResponse.groovy",
         "target": "xai-tests/stubs/com/bankScraper/bank/BankTransactionResponse.groovy"
       },
       {
-        "source": "gold-tests/finbit-bank-parser-consolidation/stubs/com/bankScraper/bank/BankUtil.groovy",
+        "source": "gold-tests/bank-parser-consolidation/stubs/com/bankScraper/bank/BankUtil.groovy",
         "target": "xai-tests/stubs/com/bankScraper/bank/BankUtil.groovy"
       },
       {
-        "source": "gold-tests/finbit-bank-parser-consolidation/stubs/com/bankScraper/bank/MainBankService.groovy",
+        "source": "gold-tests/bank-parser-consolidation/stubs/com/bankScraper/bank/MainBankService.groovy",
         "target": "xai-tests/stubs/com/bankScraper/bank/MainBankService.groovy"
       },
       {
-        "source": "gold-tests/finbit-bank-parser-consolidation/stubs/com/bankScraper/bank/ProcessedBankStatementVO.groovy",
+        "source": "gold-tests/bank-parser-consolidation/stubs/com/bankScraper/bank/ProcessedBankStatementVO.groovy",
         "target": "xai-tests/stubs/com/bankScraper/bank/ProcessedBankStatementVO.groovy"
       }
     ]
@@ -234,87 +234,87 @@
     "test_paths": [],
     "extra_test_files": [
       {
-        "source": "gold-tests/finbit-google-cloud-storage-migration/finbit_cloud_storage_spec.groovy",
+        "source": "gold-tests/google-cloud-storage-migration/cloud_storage_spec.groovy",
         "target": "xai-tests/finbit_cloud_storage_spec.groovy"
       },
       {
-        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/com/amazonaws/services/s3/model/S3Requests.groovy",
+        "source": "gold-tests/google-cloud-storage-migration/stubs/com/amazonaws/services/s3/model/S3Requests.groovy",
         "target": "xai-tests/stubs/com/amazonaws/services/s3/model/S3Requests.groovy"
       },
       {
-        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/com/bankScraper/AppUtil.groovy",
+        "source": "gold-tests/google-cloud-storage-migration/stubs/com/bankScraper/AppUtil.groovy",
         "target": "xai-tests/stubs/com/bankScraper/AppUtil.groovy"
       },
       {
-        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/com/bankScraper/LogEntry.groovy",
+        "source": "gold-tests/google-cloud-storage-migration/stubs/com/bankScraper/LogEntry.groovy",
         "target": "xai-tests/stubs/com/bankScraper/LogEntry.groovy"
       },
       {
-        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/com/bankScraper/bank/BankAccount.groovy",
+        "source": "gold-tests/google-cloud-storage-migration/stubs/com/bankScraper/bank/BankAccount.groovy",
         "target": "xai-tests/stubs/com/bankScraper/bank/BankAccount.groovy"
       },
       {
-        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/com/bankScraper/bank/StatementInputs.groovy",
+        "source": "gold-tests/google-cloud-storage-migration/stubs/com/bankScraper/bank/StatementInputs.groovy",
         "target": "xai-tests/stubs/com/bankScraper/bank/StatementInputs.groovy"
       },
       {
-        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/com/bankScraper/common/EncryptDecrypt.groovy",
+        "source": "gold-tests/google-cloud-storage-migration/stubs/com/bankScraper/common/EncryptDecrypt.groovy",
         "target": "xai-tests/stubs/com/bankScraper/common/EncryptDecrypt.groovy"
       },
       {
-        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/com/bankScraper/util/ScanPdfDetector.groovy",
+        "source": "gold-tests/google-cloud-storage-migration/stubs/com/bankScraper/util/ScanPdfDetector.groovy",
         "target": "xai-tests/stubs/com/bankScraper/util/ScanPdfDetector.groovy"
       },
       {
-        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/com/constants/AppConstant.groovy",
+        "source": "gold-tests/google-cloud-storage-migration/stubs/com/constants/AppConstant.groovy",
         "target": "xai-tests/stubs/com/constants/AppConstant.groovy"
       },
       {
-        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/com/google/auth/oauth2/GoogleCredentials.groovy",
+        "source": "gold-tests/google-cloud-storage-migration/stubs/com/google/auth/oauth2/GoogleCredentials.groovy",
         "target": "xai-tests/stubs/com/google/auth/oauth2/GoogleCredentials.groovy"
       },
       {
-        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/com/google/auth/oauth2/ServiceAccountCredentials.groovy",
+        "source": "gold-tests/google-cloud-storage-migration/stubs/com/google/auth/oauth2/ServiceAccountCredentials.groovy",
         "target": "xai-tests/stubs/com/google/auth/oauth2/ServiceAccountCredentials.groovy"
       },
       {
-        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/com/google/cloud/storage/StorageSupport.groovy",
+        "source": "gold-tests/google-cloud-storage-migration/stubs/com/google/cloud/storage/StorageSupport.groovy",
         "target": "xai-tests/stubs/com/google/cloud/storage/StorageSupport.groovy"
       },
       {
-        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/com/microsoft/azure/storage/AzureSupport.groovy",
+        "source": "gold-tests/google-cloud-storage-migration/stubs/com/microsoft/azure/storage/AzureSupport.groovy",
         "target": "xai-tests/stubs/com/microsoft/azure/storage/AzureSupport.groovy"
       },
       {
-        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/com/microsoft/azure/storage/blob/AzureBlobSupport.groovy",
+        "source": "gold-tests/google-cloud-storage-migration/stubs/com/microsoft/azure/storage/blob/AzureBlobSupport.groovy",
         "target": "xai-tests/stubs/com/microsoft/azure/storage/blob/AzureBlobSupport.groovy"
       },
       {
-        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/grails/plugin/awssdk/AmazonWebService.groovy",
+        "source": "gold-tests/google-cloud-storage-migration/stubs/grails/plugin/awssdk/AmazonWebService.groovy",
         "target": "xai-tests/stubs/grails/plugin/awssdk/AmazonWebService.groovy"
       },
       {
-        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/org/apache/http/impl/client/HttpClientBuilder.groovy",
+        "source": "gold-tests/google-cloud-storage-migration/stubs/org/apache/http/impl/client/HttpClientBuilder.groovy",
         "target": "xai-tests/stubs/org/apache/http/impl/client/HttpClientBuilder.groovy"
       },
       {
-        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/org/bson/types/ObjectId.groovy",
+        "source": "gold-tests/google-cloud-storage-migration/stubs/org/bson/types/ObjectId.groovy",
         "target": "xai-tests/stubs/org/bson/types/ObjectId.groovy"
       },
       {
-        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/org/codehaus/groovy/grails/commons/ApplicationHolder.groovy",
+        "source": "gold-tests/google-cloud-storage-migration/stubs/org/codehaus/groovy/grails/commons/ApplicationHolder.groovy",
         "target": "xai-tests/stubs/org/codehaus/groovy/grails/commons/ApplicationHolder.groovy"
       },
       {
-        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/org/openqa/selenium/SeleniumSupport.groovy",
+        "source": "gold-tests/google-cloud-storage-migration/stubs/org/openqa/selenium/SeleniumSupport.groovy",
         "target": "xai-tests/stubs/org/openqa/selenium/SeleniumSupport.groovy"
       },
       {
-        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/org/openqa/selenium/phantomjs/PhantomJSDriver.groovy",
+        "source": "gold-tests/google-cloud-storage-migration/stubs/org/openqa/selenium/phantomjs/PhantomJSDriver.groovy",
         "target": "xai-tests/stubs/org/openqa/selenium/phantomjs/PhantomJSDriver.groovy"
       },
       {
-        "source": "gold-tests/finbit-google-cloud-storage-migration/stubs/org/zeroturnaround/zip/ZipUtil.groovy",
+        "source": "gold-tests/google-cloud-storage-migration/stubs/org/zeroturnaround/zip/ZipUtil.groovy",
         "target": "xai-tests/stubs/org/zeroturnaround/zip/ZipUtil.groovy"
       }
     ]
@@ -346,7 +346,7 @@
     "extra_git_test_files": [],
     "extra_test_files": [
       {
-        "source": "gold-tests/champ-email-inbox-infrastructure.gold-spec.ts",
+        "source": "gold-tests/email-inbox-infrastructure/email-inbox-infrastructure.gold-spec.ts",
         "target": "src/emailinfra/emailinfra.gold.spec.ts"
       }
     ]
