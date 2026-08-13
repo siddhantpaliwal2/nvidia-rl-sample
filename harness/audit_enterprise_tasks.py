@@ -47,6 +47,16 @@ CONTROL_JOBS = {
         "finbit-cloud-oracle-daytona-r3",
     ),
 }
+PUBLIC_INSTRUCTION_NAMES = {
+    "paigo-dimension-pricing-tiers": "dimension-pricing-tiers",
+    "paigo-top-up-billing-lifecycle": "top-up-billing-lifecycle",
+    "paigo-s3-datastore-measurement": "s3-datastore-measurement",
+    "paigo-customer-identity-migration": "customer-identity-migration",
+    "paigo-customer-billing-schedule-migration": "customer-billing-schedule-migration",
+    "champ-email-inbox-infrastructure": "email-inbox-infrastructure",
+    "finbit-bank-parser-consolidation": "bank-parser-consolidation",
+    "finbit-google-cloud-storage-migration": "google-cloud-storage-migration",
+}
 SECRET_PATTERNS = {
     "aws-access-key": re.compile(rb"(?:AKIA|ASIA)[0-9A-Z]{16}"),
     "google-api-key": re.compile(rb"AIza[0-9A-Za-z_-]{30,}"),
@@ -145,7 +155,8 @@ def audit_task(task: str, spec: dict, controls_dir: Path, summary: dict) -> dict
         if config.get(key) != template.get(key):
             errors.append(f"generated config differs from template for {key}")
 
-    instruction_copy = ROOT / "instructions" / f"{task}.md"
+    instruction_name = PUBLIC_INSTRUCTION_NAMES.get(task, task)
+    instruction_copy = ROOT / "instructions" / f"{instruction_name}.md"
     if not instruction_copy.is_file():
         errors.append("missing readable instruction copy")
     elif instruction_copy.read_bytes() != (task_dir / "instruction.md").read_bytes():
