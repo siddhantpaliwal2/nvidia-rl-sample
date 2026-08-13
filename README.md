@@ -52,6 +52,11 @@ fail-to-pass assertion and every regression assertion passes. `c/4` is the
 number of full solves in four independent trials. With four attempts,
 `pass@4 = 1 - C(4-c, 4) / C(4, 4)` and is 1 if at least one rollout solves.
 
+That binary rule is the right way to report task resolution, but it is thin as a
+learning signal. [TRAINING-SIGNAL.md](TRAINING-SIGNAL.md) proposes a
+requirement-weighted `soft_score` to sit beside it, and lists the per-task
+verifier gaps to close before these tasks are used for training.
+
 The GPT-5.6 Sol rows are a **qualitative comparison cohort**, not a current
 quantitative head-to-head. Those traces contain the current assertion names
 but were collected before later verifier-fairness revisions and therefore have different
@@ -111,6 +116,8 @@ python3 harness/audit_enterprise_tasks.py
 - [`tasks/`](tasks/): Harbor/Terminal-Bench-compatible task packages.
 - [`instructions/`](instructions/): agent-visible tickets side by side.
 - [`gold-tests/`](gold-tests/): readable copies of the injected hidden tests.
+- [`TRAINING-SIGNAL.md`](TRAINING-SIGNAL.md): proposed `soft_score` training
+  signal and the verifier readiness work that precedes training.
 
 Each packaged trial contains `result.json`, `trajectory.json`,
 `verifier-output.json`, and verifier stdout where available. Credential
