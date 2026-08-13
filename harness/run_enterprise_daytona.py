@@ -25,6 +25,7 @@ from run_frontier_daytona import (
     parse_model,
     valid_existing,
 )
+from task_paths import public_task_name, task_directory
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -153,7 +154,7 @@ def verifier_completion_status(trial_dir: Path, task: str, result: dict) -> str 
 
     try:
         config = json.loads(
-            (ROOT / "tasks" / task / "tests" / "config.json").read_text()
+            (task_directory(ROOT, task) / "tests" / "config.json").read_text()
         )
         verifier = json.loads((trial_dir / "verifier" / "output.json").read_text())
     except (OSError, json.JSONDecodeError):
@@ -194,7 +195,7 @@ def run_one(
     job_timeout: int,
 ) -> dict:
     snapshot = TASK_SNAPSHOTS[task]
-    checksum = directory_sha256(ROOT / "tasks" / task)
+    checksum = directory_sha256(task_directory(ROOT, task))
     job_name = f"{run_id}-{alias}-{task}-a{attempt:02d}"
     job_dir = jobs_dir / job_name
     existing = complete_existing(
@@ -222,7 +223,7 @@ def run_one(
         "harbor",
         "run",
         "-p",
-        f"tasks/{task}",
+        f"tasks/{public_task_name(task)}",
         "-e",
         "daytona",
         "--ek",

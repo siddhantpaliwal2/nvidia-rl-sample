@@ -9,6 +9,8 @@ import json
 import re
 from pathlib import Path
 
+from task_paths import task_directory
+
 
 ROOT = Path(__file__).resolve().parent.parent
 MANIFEST = ROOT / "authoring" / "historical_tasks.json"
@@ -139,7 +141,7 @@ def control_verdicts(job_dir: Path) -> dict[str, str]:
 
 
 def audit_task(task: str, spec: dict, controls_dir: Path, summary: dict) -> dict:
-    task_dir = ROOT / "tasks" / task
+    task_dir = task_directory(ROOT, task)
     config_path = task_dir / "tests" / "config.json"
     config = json.loads(config_path.read_text())
     template = json.loads((task_dir / "tests" / "config.template.json").read_text())
@@ -291,7 +293,7 @@ def secret_findings(task_names: list[str]) -> list[dict]:
         ROOT / "sample-run" / "enterprise-champ-fairness-checkpoint.json",
         ROOT / "sample-run" / "enterprise-model-results.json",
         ROOT / "sample-run" / "enterprise-trials",
-        *(ROOT / "tasks" / task for task in task_names),
+        *(task_directory(ROOT, task) for task in task_names),
     ]
     findings = []
     seen = set()

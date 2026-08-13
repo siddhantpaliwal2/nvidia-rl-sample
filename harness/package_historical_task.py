@@ -16,6 +16,8 @@ import subprocess
 import tempfile
 from pathlib import Path
 
+from task_paths import task_directory
+
 
 ROOT = Path(__file__).resolve().parent.parent
 MANIFEST_PATH = ROOT / "authoring" / "historical_tasks.json"
@@ -150,7 +152,7 @@ def main() -> int:
     if args.task not in manifest:
         parser.error(f"unknown historical task: {args.task}")
     spec = manifest[args.task]
-    task_dir = ROOT / "tasks" / args.task
+    task_dir = task_directory(ROOT, args.task)
     template_path = task_dir / "tests" / "config.template.json"
     if not template_path.is_file():
         parser.error(f"missing verifier template: {template_path}")

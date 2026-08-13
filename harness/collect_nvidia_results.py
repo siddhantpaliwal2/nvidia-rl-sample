@@ -26,6 +26,7 @@ from run_enterprise_daytona import (
     verifier_completion_status,
 )
 from run_frontier_daytona import directory_sha256
+from task_paths import task_directory
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -219,7 +220,7 @@ def collect_trial(
 
     verifier = json.loads((trial_dir / "verifier" / "output.json").read_text())
     trajectory = json.loads((trial_dir / "agent" / "trajectory.json").read_text())
-    config = json.loads((ROOT / "tasks" / task / "tests" / "config.json").read_text())
+    config = json.loads((task_directory(ROOT, task) / "tests" / "config.json").read_text())
     required = config["fail_to_pass"] + config["pass_to_pass"]
     verdicts = {
         item["name"]: item["status"]
@@ -359,11 +360,11 @@ def historical_sol_jobs(source_raw: Path, task: str) -> list[Path]:
         for attempt in range(1, 9)
     ]
     current_required = set(
-        json.loads((ROOT / "tasks" / task / "tests" / "config.json").read_text())[
+        json.loads((task_directory(ROOT, task) / "tests" / "config.json").read_text())[
             "fail_to_pass"
         ]
         + json.loads(
-            (ROOT / "tasks" / task / "tests" / "config.json").read_text()
+            (task_directory(ROOT, task) / "tests" / "config.json").read_text()
         )["pass_to_pass"]
     )
     complete: list[Path] = []
@@ -483,7 +484,7 @@ def main() -> int:
     output_root.mkdir(parents=True)
 
     current_checksums = {
-        task: directory_sha256(ROOT / "tasks" / task) for task in TASKS
+        task: directory_sha256(task_directory(ROOT, task)) for task in TASKS
     }
     collected: dict[str, list[dict]] = {alias: [] for alias in ROUTES}
 

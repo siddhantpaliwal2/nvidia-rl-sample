@@ -16,6 +16,7 @@ from run_enterprise_daytona import (
     verifier_completion_status,
 )
 from run_frontier_daytona import directory_sha256
+from task_paths import task_directory
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -220,7 +221,7 @@ def package_artifacts(
 
 def collect_attempt(alias: str, task: str, job: str, route: str) -> dict:
     job_dir = RAW / job
-    checksum = directory_sha256(ROOT / "tasks" / task)
+    checksum = directory_sha256(task_directory(ROOT, task))
     result = complete_existing(
         job_dir,
         task,
@@ -242,7 +243,7 @@ def collect_attempt(alias: str, task: str, job: str, route: str) -> dict:
     # verifier could not emit assertion rows.  Treat the absent list as empty
     # so the packaged evidence records every required assertion as failed.
     tests = verifier.get("tests") or []
-    config = json.loads((ROOT / "tasks" / task / "tests" / "config.json").read_text())
+    config = json.loads((task_directory(ROOT, task) / "tests" / "config.json").read_text())
     required = config["fail_to_pass"] + config["pass_to_pass"]
     verdicts = {item["name"]: item["status"] for item in tests}
     agent_result = result["agent_result"]

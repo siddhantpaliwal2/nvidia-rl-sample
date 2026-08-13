@@ -8,6 +8,7 @@ import re
 from pathlib import Path
 
 from run_frontier_daytona import directory_sha256
+from task_paths import task_directory
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -42,7 +43,7 @@ def main() -> int:
     results = json.loads(RESULTS.read_text())
     controls = json.loads(CONTROLS.read_text())
     models = {item["alias"]: item for item in results["models"]}
-    current = {task: directory_sha256(ROOT / "tasks" / task) for task in TASKS}
+    current = {task: directory_sha256(task_directory(ROOT, task)) for task in TASKS}
 
     if set(models) != set(EXPECTED_ROUTES):
         errors.append(f"unexpected model aliases: {sorted(models)}")
