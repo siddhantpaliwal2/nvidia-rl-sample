@@ -25,7 +25,7 @@ from run_frontier_daytona import (
     parse_model,
     valid_existing,
 )
-from task_paths import public_task_name, task_directory
+from task_paths import internal_task_name, public_task_name, task_directory
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -339,7 +339,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--env-file", type=Path, required=True)
     parser.add_argument("--model", action="append", type=parse_model)
-    parser.add_argument("--task", action="append", choices=tuple(TASK_SNAPSHOTS))
+    parser.add_argument("--task", action="append", metavar="TASK")
     parser.add_argument("--attempt-start", type=int, default=1)
     parser.add_argument("--attempts", type=int, default=1)
     parser.add_argument("--concurrency", type=int, default=1)
@@ -373,7 +373,14 @@ def main() -> int:
     models = dict(args.model or DEFAULT_MODELS.items())
     if len(models) != len(args.model or DEFAULT_MODELS):
         parser.error("model aliases must be unique")
-    tasks = args.task or list(TASK_SNAPSHOTS)
+    tasks = (
+        [internal_task_name(task) for task in args.task]
+        if args.task
+        else list(TASK_SNAPSHOTS)
+    )
+    unknown_tasks = [task for task in tasks if task not in TASK_SNAPSHOTS]
+    if unknown_tasks:
+        parser.error(f"unknown task: {unknown_tasks[0]}")
     jobs = [
         (alias, route, task, attempt)
         for attempt in range(args.attempt_start, args.attempt_start + args.attempts)

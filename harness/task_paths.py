@@ -21,5 +21,12 @@ def public_task_name(task: str) -> str:
     return PUBLIC_TASK_NAMES.get(task, task)
 
 
+def internal_task_name(task: str) -> str:
+    for internal_name, public_name in PUBLIC_TASK_NAMES.items():
+        if task == public_name:
+            return internal_name
+    return task
+
+
 def task_directory(root: Path, task: str) -> Path:
     return root / "tasks" / public_task_name(task)
