@@ -691,6 +691,27 @@ Examples are email-entity discoverability, Finbit shared-parser routing, billing
 queue exclusivity, and S3 control-plane persistence. The reference oracle
 proves satisfiability; it is not a patch-similarity target.
 
+## Statistical precision
+
+All eight tasks that were run are reported above; no task cell is withheld.
+The aggregate solve rates carry the following Wilson 95% intervals at n=32:
+
+| Model | Solves | pass@1 | Wilson 95% CI |
+|---|---:|---:|---|
+| Nemotron 3 Ultra | 2/32 | 0.0625 | [0.0173, 0.2015] |
+| Claude Opus 5 | 24/32 | 0.7500 | [0.5789, 0.8675] |
+| GPT-5.6 Sol | 0/32 | 0.0000 | [0.0000, 0.1072] |
+
+The Nemotron/Opus aggregate separation is large relative to its interval
+(Fisher exact p = 1.8e-8) and is the only comparison this study supports at
+strength. **Individual task cells are not.** At n=4 a cell interval spans
+roughly half the unit range — 0/4 is [0.000, 0.490], 2/4 is [0.150, 0.850],
+4/4 is [0.510, 1.000]. The per-task table should therefore be read as
+directional evidence about which contracts each model closes, not as per-task
+rate estimates. In particular, the 2/4 pricing cell is consistent with any
+true rate between 15% and 85%, so "Nemotron is repeatably capable on tiered
+pricing" is a claim about the two observed traces, not a measured rate.
+
 ## Caveats
 
 - Four attempts per task are a capability screen, not a precise population
