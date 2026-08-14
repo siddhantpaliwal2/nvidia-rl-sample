@@ -199,14 +199,14 @@ the shared twelve-repository registry:
 
 | Task | Local base image | Private ECR repository |
 |---|---|---|
-| `paigo-customer-billing-schedule-migration` | `paigo-backend-eng504-billing-base:v1` | `rl-images/enterprise-backend-eng504-billing-base` |
-| `paigo-customer-identity-migration` | `paigo-backend-eng504-identity-base:v1` | `rl-images/enterprise-backend-eng504-identity-base` |
-| `paigo-dimension-pricing-tiers` | `paigo-backend-eng830-base:v1` | `rl-images/enterprise-backend-eng830-base` |
-| `paigo-s3-datastore-measurement` | `paigo-backend-eng411-base:v1` | `rl-images/enterprise-backend-eng411-base` |
-| `paigo-top-up-billing-lifecycle` | `paigo-backend-eng1167-base:v1` | `rl-images/enterprise-backend-eng1167-base` |
-| `champ-email-inbox-infrastructure` | `champ-state-machine-champ2197-base:v1` | `rl-images/enterprise-state-machine-email2197-base` |
-| `finbit-bank-parser-consolidation` | `finbit-bank-parser-base:v1` | `rl-images/enterprise-bank-parser-base` |
-| `finbit-google-cloud-storage-migration` | `finbit-google-cloud-storage-base:v1` | `rl-images/enterprise-google-cloud-storage-base` |
+| `customer-billing-schedule-migration` | `paigo-backend-eng504-billing-base:v1` | `rl-images/enterprise-backend-eng504-billing-base` |
+| `customer-identity-migration` | `paigo-backend-eng504-identity-base:v1` | `rl-images/enterprise-backend-eng504-identity-base` |
+| `dimension-pricing-tiers` | `paigo-backend-eng830-base:v1` | `rl-images/enterprise-backend-eng830-base` |
+| `s3-datastore-measurement` | `paigo-backend-eng411-base:v1` | `rl-images/enterprise-backend-eng411-base` |
+| `top-up-billing-lifecycle` | `paigo-backend-eng1167-base:v1` | `rl-images/enterprise-backend-eng1167-base` |
+| `email-inbox-infrastructure` | `champ-state-machine-champ2197-base:v1` | `rl-images/enterprise-state-machine-email2197-base` |
+| `bank-parser-consolidation` | `finbit-bank-parser-base:v1` | `rl-images/enterprise-bank-parser-base` |
+| `google-cloud-storage-migration` | `finbit-google-cloud-storage-base:v1` | `rl-images/enterprise-google-cloud-storage-base` |
 
 The script pins every pull by immutable digest and restores the local aliases
 expected by the task Dockerfiles. Verify the complete packaged task set before
